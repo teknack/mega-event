@@ -1,16 +1,22 @@
 <?php
 /**
- * 0,1,2,3,4,5,6,7,8
  * Setup
  * 
- * assoc_array locArray
- * - "p" = player owned -> ["p"] => "[x,y]-...."
- * - "s" = special -> ["s"] => "[x,y]-...."
- * - "n" = normal -> ["n"] => "[x,y]-...."
- * - "b" = base -> ["b"] => "[x,y]-...."
+ * Data fetched from db is stored in locArray in below format
  * 
+ * assoc_array locArray
+ * - "p" = player owned -> ["p"] => "x,y-...."
+ * - "s" = special -> ["s"] => "x,y-...."
+ * - "n" = normal -> ["n"] => "x,y-...."
+ * - "b" = base -> ["b"] => "x,y-...."
+ * - "r" = resources -> ["r"] => "x,y-...."
+ * 
+ * Data is then parsed by "populateMapArray()" which inserts the character corresponding to the type of cell
+ * at ("i","j") in the 2D array "mapArray"
  * 
  * array mapArray
+ * A 2D array which represents the map, contains characters corresponding to type of cell present in each cell
+ * 
 **/
 
 echo("this is a test<br>");
