@@ -38,21 +38,68 @@ function populateMapArray($locArray)
 	$s_loc = split("-",$str_s);
 	$n_loc = split("-",$str_n);
 	$b_loc = split("-",$str_b);
+	
+	for ($i = 0; $i <= 8; $i++)
+	{
+		for($j = 0; $j <= 8; $j++)
+		{
+			$mapArray[$i][$j] = "--";
+		}
+	}
+	
+	foreach ($p_loc as $i)
+	{
+		$loc = split(",",$i);
+		$mapArray[$loc[0]][$loc[1]] = "p";
+	}
+	
+	foreach ($s_loc as $i)
+	{
+		$loc = split(",",$i);
+		$mapArray[$loc[0]][$loc[1]] = "s";
+	}
+	
+	foreach ($n_loc as $i)
+	{
+		$loc = split(",",$i);
+		$mapArray[$loc[0]][$loc[1]] = "n";
+	}
+	
+	foreach ($b_loc as $i)
+	{
+		$loc = split(",",$i);
+		$mapArray[$loc[0]][$loc[1]] = "b";
+	}
 }
 
 function genMatrix()
 {
 	global $mapArray;
+	echo("<table border=1>");
+	echo("<tr>");
+	echo("<td>--</td>");
 	for ($i = 0; $i <= 8; $i++)
 	{
+		echo("<td><b>".$i."</b></td>");
+	}
+	echo("</tr>");
+	for ($i = 0; $i <= 8; $i++)
+	{
+		echo("<tr>");
+		echo("<td><b>".$i."</b></td>");
 		for ($j = 0; $j<= 8; $j++)
 		{
-			echo("[");
-			echo(" "); //replace with if-else for discerning what is present at x,y
-			echo("]"); 
+			//echo("[");
+			//echo(" "); //replace with if-else for discerning what is present at x,y
+			//echo("]"); 
+			
+			echo("<td>");
+			echo($mapArray[$i][$j]);
+			echo("</td>");
 		}
-		echo("<br>");
+		//echo("</tr>");
 	}
+	echo("</table>");
 }
 
 function fake_main()
