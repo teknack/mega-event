@@ -88,16 +88,12 @@ function genMatrix()
 		echo("<tr>");
 		echo("<td><b>".$i."</b></td>");
 		for ($j = 0; $j<= 8; $j++)
-		{
-			//echo("[");
-			//echo(" "); //replace with if-else for discerning what is present at x,y
-			//echo("]"); 
-			
+		{ 	
 			echo("<td>");
 			echo($mapArray[$i][$j]);
 			echo("</td>");
 		}
-		//echo("</tr>");
+		echo("</tr>");
 	}
 	echo("</table>");
 }
