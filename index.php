@@ -108,10 +108,12 @@ function fake_main()
 <html>
 
 <head>
+	<link rel="stylesheet" type="text/css" href="./index.css">
 	<title>Test page</title>
 </head>
 
 <body>
+	
 	<?php fake_main(); genMatrix() ?>
 </body>
 
