@@ -1,0 +1,11 @@
+Transitioning from Sid's World map to Jacques's local map
+-> cell querying will be done on local map
+
+Tick code (?)
+
+Things to be done by 15/01/2016
+--Background Canvas
+--Zoom in feature
+--Basic GUI
+--Single Player movement.
+--Local Map movement
