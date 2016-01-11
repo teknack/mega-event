@@ -19,7 +19,7 @@
  * 
 **/
 
-echo("this is a test<br>");
+//echo("this is a test<br>");
 
 $mapArray = array();
 $locArray = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
