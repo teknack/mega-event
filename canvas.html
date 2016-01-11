@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<body>
+<table>
+<tr>
+<td>
+<canvas id="canvas" width="1000" height="1000"
+style="border:1px solid #c3c3c3;">
+Your browser does not support the canvas element.
+</canvas>
+</td>
+<td>
+<button id="b">fill</button>
+<p id="info"></p>
+</td>
+</tr>
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "#FF0000";
+var x=0,i=0;
+var y=0,j=0;
+var slotSize=10;
+var selectSize=5;
+var grid=[];
+for(i=0;i<100;i++)
+{
+	grid[i]=[];
+}
+for(x=0,i=0;i<100;x+=slotSize,i++)
+{
+	for(y=0,j=0;j<100;y+=slotSize,j++)
+	{
+		if((Math.floor(i/10))%2==0 && (Math.floor(j/10))%2==0)     //required for creating the pattern
+		{
+			ctx.fillStyle="red"
+			grid[i][j]="red";
+		}
+		else
+		{
+			ctx.fillStyle="yellow";
+			grid[i][j]="yellow";
+		}
+		ctx.strokeRect(x,y,slotSize,slotSize);
+		ctx.strokeRect(x,y,slotSize,slotSize);
+		ctx.fillRect(x,y,slotSize,slotSize);
+	}
+}
+function getCursorPosition(canvas, event) {
+    var rect = canvas.getBoundingClientRect();
+    var x = event.clientX - rect.left;
+    var y = event.clientY - rect.top;
+    return {x:x, y:y}
+}
+var basex=20,basey=20;
+function occupy(style,size,row,col)
+{
+	//console.log("occupy called with"+style)
+	cx=(slotSize)*row;
+	cy=(slotSize)*col;
+	for(i=0;i<selectSize;i++,cx+=slotSize)
+	{
+		for(j=0;j<selectSize;j++,cx+=slotSize)
+		{
+			ctx.fillStyle=style[i][j];
+			ctx.fillRect(cx,cy,slotSize,slotSize);
+			ctx.strokeRect(cx,cy,slotSize,slotSize);
+		}
+	}
+}
+var row=0,col=0;
+function highlight(event)   // 
+{
+	var coords=getCursorPosition(canvas,event);
+	var x=coords.x;
+	var y=coords.y;
+	if(row!=Math.floor(x/slotSize) || col!=Math.floor(y/slotSize))
+	{
+		var color=getColor(row,col);				//working errantly
+		occupy(color,5,row,col);					//<--- problem line used to get the orginal color of boxes back(set to white for now)
+		row=Math.floor(x/slotSize);                 //to truncate to int since all number are float by default
+		col=Math.floor(y/slotSize);
+		document.getElementById("info").innerHTML=x+","+y+"        "+row+","+col;
+		occupy("#0000ff",5,row,col);                  // highlighting color
+	}
+}
+function getColor(row,col)
+{
+	/*var x=slotSize*row;
+	var y=slotSize*col;
+	var dat=ctx.getImageData(x,y,1,1);
+	console.log("raw data  "+dat.data[0]+" "+dat.data[1]+" "+dat.data[2]);
+	var color="#"+rgbToHex(dat.data[0],dat.data[1],dat.data[2]);*/
+	var color=[];
+	for(i=0;i<selectSize;i++)
+	{
+		color[i]=[];
+	}
+	var r,c
+	for(i=row,r=0;i<row+selectSize;i++,r++)
+	{
+		for(j=col,c=0;j<col+selectSize;j++,c++)
+		{
+			color[r][c]=grid[i][j];
+		}
+	}
+	return color;
+}
+function rgbToHex(r,g,b)
+{
+	if(r<=255 && g<=255 && b<=255)
+	{
+		rh=r.toString(16);
+		gh=g.toString(16);
+		bh=b.toString(16);
+		while(rh.length<2)
+		{
+			rh="0"+rh;
+		}
+		while(gh.length<2)
+		{
+			gh="0"+gh;
+		}
+		while(bh.length<2)
+		{
+			bh="0"+bh;
+		}
+		color=rh+gh+bh;
+		console.log(color+" "+rh+" "+gh+" "+bh);
+		return color;
+	}
+	else
+		console.log("invalid color values"+r+" "+g+" "+b);
+}
+function clear(event)
+{
+	var coords=relMouseCoords(event);
+	row=(coords.x/slotSize);
+	col=(coords.y/slotSize);
+	occupy("#ffffff",5,row,col);
+}
+document.getElementById("b").setAttribute("onClick","occupy('red',1,2)");
+document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
+document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
+</script>
+</body>
+</html>
