@@ -53,20 +53,14 @@ function getCursorPosition(canvas, event) {
     return {x:x, y:y}
 }
 var basex=20,basey=20;
-function occupy(style,size,row,col)
+function occupy(style,row,col)
 {
 	//console.log("occupy called with"+style)
 	cx=(slotSize)*row;
 	cy=(slotSize)*col;
-	for(i=0;i<selectSize;i++,cx+=slotSize)
-	{
-		for(j=0;j<selectSize;j++,cx+=slotSize)
-		{
-			ctx.fillStyle=style[i][j];
-			ctx.fillRect(cx,cy,slotSize,slotSize);
-			ctx.strokeRect(cx,cy,slotSize,slotSize);
-		}
-	}
+	ctx.fillStyle=style;
+	ctx.fillRect(cx,cy,slotSize,slotSize);
+	ctx.strokeRect(cx,cy,slotSize,slotSize);
 }
 var row=0,col=0;
 function highlight(event)   // 
@@ -76,22 +70,25 @@ function highlight(event)   //
 	var y=coords.y;
 	if(row!=Math.floor(x/slotSize) || col!=Math.floor(y/slotSize))
 	{
-		var color=getColor(row,col);				//working errantly
-		occupy(color,5,row,col);					//<--- problem line used to get the orginal color of boxes back(set to white for now)
+		clearc();					//<--- problem line used to get the orginal color of boxes back(set to white for now)
 		row=Math.floor(x/slotSize);                 //to truncate to int since all number are float by default
 		col=Math.floor(y/slotSize);
 		document.getElementById("info").innerHTML=x+","+y+"        "+row+","+col;
-		occupy("#0000ff",5,row,col);                  // highlighting color
+		occupy("#0000ff",row,col);                  // highlighting color
+		/*var cx,cy;
+		cx=row*slotSize;
+		cy=col*slotSize;
+		ctx.strokeRect(cx,cy,slotSize,slotSize);*/
 	}
 }
 function getColor(row,col)
 {
-	/*var x=slotSize*row;
+	var x=slotSize*row;
 	var y=slotSize*col;
 	var dat=ctx.getImageData(x,y,1,1);
 	console.log("raw data  "+dat.data[0]+" "+dat.data[1]+" "+dat.data[2]);
-	var color="#"+rgbToHex(dat.data[0],dat.data[1],dat.data[2]);*/
-	var color=[];
+	var color="#"+rgbToHex(dat.data[0],dat.data[1],dat.data[2]);
+	/*var color=[];
 	for(i=0;i<selectSize;i++)
 	{
 		color[i]=[];
@@ -103,7 +100,7 @@ function getColor(row,col)
 		{
 			color[r][c]=grid[i][j];
 		}
-	}
+	}*/
 	return color;
 }
 function rgbToHex(r,g,b)
@@ -132,12 +129,26 @@ function rgbToHex(r,g,b)
 	else
 		console.log("invalid color values"+r+" "+g+" "+b);
 }
-function clear(event)
+function clearc()
 {
-	var coords=relMouseCoords(event);
-	row=(coords.x/slotSize);
-	col=(coords.y/slotSize);
-	occupy("#ffffff",5,row,col);
+	console.log("clearing");
+	for(i=0;i<100;i++)
+	{
+		for(j=0;j<100;j++)
+		{
+			var col=getColor(i,j);
+			if( col!=grid[i][j] )
+			{
+				console.log("found!!");
+				cx=(slotSize)*i;
+				cy=(slotSize)*j;
+				ctx.fillStyle=grid[i][j];
+				ctx.fillRect(cx,cy,slotSize,slotSize);
+				ctx.strokeRect(cx,cy,slotSize,slotSize);
+			}
+				
+		}
+	}
 }
 document.getElementById("b").setAttribute("onClick","occupy('red',1,2)");
 document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
