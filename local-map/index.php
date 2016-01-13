@@ -23,6 +23,7 @@
 
 $mapArray = array();
 $locArray = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
+//$_POST["locArray"] = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 
 function populateMapArray($locArray)
 {
@@ -108,7 +109,7 @@ function fake_main()
 <html>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="./index.css">
+	<link rel="stylesheet" type="text/css" href="./local-map.css">
 	<title>Test page</title>
 </head>
 
