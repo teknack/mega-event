@@ -1,0 +1,22 @@
+td{
+	width:2em;
+	height:2em;
+	text-align:center;
+}
+
+#button_left{
+	float:left;
+	vertical-align:parent | middle;
+}
+
+#button_right{
+	float:right;
+}
+
+#button_up{
+	position:"center";
+}
+
+#button_down{
+	position:"center";
+}

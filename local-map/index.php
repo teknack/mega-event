@@ -23,6 +23,7 @@
 
 $mapArray = array();
 $locArray = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
+//$_POST["locArray"] = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 
 function populateMapArray($locArray)
 {
@@ -100,7 +101,7 @@ function genMatrix()
 
 function fake_main()
 {
-	global $locArray;
+	global $locArray; //=$_POST["locations"];
 	populateMapArray($locArray);
 }
 ?>
@@ -108,13 +109,38 @@ function fake_main()
 <html>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="./index.css">
+	<link rel="stylesheet" type="text/css" href="./local-map.css">
 	<title>Test page</title>
 </head>
 
 <body>
+	<div align="center"><?php fake_main(); genMatrix() ?></div>
 	
-	<?php fake_main(); genMatrix() ?>
+	<div style="float:right">
+	<form method="POST" action="">
+		<table name="nav_buttons" border=0 align="center">
+			<tr>
+				<td></td>
+				<td><button>UP</button></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><button>LEFT</button></td>
+				<td></td>
+				<td><button>RIGHT</button></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><button>DOWN</button></td>
+				<td></td>
+			</tr>
+		</table>
+	</form>
+	</div>
+	
+	<div style="float:left">
+	Place holder text
+	</div>
 </body>
 
 </html>
