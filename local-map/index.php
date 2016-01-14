@@ -10,6 +10,8 @@
  * - "n" = normal -> ["n"] => "x,y-...."
  * - "b" = base -> ["b"] => "x,y-...."
  * - "r" = resources -> ["r"] => "x,y-...."
+ * - "f1" = faction1 -> ["f1"] => "x,y-...."
+ * - "f2" = faction1 -> ["f2"] => "x,y-...."
  * 
  * Data is then parsed by "populateMapArray()" which inserts the character corresponding to the type of cell
  * at ("i","j") in the 2D array "mapArray"
@@ -24,13 +26,20 @@ include "../db_access/db.php";
 //echo("this is a test<br>");
 
 $mapArray = array();
-//$locArray = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
+$locArray = array("p"=>"4,4","f1"=>"1,1","f2"=>"","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 //$_POST["locArray"] = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 
+/*
 if (isset($_POST) && !empty($_POST))
 {
-	
+	$locArray = $_POST["locArray"];
 }
+else
+{
+	redirect("www.teknack.in");
+	die();
+}
+*/
 
 function populateMapArray($locArray)
 {
@@ -40,12 +49,14 @@ function populateMapArray($locArray)
 	$str_s = $locArray["s"];
 	$str_n = $locArray["n"];
 	$str_b = $locArray["b"];
+	$str_f = $locArray["f"];
 	
 	$p_loc = split("-",$str_p);
 	//print_r($p_loc); 
 	$s_loc = split("-",$str_s);
 	$n_loc = split("-",$str_n);
 	$b_loc = split("-",$str_b);
+	$f_loc = split("-",$str_f);
 	
 	for ($i = 0; $i <= 8; $i++)
 	{
@@ -77,6 +88,12 @@ function populateMapArray($locArray)
 	{
 		$loc = split(",",$i);
 		$mapArray[$loc[0]][$loc[1]] = "b";
+	}
+	
+	foreach ($f_loc as $i)
+	{
+		$loc = split(",",$i);
+		$mapArray[$loc[0]][$loc[1]] = $mapArray[$loc[0]][$loc[1]]."/f";
 	}
 }
 
