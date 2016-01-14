@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-$dbusername="DS";
-$dbpassword="DocSub";
-$dbname="DocSub";
-$dbtable="Sub";
+$dbusername="root";
+$dbpassword="";
+$dbname="Mega";
+$dbtable="grid";
 $dbconn="";
 $dbservername="localhost";
 
@@ -103,6 +103,16 @@ function getID()
 {
 	global $id;
 	return($id);
+}
+
+function getSlot($x,$y)
+{
+	global $dbconn;
+	
+	$query = "SELECT occupied,fortification,troops FROM grid WHERE row=".$x." AND col=".$y."";
+	$res = mysqli_query($dbconn,$query);
+	$res = mysqli_fetch_assoc($res);
+	return($res);
 }
 
 function fetch($col="")
