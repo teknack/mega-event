@@ -22,12 +22,8 @@ var x=0,i=0;
 var y=0,j=0;
 var slotSize=10;
 var selectSize=5;
-var grid=[];
-for(i=0;i<100;i++)
-{
-	grid[i]=[];
-}
-for(x=0,i=0;i<100;x+=slotSize,i++)
+var grid;
+/*for(x=0,i=0;i<100;x+=slotSize,i++)
 {
 	for(y=0,j=0;j<100;y+=slotSize,j++)
 	{
@@ -45,6 +41,26 @@ for(x=0,i=0;i<100;x+=slotSize,i++)
 		ctx.strokeRect(x,y,slotSize,slotSize);
 		ctx.fillRect(x,y,slotSize,slotSize);
 	}
+}*/
+
+window.onload=function loadDoc() {
+  var xhttp;
+  if (window.XMLHttpRequest) {
+    // code for modern browsers
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      grid=JSON.parse(xhttp.responseText);
+      console.log("gridwa");
+      console.log(grid);
+    }
+  }
+  xhttp.open("GET", "getWMap.php", true);
+  xhttp.send();
 }
 function getCursorPosition(canvas, event) {
     var rect = canvas.getBoundingClientRect();
@@ -86,7 +102,7 @@ function getColor(row,col)
 	var x=slotSize*row;
 	var y=slotSize*col;
 	var dat=ctx.getImageData(x,y,1,1);
-	console.log("raw data  "+dat.data[0]+" "+dat.data[1]+" "+dat.data[2]);
+	//console.log("raw data  "+dat.data[0]+" "+dat.data[1]+" "+dat.data[2]);
 	var color="#"+rgbToHex(dat.data[0],dat.data[1],dat.data[2]);
 	/*var color=[];
 	for(i=0;i<selectSize;i++)
@@ -123,15 +139,15 @@ function rgbToHex(r,g,b)
 			bh="0"+bh;
 		}
 		color=rh+gh+bh;
-		console.log(color+" "+rh+" "+gh+" "+bh);
+		//console.log(color+" "+rh+" "+gh+" "+bh);
 		return color;
 	}
-	else
-		console.log("invalid color values"+r+" "+g+" "+b);
+	//else
+		//console.log("invalid color values"+r+" "+g+" "+b);
 }
 function clearc()
 {
-	console.log("clearing");
+	//console.log("clearing");
 	for(i=0;i<100;i++)
 	{
 		for(j=0;j<100;j++)
@@ -139,7 +155,7 @@ function clearc()
 			var col=getColor(i,j);
 			if( col!=grid[i][j] )
 			{
-				console.log("found!!");
+				//console.log("found!!");
 				cx=(slotSize)*i;
 				cy=(slotSize)*j;
 				ctx.fillStyle=grid[i][j];
@@ -150,9 +166,9 @@ function clearc()
 		}
 	}
 }
-document.getElementById("b").setAttribute("onClick","occupy('red',1,2)");
+/*document.getElementById("b").setAttribute("onClick","occupy('red',1,2)");
 document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
-document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
+document.getElementById("canvas").setAttribute("onmouseout","clear(event)");*/
 </script>
 </body>
 </html>
