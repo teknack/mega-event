@@ -10,7 +10,8 @@
  * - "n" = normal -> ["n"] => "x,y-...."
  * - "b" = base -> ["b"] => "x,y-...."
  * - "r" = resources -> ["r"] => "x,y-...."
- * - "f" = faction -> ["f"] => "x,y-...."
+ * - "f1" = faction1 -> ["f1"] => "x,y-...."
+ * - "f2" = faction1 -> ["f2"] => "x,y-...."
  * 
  * Data is then parsed by "populateMapArray()" which inserts the character corresponding to the type of cell
  * at ("i","j") in the 2D array "mapArray"
@@ -25,9 +26,10 @@ include "../db_access/db.php";
 //echo("this is a test<br>");
 
 $mapArray = array();
-//$locArray = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
+$locArray = array("p"=>"4,4","f1"=>"1,1","f2"=>"","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 //$_POST["locArray"] = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 
+/*
 if (isset($_POST) && !empty($_POST))
 {
 	$locArray = $_POST["locArray"];
@@ -37,6 +39,7 @@ else
 	redirect("www.teknack.in");
 	die();
 }
+*/
 
 function populateMapArray($locArray)
 {
@@ -90,7 +93,7 @@ function populateMapArray($locArray)
 	foreach ($f_loc as $i)
 	{
 		$loc = split(",",$i);
-		$mapArray[$loc[0]][$loc[1]] = "f";
+		$mapArray[$loc[0]][$loc[1]] = $mapArray[$loc[0]][$loc[1]]."/f";
 	}
 }
 
