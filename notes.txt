@@ -1,0 +1,11 @@
+WITH REFERENCE TO DB
+
+grid -> Fortification:
+	Normal -> 0
+	resource -> -1
+	special -> -2
+	Base -> -9
+
+Test values
+	grid
+		row=1 & col=1

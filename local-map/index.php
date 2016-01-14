@@ -19,11 +19,18 @@
  * 
 **/
 
+include "../db_access/db.php";
+
 //echo("this is a test<br>");
 
 $mapArray = array();
-$locArray = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
+//$locArray = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 //$_POST["locArray"] = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
+
+if (isset($_POST) && !empty($_POST))
+{
+	
+}
 
 function populateMapArray($locArray)
 {
