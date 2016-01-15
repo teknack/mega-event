@@ -15,35 +15,71 @@ Your browser does not support the canvas element.
 </td>
 </tr>
 <script>
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
+var canvas;
+var ctx;
 ctx.fillStyle = "#FF0000";
 var x=0,i=0;
 var y=0,j=0;
+var playerId;
 var slotSize=10;
 var selectSize=5;
-var grid;
-/*for(x=0,i=0;i<100;x+=slotSize,i++)
+var grid=[],gridp=[];
+for(var i=0;i<100;i++)
 {
-	for(y=0,j=0;j<100;y+=slotSize,j++)
+	grid[i]=[];
+	gridp[i]=[];
+}
+var temp;
+function renderGrid()
+{
+	for(x=0,i=0;i<100;x+=slotSize,i++)
 	{
-		if((Math.floor(i/10))%2==0 && (Math.floor(j/10))%2==0)     //required for creating the pattern
+		for(y=0,j=0;j<100;y+=slotSize,j++)
 		{
-			ctx.fillStyle="red"
-			grid[i][j]="red";
+			ctx.fillStyle=grid[i][j];
+			ctx.strokeRect(x,y,slotSize,slotSize);
+			ctx.strokeRect(x,y,slotSize,slotSize);
+			ctx.fillRect(x,y,slotSize,slotSize);
 		}
-		else
-		{
-			ctx.fillStyle="yellow";
-			grid[i][j]="yellow";
-		}
-		ctx.strokeRect(x,y,slotSize,slotSize);
-		ctx.strokeRect(x,y,slotSize,slotSize);
-		ctx.fillRect(x,y,slotSize,slotSize);
 	}
-}*/
-
-window.onload=function loadDoc() {
+}
+function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numeric array to 
+{
+	playerId=1;
+	for(i=0,k=0;i<100;i++)
+	  {
+		for(j=0;j<100;j++,k++)
+		{
+			if(temp[k]["occupied"]===playerId )
+			{
+				if(temp[k]["faction"]===1)
+				{
+					grid[i][j]="blue";
+					gridp[i][j]="blue";
+				}
+				if(temp[k]["faction"]===0)
+				{
+					gridp[i][j]="red";
+					grid[i][j]="red";
+				}
+			}
+			else if(temp[k]["occupied"]==0)
+			{
+				gridp[i][j]="white";
+				grid[i][j]="white";
+			}
+			else
+			{
+				gridp[i][j]="yellow";
+				grid[i][j]="yellow";
+			}
+		}
+	  }
+}
+window.onload=function loadDoc(){
+	canvas = document.getElementById("canvas");
+	ctx = canvas.getContext("2d");
+  //ajax starts here do not edit!!
   var xhttp;
   if (window.XMLHttpRequest) {
     // code for modern browsers
@@ -54,20 +90,49 @@ window.onload=function loadDoc() {
   }
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4 && xhttp.status == 200) {
-      grid=JSON.parse(xhttp.responseText);
-      console.log("gridwa");
-      console.log(grid);
+      temp=JSON.parse(xhttp.responseText);             //editable                                   
+      convertToGrid(temp);	            			   //editable
+      renderGrid(grid);                                //editable
     }
   }
   xhttp.open("GET", "getWMap.php", true);
   xhttp.send();
+  //ajax ends--->
+  //playerId=temp[10]["player"];
 }
-function getCursorPosition(canvas, event) {
-    var rect = canvas.getBoundingClientRect();
+function passCursorPosition(canvas, event) {
+	//ajax starts here do not edit!!
+  	var xhttp;
+  	var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
-    return {x:x, y:y}
+    var res=x+","+y;
+  	if (window.XMLHttpRequest) {
+    // code for modern browsers
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  	}
+  	xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      console.log()             //editable                                    
+      //console.log("gridwa");				 //editable
+      //console.log(grid);					 //editable
+    }
+  }
+  xhttp.open("GET", "trial.php?coord="+res, true);
+  xhttp.send();
+  //ajax ends--->
 }
+function getCursorPosition(canvas, event) {
+  	var rect = canvas.getBoundingClientRect();
+    var x = event.clientX - rect.left;
+    var y = event.clientY - rect.top;
+    var res=x+","+y;
+    console.log(x+","+y);
+    return({x:x,y:y});
+ }
 var basex=20,basey=20;
 function occupy(style,row,col)
 {
@@ -166,9 +231,9 @@ function clearc()
 		}
 	}
 }
-/*document.getElementById("b").setAttribute("onClick","occupy('red',1,2)");
+document.getElementById("canvas").setAttribute("onClick","getCursorPosition()");
 document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
-document.getElementById("canvas").setAttribute("onmouseout","clear(event)");*/
+document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
 </script>
 </body>
 </html>
