@@ -1,49 +1,50 @@
 <?php
 
-	include "./db.php" //To Edit
-	$coord;
+	include "./db_access/db.php"; //To Edit
+	$coords="";
 	function accept($c=""){
-		global $coord;
-		$coord = split("," , $c);
+		global $coords;
+		
+		$coords = split("," , $c);
 	}
 
 	function slotAllocation(){
-		global $coord;
+		global $coords;
 		$locArray = array("p" => "", "s" => "", "n" => "", "b" => "", "r" => "", "f1" => "", "f2" => "");
 		connect();
 		
 
-		for($i=$coord[0];$i<=($coord[0]+8);$i++) //Set to table row value
+		for($i=$coords[0];$i<=($coords[0]+8);$i++) //Set to table row value
 		{
-			for($j=$coord[1];$j<=($coord[1]+8);$j++) // Set to table column value
+			for($j=$coords[1];$j<=($coords[1]+8);$j++) // Set to table column value
 			{
 				$arr = getSlot($i,$j);
 				if($arr["occupied"] !== "0")
 				{
-					$locArray["p"] = $locArray["p"]."-".$x.",".$y;
+					$locArray["p"] = $locArray["p"]."-".$i.",".$j;
 				}
 				switch($arr["fortification"])
 				{
 					case "-1":
-						$locArray["r"] = $locArray["r"]."-".$x.",".$y;
+						$locArray["r"] = $locArray["r"]."-".$i.",".$j;
 						break;
 					case "-2":
-						$locArray["s"] = $locArray["s"]."-".$x.",".$y;
+						$locArray["s"] = $locArray["s"]."-".$i.",".$j;
 						break;
 					case "-9":
-						$locArray["b"] = $locArray["b"]."-".$x.",".$y;
+						$locArray["b"] = $locArray["b"]."-".$i.",".$j;
 						break;
 					case "0":
-						$locArray["n"] = $locArray["n"]."-".$x.",".$y;
+						$locArray["n"] = $locArray["n"]."-".$i.",".$j;
 						break;
 					default: 
 						alert("Can't find what you want? You're in the wrong neighbourhood.");
 				}
 				if($arr["faction"] === "1"){
-					$locArray["f1"] = $locArray["f1"]."-".$x.",".$y;
+					$locArray["f1"] = $locArray["f1"]."-".$i.",".$j;
 				}
 				else if($arr["faction"] === "2"){
-					$locArray["f2"] = $locArray["f2"]."-".$x.",".$y;
+					$locArray["f2"] = $locArray["f2"]."-".$i.",".$j;
 				}
 			}
 		}
@@ -51,11 +52,12 @@
 
 	}
 	
-	if(isset($_POST) && !empty($_POST))
+	if(isset($_REQUEST) && !empty($_REQUEST))
 	{
-		accept($_POST["tl"]);
-		$_POST["locArray"] = slotAllocation();
-
+		$ordinates = $_REQUEST["coord"];
+		accept($ordinates);
+		$_SESSION["locArray"] = slotAllocation();
+	
 		redirect("./local-map/index.php");
 	}
 ?>
