@@ -26,7 +26,7 @@ include "../db_access/db.php";
 //echo("this is a test<br>");
 
 $mapArray = array();
-$locArray = array("p"=>"4,4","f1"=>"1,1","f2"=>"","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
+$locArray = array("p"=>"4,4","f1"=>"4,4","f2"=>"1,1","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 //$_POST["locArray"] = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 
 /*
@@ -49,14 +49,16 @@ function populateMapArray($locArray)
 	$str_s = $locArray["s"];
 	$str_n = $locArray["n"];
 	$str_b = $locArray["b"];
-	$str_f = $locArray["f"];
+	$str_f1 = $locArray["f1"];
+	$str_f2 = $locArray["f2"];
 	
 	$p_loc = split("-",$str_p);
 	//print_r($p_loc); 
 	$s_loc = split("-",$str_s);
 	$n_loc = split("-",$str_n);
 	$b_loc = split("-",$str_b);
-	$f_loc = split("-",$str_f);
+	$f1_loc = split("-",$str_f1);
+	$f2_loc = split("-",$str_f2);
 	
 	for ($i = 0; $i <= 8; $i++)
 	{
@@ -90,10 +92,16 @@ function populateMapArray($locArray)
 		$mapArray[$loc[0]][$loc[1]] = "b";
 	}
 	
-	foreach ($f_loc as $i)
+	foreach ($f1_loc as $i)
 	{
 		$loc = split(",",$i);
-		$mapArray[$loc[0]][$loc[1]] = $mapArray[$loc[0]][$loc[1]]."/f";
+		$mapArray[$loc[0]][$loc[1]] = $mapArray[$loc[0]][$loc[1]]."/f1";
+	}
+	
+	foreach ($f2_loc as $i)
+	{
+		$loc = split(",",$i);
+		$mapArray[$loc[0]][$loc[1]] = $mapArray[$loc[0]][$loc[1]]."/f2";
 	}
 }
 
@@ -113,10 +121,21 @@ function genMatrix()
 		echo("<tr>");
 		echo("<td><b>".$i."</b></td>");
 		for ($j = 0; $j<= 8; $j++)
-		{ 	
-			echo("<td>");
-			echo($mapArray[$i][$j]);
-			echo("</td>");
+		{ 	if (!empty($mapArray[$i][$j]))
+			{
+				if (split("",$mapArray[$i][$j])[1] === "/")
+				{
+					echo("<td bgcolor='red'>");
+					echo($mapArray[$i][$j]);
+					echo("</td>");
+				} 
+				else
+				{
+					echo("<td>");
+					echo($mapArray[$i][$j]);
+					echo("</td>");
+				}
+				
 		}
 		echo("</tr>");
 	}
@@ -133,7 +152,7 @@ function fake_main()
 <html>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="./local-map.css">
+	<link rel="stylesheet" type="text/css" href="./index.css">
 	<title>Test page</title>
 </head>
 
