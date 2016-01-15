@@ -4,7 +4,7 @@
 <table>
 <tr>
 <td>
-<canvas id="canvas" width="2000" height="2000"
+<canvas id="canvas" width="1000" height="1000"
 style="border:1px solid #c3c3c3;">
 Your browser does not support the canvas element.
 </canvas>
@@ -174,7 +174,7 @@ function highlight(event)
 		row=Math.floor(y/slotSize);                 //to truncate to int since all number are float by default
 		col=Math.floor(x/slotSize);
 		document.getElementById("info").innerHTML=x+","+y+"        "+row+","+col;
-		occupy("#0000ff",row,col,hSize);                  // highlighting color
+		occupy("rgba(128,128,128,0.3)",row,col,hSize);                  // highlighting color
 	}
 }
 function clearc()
