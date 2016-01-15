@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 	include "./db_access/db.php"; //To Edit
 	$coords="";
@@ -6,6 +7,7 @@
 		global $coords;
 		
 		$coords = split("," , $c);
+		$_SESSION["coord"] = $coords;
 	}
 
 	function slotAllocation(){
@@ -23,22 +25,25 @@
 				{
 					$locArray["p"] = $locArray["p"]."-".$i.",".$j;
 				}
-				switch($arr["fortification"])
+				else
 				{
-					case "-1":
-						$locArray["r"] = $locArray["r"]."-".$i.",".$j;
-						break;
-					case "-2":
-						$locArray["s"] = $locArray["s"]."-".$i.",".$j;
-						break;
-					case "-9":
-						$locArray["b"] = $locArray["b"]."-".$i.",".$j;
-						break;
-					case "0":
-						$locArray["n"] = $locArray["n"]."-".$i.",".$j;
-						break;
-					default: 
-						alert("Can't find what you want? You're in the wrong neighbourhood.");
+					switch($arr["fortification"])
+					{
+						case "-1":
+							$locArray["r"] = $locArray["r"]."-".$i.",".$j;
+							break;
+						case "-2":
+							$locArray["s"] = $locArray["s"]."-".$i.",".$j;
+							break;
+						case "-9":
+							$locArray["b"] = $locArray["b"]."-".$i.",".$j;
+							break;
+						case "0":
+							$locArray["n"] = $locArray["n"]."-".$i.",".$j;
+							break;
+						default: 
+							alert("Can't find what you want? You're in the wrong neighbourhood.");
+					}
 				}
 				if($arr["faction"] === "1"){
 					$locArray["f1"] = $locArray["f1"]."-".$i.",".$j;
