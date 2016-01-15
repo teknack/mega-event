@@ -26,20 +26,23 @@ include "../db_access/db.php";
 //echo("this is a test<br>");
 
 $mapArray = array();
-$locArray = array("p"=>"4,4","f1"=>"4,4","f2"=>"1,1","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
+//$locArray = array("p"=>"4,4","f1"=>"4,4","f2"=>"1,1","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 //$_POST["locArray"] = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 
-/*
-if (isset($_POST) && !empty($_POST))
+
+if (isset($_SESSION) && !empty($_SESSION))
 {
-	$locArray = $_POST["locArray"];
+	$locArray = $_SESSION["locArray"];
+	echo("---");
+	var_dump($locArray);
+	echo("<br>---");
 }
 else
 {
 	redirect("www.teknack.in");
 	die();
 }
-*/
+
 
 function populateMapArray($locArray)
 {
@@ -71,37 +74,55 @@ function populateMapArray($locArray)
 	foreach ($p_loc as $i)
 	{
 		$loc = split(",",$i);
-		$mapArray[$loc[0]][$loc[1]] = "p";
+		if ($loc[0] !== "")
+		{
+			$mapArray[$loc[0]][$loc[1]] = "p";
+		}
 	}
 	
 	foreach ($s_loc as $i)
 	{
 		$loc = split(",",$i);
-		$mapArray[$loc[0]][$loc[1]] = "s";
+		if ($loc[0] !== "")
+		{
+			$mapArray[$loc[0]][$loc[1]] = "s";
+		}
 	}
 	
 	foreach ($n_loc as $i)
 	{
 		$loc = split(",",$i);
-		$mapArray[$loc[0]][$loc[1]] = "n";
+		if ($loc[0] !== "")
+		{
+			$mapArray[$loc[0]][$loc[1]] = "n";
+		}
 	}
 	
 	foreach ($b_loc as $i)
 	{
 		$loc = split(",",$i);
-		$mapArray[$loc[0]][$loc[1]] = "b";
+		if ($loc[0] !== "")
+		{
+			$mapArray[$loc[0]][$loc[1]] = "b";
+		}
 	}
 	
 	foreach ($f1_loc as $i)
 	{
 		$loc = split(",",$i);
-		$mapArray[$loc[0]][$loc[1]] = $mapArray[$loc[0]][$loc[1]]."/f1";
+		if ($loc[0] !== "")
+		{
+			$mapArray[$loc[0]][$loc[1]] = "<div style='background-color:red'>".$mapArray[$loc[0]][$loc[1]]."</div>";
+		}
 	}
 	
 	foreach ($f2_loc as $i)
 	{
 		$loc = split(",",$i);
-		$mapArray[$loc[0]][$loc[1]] = $mapArray[$loc[0]][$loc[1]]."/f2";
+		if ($loc[0] !== "")
+		{
+			$mapArray[$loc[0]][$loc[1]] = "<div style='background-color:blue'>".$mapArray[$loc[0]][$loc[1]]."</div>";
+		}
 	}
 }
 
@@ -121,11 +142,14 @@ function genMatrix()
 		echo("<tr>");
 		echo("<td><b>".$i."</b></td>");
 		for ($j = 0; $j<= 8; $j++)
-		{ 	if (!empty($mapArray[$i][$j]))
-			{
+		{ 	
+			/*
+			//if (!empty($mapArray[$i][$j]))
+			//{
+				
 				if (split("",$mapArray[$i][$j])[1] === "/")
 				{
-					echo("<td bgcolor='red'>");
+					echo("<td style='background-color:red'>");
 					echo($mapArray[$i][$j]);
 					echo("</td>");
 				} 
@@ -135,11 +159,15 @@ function genMatrix()
 					echo($mapArray[$i][$j]);
 					echo("</td>");
 				}
+				*/
+				echo("<td>");
+				echo($mapArray[$i][$j]);
+				echo("</td>");
 				
 		}
-		echo("</tr>");
+			echo("</tr>");
 	}
-	echo("</table>");
+		echo("</table>");
 }
 
 function fake_main()
