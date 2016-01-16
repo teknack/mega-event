@@ -35,7 +35,8 @@ if (isset($_SESSION) && !empty($_SESSION))
 	$locArray = $_SESSION["locArray"];
 	echo("---");
 	var_dump($locArray);
-	echo("<br>---");
+	echo("<br>---<br>");
+	$tlc = $_SESSION["coord"]; //Top Left Coordinate
 }
 else
 {
@@ -46,7 +47,7 @@ else
 
 function populateMapArray($locArray)
 {
-	global $mapArray;
+	global $mapArray,$tlc;
 	
 	$str_p = $locArray["p"];
 	$str_s = $locArray["s"];
@@ -76,7 +77,7 @@ function populateMapArray($locArray)
 		$loc = split(",",$i);
 		if ($loc[0] !== "")
 		{
-			$mapArray[$loc[0]][$loc[1]] = "p";
+			$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]] = "p";
 		}
 	}
 	
@@ -85,7 +86,7 @@ function populateMapArray($locArray)
 		$loc = split(",",$i);
 		if ($loc[0] !== "")
 		{
-			$mapArray[$loc[0]][$loc[1]] = "s";
+			$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]] = "s";
 		}
 	}
 	
@@ -94,7 +95,7 @@ function populateMapArray($locArray)
 		$loc = split(",",$i);
 		if ($loc[0] !== "")
 		{
-			$mapArray[$loc[0]][$loc[1]] = "n";
+			$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]] = "n";
 		}
 	}
 	
@@ -103,7 +104,7 @@ function populateMapArray($locArray)
 		$loc = split(",",$i);
 		if ($loc[0] !== "")
 		{
-			$mapArray[$loc[0]][$loc[1]] = "b";
+			$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]] = "b";
 		}
 	}
 	
@@ -112,7 +113,7 @@ function populateMapArray($locArray)
 		$loc = split(",",$i);
 		if ($loc[0] !== "")
 		{
-			$mapArray[$loc[0]][$loc[1]] = "<div style='background-color:red'>".$mapArray[$loc[0]][$loc[1]]."</div>";
+			$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]] = "<div style='background-color:red'>".$mapArray[$loc[0]][$loc[1]]."</div>";
 		}
 	}
 	
@@ -121,7 +122,7 @@ function populateMapArray($locArray)
 		$loc = split(",",$i);
 		if ($loc[0] !== "")
 		{
-			$mapArray[$loc[0]][$loc[1]] = "<div style='background-color:blue'>".$mapArray[$loc[0]][$loc[1]]."</div>";
+			$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]] = "<div style='background-color:blue'>".$mapArray[$loc[0]][$loc[1]]."</div>";
 		}
 	}
 }
