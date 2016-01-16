@@ -24,6 +24,14 @@ session_start();
 				if($arr["occupied"] !== "0")
 				{
 					$locArray["p"] = $locArray["p"]."-".$i.",".$j;
+					if($arr["faction"] === "1")
+					{
+						$locArray["f1"] = $locArray["f1"]."-".$i.",".$j;
+					}
+					else if($arr["faction"] === "2")
+					{
+						$locArray["f2"] = $locArray["f2"]."-".$i.",".$j;
+					}
 				}
 				else
 				{
@@ -44,12 +52,6 @@ session_start();
 						default: 
 							alert("Can't find what you want? You're in the wrong neighbourhood.");
 					}
-				}
-				if($arr["faction"] === "1"){
-					$locArray["f1"] = $locArray["f1"]."-".$i.",".$j;
-				}
-				else if($arr["faction"] === "2"){
-					$locArray["f2"] = $locArray["f2"]."-".$i.",".$j;
 				}
 			}
 		}

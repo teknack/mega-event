@@ -113,7 +113,7 @@ function populateMapArray($locArray)
 		$loc = split(",",$i);
 		if ($loc[0] !== "")
 		{
-			$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]] = "<div style='background-color:red'>".$mapArray[$loc[0]][$loc[1]]."</div>";
+			$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]] = "<div style='background-color:red'>".$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]]."</div>";
 		}
 	}
 	
@@ -122,7 +122,7 @@ function populateMapArray($locArray)
 		$loc = split(",",$i);
 		if ($loc[0] !== "")
 		{
-			$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]] = "<div style='background-color:blue'>".$mapArray[$loc[0]][$loc[1]]."</div>";
+			$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]] = "<div style='background-color:blue'>".$mapArray[$loc[0]-$tlc[0]][$loc[1]-$tlc[1]]."</div>";
 		}
 	}
 }

@@ -87,14 +87,14 @@ window.onload=function loadDoc(){
   //playerId=temp[10]["player"];
 }
 function passCursorPosition(canvas, event) {
-	//ajax starts here do not edit!!
   	var xhttp;
   	var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
-    var res=x+","+y;
-    window.location="../transfer.php?coord="+res;
-  	
+    var row=Math.floor(y/slotSize);
+    var col=Math.floor(x/slotSize);
+    var res=row+","+col;	
+    window.location="./../transfer.php?coord="+res;
 }
 function getCursorPosition(canvas , event) {
   	var rect = canvas.getBoundingClientRect();
