@@ -28,7 +28,6 @@ function renderGrid()
 }
 function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numeric array to 
 {
-	playerId=1;
 	for(i=0,k=0;i<100;i++)
 	  {
 		for(j=0;j<100;j++,k++)
@@ -73,7 +72,8 @@ window.onload=function loadDoc(){
   }
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4 && xhttp.status == 200) {
-      temp=JSON.parse(xhttp.responseText);             //editable                                   
+      temp=JSON.parse(xhttp.responseText);             //editable
+      playerId=temp[10000]["player"];                                  
       convertToGrid(temp);	            			   //editable
       renderGrid(grid);                                //editable
     }
