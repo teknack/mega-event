@@ -176,6 +176,8 @@ function fake_main()
 	global $locArray; //=$_POST["locations"];
 	populateMapArray($locArray);
 }
+
+//For Button Press
 ?>
 
 <html>
@@ -189,21 +191,21 @@ function fake_main()
 	<div align="center"><?php fake_main(); genMatrix() ?></div>
 	
 	<div style="float:right">
-	<form method="POST" action="">
-		<table name="nav_buttons" border=0 align="center">
+	<form method="POST" action="shift.php">
+		<table id="nav_buttons" border=0 align="center">
 			<tr>
 				<td></td>
-				<td><button>UP</button></td>
+				<td><button type="submit" name="up">UP</button></td>
 				<td></td>
 			</tr>
 			<tr>
-				<td><button>LEFT</button></td>
-				<td></td>
-				<td><button>RIGHT</button></td>
+				<td><button name="left">LEFT</button></td>
+				<td><button name="world-map">WORLD MAP</button></td>
+				<td><button name="right">RIGHT</button></td>
 			</tr>
 			<tr>
 				<td></td>
-				<td><button>DOWN</button></td>
+				<td><button name="down">DOWN</button></td>
 				<td></td>
 			</tr>
 		</table>
