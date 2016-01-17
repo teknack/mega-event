@@ -13,7 +13,7 @@ if (isset($_POST) && !empty($_POST))
 	{
 		if ($tlc[0] == 0)
 		{
-			alert("Can't go any further up...");
+			echo "<script>alert(\"Can't go any further up...\")</script>;";
 			redirect("index.php");
 		}
 		else
@@ -26,7 +26,7 @@ if (isset($_POST) && !empty($_POST))
 	{
 		if ($tlc[0] == 99)
 		{
-			alert("Can't go any further down...");
+			echo "<script>alert(\"Can't go any further down...\")</script>;";
 			redirect("index.php");
 		}
 		else
@@ -39,7 +39,7 @@ if (isset($_POST) && !empty($_POST))
 	{
 		if ($tlc[1] == 0)
 		{
-			alert("Can't go any further left...");
+			echo "<script>alert(\"Can't go any further left...\")</script>;";
 			redirect("index.php");
 		}
 		else
@@ -52,7 +52,7 @@ if (isset($_POST) && !empty($_POST))
 	{
 		if ($tlc[1] == 99)
 		{
-			alert("Can't go any further right...");
+			echo "<script>alert(\"Can't go any further right...\")</script>;";
 			redirect("index.php");
 		}
 		else
