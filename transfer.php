@@ -1,9 +1,10 @@
 <?php
-session_start();
+//session_start(); -> db.php already has a session_start()
 
 	include "./db_access/db.php"; //To Edit
 	$coords="";
-	function accept($c=""){
+	function accept($c="")
+	{
 		global $coords;
 		
 		$coords = split("," , $c);
@@ -24,6 +25,14 @@ session_start();
 				if($arr["occupied"] !== "0")
 				{
 					$locArray["p"] = $locArray["p"]."-".$i.",".$j;
+					if($arr["faction"] === "1")
+					{
+						$locArray["f1"] = $locArray["f1"]."-".$i.",".$j;
+					}
+					else if($arr["faction"] === "2")
+					{
+						$locArray["f2"] = $locArray["f2"]."-".$i.",".$j;
+					}
 				}
 				else
 				{
@@ -45,12 +54,6 @@ session_start();
 							alert("Can't find what you want? You're in the wrong neighbourhood.");
 					}
 				}
-				if($arr["faction"] === "1"){
-					$locArray["f1"] = $locArray["f1"]."-".$i.",".$j;
-				}
-				else if($arr["faction"] === "2"){
-					$locArray["f2"] = $locArray["f2"]."-".$i.",".$j;
-				}
 			}
 		}
 		return($locArray);
@@ -64,5 +67,17 @@ session_start();
 		$_SESSION["locArray"] = slotAllocation();
 	
 		redirect("./local-map/index.php");
+	}
+	else if (isset($_SESSION["coordn"]) && !empty($_SESSION["coordn"]))
+	{
+		$ordinates = $_SESSION["coordn"];
+		accept($ordinates);
+		$_SESSION["locArray"] = slotAllocation();
+		var_dump($_SESSION["locArray"]);
+		redirect("./local-map/index.php");
+	}
+	else
+	{
+		alert("hello jello");
 	}
 ?>

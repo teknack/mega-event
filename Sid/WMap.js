@@ -34,12 +34,12 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 		{
 			if(temp[k]["occupied"]===playerId )
 			{
-				if(temp[k]["faction"]===1)
+				if(temp[k]["faction"]===2)
 				{
 					grid[i][j]="blue";
 					
 				}
-				if(temp[k]["faction"]===0)
+				if(temp[k]["faction"]===1)
 				{
 					
 					grid[i][j]="red";
@@ -47,12 +47,10 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 			}
 			else if(temp[k]["occupied"]==0)
 			{
-				
 				grid[i][j]="white";
 			}
 			else
-			{
-				
+			{	
 				grid[i][j]="yellow";
 			}
 		}

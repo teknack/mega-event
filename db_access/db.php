@@ -111,6 +111,7 @@ function getSlot($x,$y)
 	
 	$query = "SELECT occupied,fortification,troops,faction FROM grid WHERE row=".$x." AND col=".$y."";
 	$res = mysqli_query($dbconn,$query);
+	//alert($res);
 	$res = mysqli_fetch_assoc($res);
 	return($res);
 }
