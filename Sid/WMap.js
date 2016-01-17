@@ -28,7 +28,6 @@ function renderGrid()
 }
 function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numeric array to 
 {
-	playerId=1;
 	for(i=0,k=0;i<100;i++)
 	  {
 		for(j=0;j<100;j++,k++)
@@ -73,7 +72,8 @@ window.onload=function loadDoc(){
   }
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4 && xhttp.status == 200) {
-      temp=JSON.parse(xhttp.responseText);             //editable                                   
+      temp=JSON.parse(xhttp.responseText);             //editable
+      playerId=temp[10000]["player"];                                  
       convertToGrid(temp);	            			   //editable
       renderGrid(grid);                                //editable
     }
@@ -87,30 +87,14 @@ window.onload=function loadDoc(){
   //playerId=temp[10]["player"];
 }
 function passCursorPosition(canvas, event) {
-	//ajax starts here do not edit!!
   	var xhttp;
   	var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
-    var res=x+","+y;
+    var row=Math.floor(y/slotSize);
+    var col=Math.floor(x/slotSize);
+    var res=row+","+col;	
     window.location="trial.php?coord="+res;
-  	/*if (window.XMLHttpRequest) {
-    // code for modern browsers
-    xhttp = new XMLHttpRequest();
-    } else {
-    // code for IE6, IE5
-    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  	}
-  	xhttp.onreadystatechange = function() {
-    if (xhttp.readyState == 4 && xhttp.status == 200) {
-      console.log()             //editable                                    
-      //console.log("gridwa");				 //editable
-      //console.log(grid);					 //editable
-    }
-  }
-  xhttp.open("GET", "trial.php?coord="+res, true);
-  xhttp.send();*/
-  //ajax ends--->
 }
 function getCursorPosition(canvas , event) {
   	var rect = canvas.getBoundingClientRect();
