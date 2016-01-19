@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+validate(); //VALIDATION CHECK
+
 $dbusername="root";
 $dbpassword="";
 $dbname="Mega";
@@ -143,5 +145,14 @@ function testVar($input="")
 	$input = htmlspecialchars($input);
 
 	return ($input);
+}
+
+function validate()
+{
+	if (!isset($_SESSION["tek_emailid"]))
+	{
+		alert("Well, someone is feeling adventurous... Go log in and come back :P");
+		redirect("www.teknack.in");
+	} 
 }
 ?>
