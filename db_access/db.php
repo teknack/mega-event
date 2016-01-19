@@ -137,11 +137,11 @@ function getSlot($x,$y)
 	return($res);
 }
 
-function fetch($player,$table,$col="")
+function fetch($player,$col="")
 {
-	global $dbconn;
+	global $dbconn,$dbtable;
 	
-	$query="SELECT ".$col." FROM ".$table." WHERE tek_emailid='".$player."';";
+	$query="SELECT ".$col." FROM ".$dbtable." WHERE tek_emailid='".$player."';";
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);
 	return($res[$col]);
