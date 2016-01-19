@@ -22,7 +22,7 @@
 **/
 
 include "../db_access/db.php";
-include "../player.php";
+include "./player.php";
 //echo("this is a test<br>");
 
 $mapArray = array();
@@ -212,12 +212,15 @@ function fake_main()
 	</form>
 	</div>
 	
-	<div style="float:left">
-	<h2>Stats</h2><br> <?php getStats()?>
-	<u>Faction:</u> <?php getFaction?>
-	<ul>
-		<li>Food:</li> <?php getFood()?>
-	</ul>
+	<div id="playerinfo" style="float:left">
+		<h2>Stats</h2><br> 
+		<?php $stat = getStats(); ?>
+		Food : <?php echo $stat["food"].' / '.$stat["food_regen"].';' ?><br>
+		Water : <?php echo $stat["water"].' / '.$stat["water_regen"].';' ?><br>
+		Power : <?php echo $stat["power"].' / '.$stat["power_regen"].';' ?><br>
+		Metal : <?php echo $stat["metal"].' / '.$stat["metal_regen"].';' ?><br>
+		Wood : <?php echo $stat["wood"].' / '.$stat["wood_regen"].';' ?><br>
+	
 	</div>
 </body>
 
