@@ -1,11 +1,11 @@
-Transitioning from Sid's World map to Jacques's local map
--> cell querying will be done on local map
+[DONE] Transitioning from Sid's World map to Jacques's local map
+[DONE] 	-> cell querying will be done on local map
 
-Tick code (?)
+[NOT DOING] Tick code (?)
 
 Things to be done by 15/01/2016
 --Background Canvas
---Zoom in feature
+[DONE] --Zoom in feature
 --Basic GUI
---Single Player movement.
---Local Map movement
+[DONE] --Single Player movement.
+[DONE] --Local Map movement
