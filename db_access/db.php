@@ -99,6 +99,7 @@ function checkLogin($inid="",$password="")
 		}
 }
 
+
 function getID()
 {
 	global $id;
@@ -109,7 +110,7 @@ function getSlot($x,$y)
 {
 	global $dbconn;
 	
-	$query = "SELECT occupied,fortification,troops,faction FROM grid WHERE row=".$x." AND col=".$y."";
+	$query = "SELECT occupied,fortification,troops,faction FROM grid WHERE row=".$x." AND col=".$y.";";
 	$res = mysqli_query($dbconn,$query);
 	//alert($res);
 	$res = mysqli_fetch_assoc($res);
