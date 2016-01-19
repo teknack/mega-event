@@ -22,7 +22,7 @@
 **/
 
 include "../db_access/db.php";
-
+include "../player.php";
 //echo("this is a test<br>");
 
 $mapArray = array();
@@ -189,7 +189,7 @@ function fake_main()
 
 <body>
 	<div align="center"><?php fake_main(); genMatrix() ?></div>
-	
+	<hr>
 	<div style="float:right">
 	<form method="POST" action="shift.php">
 		<table id="nav_buttons" border=0 align="center">
@@ -213,7 +213,11 @@ function fake_main()
 	</div>
 	
 	<div style="float:left">
-	Place holder text
+	<h2>Stats</h2><br> <?php getStats()?>
+	<u>Faction:</u> <?php getFaction?>
+	<ul>
+		<li>Food:</li> <?php getFood()?>
+	</ul>
 	</div>
 </body>
 
