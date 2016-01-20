@@ -20,3 +20,8 @@ td{
 #button_down{
 	position:"center";
 }
+
+#playerinfo span {
+	display: inline;
+	
+}

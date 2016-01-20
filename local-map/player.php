@@ -10,7 +10,6 @@ function getStats(){
 	
 	connect();
 	$playerid = 2; // $_SESSION["tek_emailid"];
-	echo "Statistics<br>";
 	setTable("player");
 
 	$query = "SELECT faction,food,food_regen,water,water_regen,power,power_regen,metal,metal_regen,wood,wood_regen,total FROM player WHERE tek_emailid=".$playerid.";";

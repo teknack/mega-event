@@ -33,9 +33,9 @@ $mapArray = array();
 if (isset($_SESSION) && !empty($_SESSION))
 {
 	$locArray = $_SESSION["locArray"];
-	echo("---");
+	/*echo("---");
 	var_dump($locArray);
-	echo("<br>---<br>");
+	echo("<br>---<br>");*/
 	$tlc = $_SESSION["coord"]; //Top Left Coordinate
 }
 else
@@ -188,6 +188,22 @@ function fake_main()
 </head>
 
 <body>
+	<div id="playerinfo" >
+		<!--<h2>Stats</h2><br> -->
+		<?php $stat = getStats(); ?>
+		<!--<table border="2" style="width : 50%">
+			<tr>-->
+				<span>Food : <?php echo $stat["food"].' / '.$stat["food_regen"] ?></span>
+				<span>Water : <?php echo $stat["water"].' / '.$stat["water_regen"] ?></span>
+				<span>Power : <?php echo $stat["power"].' / '.$stat["power_regen"]?></span>
+				<span>Metal : <?php echo $stat["metal"].' / '.$stat["metal_regen"]?></span>
+				<span>Wood : <?php echo $stat["wood"].' / '.$stat["wood_regen"]?></span>
+
+		<!--	</tr>
+		</table>	-->
+		<br>
+	</div>
+
 	<div align="center"><?php fake_main(); genMatrix() ?></div>
 	<hr>
 	<div style="float:right">
@@ -212,16 +228,6 @@ function fake_main()
 	</form>
 	</div>
 	
-	<div id="playerinfo" style="float:left">
-		<h2>Stats</h2><br> 
-		<?php $stat = getStats(); ?>
-		Food : <?php echo $stat["food"].' / '.$stat["food_regen"].';' ?><br>
-		Water : <?php echo $stat["water"].' / '.$stat["water_regen"].';' ?><br>
-		Power : <?php echo $stat["power"].' / '.$stat["power_regen"].';' ?><br>
-		Metal : <?php echo $stat["metal"].' / '.$stat["metal_regen"].';' ?><br>
-		Wood : <?php echo $stat["wood"].' / '.$stat["wood_regen"].';' ?><br>
-	
-	</div>
 </body>
 
 </html>
