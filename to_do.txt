@@ -5,6 +5,7 @@
 
 REMINDER:
 --player.php => Set player id to session. Currently constant.
+--Set path in common-code.php
 
 Things to be done by 15/01/2016
 --Background Canvas
@@ -14,4 +15,6 @@ Things to be done by 15/01/2016
 [DONE] --Local Map movement
 
 Things to be done by 23/01/2016
---
+--Move 
+--Settle
+
