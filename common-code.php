@@ -5,7 +5,7 @@
  */
 include "./db_access/db.php"; //REMINDER : change this path during final deployment
  
-function ($dbconn,$gamename,$score,$player)
+function ($gamename,$score,$player)
 {
 	connect();
 	
@@ -75,5 +75,18 @@ function ($dbconn,$gamename,$score,$player)
 		insert($colname,$val);
 	}
 	
-} 
+	disconnect();
+}
+
+function getScores()
+{
+	connect();
+	setTable("CommonTable");
+	
+}
+
+function harvest($player)
+{
+	$scores = getScores(); //returns assoc array with scores from each event
+}
 ?>

@@ -147,6 +147,16 @@ function fetch($player,$col="")
 	return($res[$col]);
 }
 
+function fetchAll($player)
+{
+	global $dbconn, $dbtable;
+	
+	$query = "SELECT * FROM".$dbtable." WHERE tek_emailid='".$player."';";
+	$res = mysqli_query($dbconn,$query);
+	$res = mysqli_fetch_assoc($res);
+	return($res);
+}
+
 function redirect($url="index.php")
 {
 	echo("<script>window.location='".$url."'</script>");
