@@ -31,6 +31,24 @@ function setTable($table)
 	$dbtable = $table;
 }
 
+function checkPlayerExists($player,$table)
+{
+	global $dbconn;
+	
+	$query = "SELECT tek_emailid FROM ".$table." WHERE tek_emailid='".$player.";";
+	
+	$res = mysqli_query($dbconn,$query);
+	
+	if (mysqli_num_rows($res) === 1)
+	{
+		return(true);
+	}
+	else
+	{
+		return(false);
+	}
+}
+
 function insert($columns,$values)
 {
 	global $dbtable,$dbconn;
@@ -119,11 +137,11 @@ function getSlot($x,$y)
 	return($res);
 }
 
-function fetch($col="")
+function fetch($player,$col="")
 {
-	global $dbconn, $email;
+	global $dbconn,$dbtable;
 	
-	$query="SELECT ".$col." FROM Users WHERE email='".$email."';";
+	$query="SELECT ".$col." FROM ".$dbtable." WHERE tek_emailid='".$player."';";
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);
 	return($res[$col]);

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 19, 2016 at 08:25 AM
+-- Generation Time: Jan 19, 2016 at 12:19 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -19,6 +19,28 @@ SET time_zone = "+00:00";
 --
 -- Database: `Mega`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `CommonTable`
+--
+
+CREATE TABLE IF NOT EXISTS `CommonTable` (
+  `tek_emailid` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL COMMENT 'Into the Darkness',
+  `th` int(11) NOT NULL COMMENT 'Treasure Hunt',
+  `ftt` int(11) NOT NULL COMMENT 'Follow The Route',
+  `c` int(11) NOT NULL COMMENT 'Camoflage',
+  `ss` int(11) NOT NULL COMMENT 'Sixty Seconds',
+  `r` int(11) NOT NULL COMMENT 'Reflex',
+  `kq` int(11) NOT NULL COMMENT 'KIC Quiz',
+  `ai` int(11) NOT NULL COMMENT 'Auction It',
+  `s` int(11) NOT NULL COMMENT 'Snakes',
+  `a` int(11) NOT NULL COMMENT 'Antivirus',
+  `auction_it` int(11) NOT NULL,
+  `mugshots` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
