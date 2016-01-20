@@ -201,7 +201,7 @@ function fake_main()
 
 		<!--	</tr>
 		</table>	-->
-		<br>
+		<br><br>
 	</div>
 
 	<div align="center"><?php fake_main(); genMatrix() ?></div>
