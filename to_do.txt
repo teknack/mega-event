@@ -3,9 +3,15 @@
 
 [NOT DOING] Tick code (?)
 
+REMINDER:
+--player.php => Set player id to session. Currently constant.
+
 Things to be done by 15/01/2016
 --Background Canvas
 [DONE] --Zoom in feature
 --Basic GUI
 [DONE] --Single Player movement.
 [DONE] --Local Map movement
+
+Things to be done by 23/01/2016
+--
