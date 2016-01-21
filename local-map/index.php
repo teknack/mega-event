@@ -193,17 +193,18 @@ function fake_main()
 		<?php $stat = getStats(); ?>
 		<!--<table border="2" style="width : 50%">
 			<tr>-->
-				<span>Food : <?php echo $stat["food"].' / '.$stat["food_regen"] ?></span>
-				<span>Water : <?php echo $stat["water"].' / '.$stat["water_regen"] ?></span>
-				<span>Power : <?php echo $stat["power"].' / '.$stat["power_regen"]?></span>
-				<span>Metal : <?php echo $stat["metal"].' / '.$stat["metal_regen"]?></span>
-				<span>Wood : <?php echo $stat["wood"].' / '.$stat["wood_regen"]?></span>
-
+				<div id="leftward">					
+					<span>Food : <?php echo $stat["food"].' / '.$stat["food_regen"] ?></span>
+					<span>Water : <?php echo $stat["water"].' / '.$stat["water_regen"] ?></span>
+					<span>Power : <?php echo $stat["power"].' / '.$stat["power_regen"]?></span>
+					<span>Metal : <?php echo $stat["metal"].' / '.$stat["metal_regen"]?></span>
+					<span>Wood : <?php echo $stat["wood"].' / '.$stat["wood_regen"]?></span>
+				</div>
 		<!--	</tr>
 		</table>	-->
-		<br><br>
+		
 	</div>
-
+	<br><br>
 	<div align="center"><?php fake_main(); genMatrix() ?></div>
 	<hr>
 	<div style="float:right">

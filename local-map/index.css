@@ -21,11 +21,26 @@ td{
 	position:"center";
 }
 
-#playerinfo span {
+#playerinfo #leftward {
 	display: inline;
+	font-size: 0.8em;
+	font-family: Verdana;
+}
+
+#playerinfo #leftward span{
 	border-style: solid;
-	border-color: blue;
-	padding: 1px;
+	border-color: #990000;
 	padding-left: 3px;
 	padding-right: 3px;
+	background: #000000;
+
+}
+
+#playerinfo {
+	background: url("./css/stripnew.jpg") repeat-x left top;
+	font-size: 1em;
+	color: #ffffb3;
+	background-color:#000000;
+	padding: 6px;
+	
 }
