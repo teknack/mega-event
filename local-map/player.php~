@@ -26,7 +26,7 @@ function getStats(){
 	return($res);
 }
 
-function maxOf($x,$y)    //finds the greater of the two numbers
+function Max($x,$y)    //finds the greater of the two numbers
 {
 	if($x>$y)
 		return $x;
@@ -43,7 +43,7 @@ function deductResource($resource,$value)   //use to reduce resource on some act
 }
 function move($srcRow,$srcCol,$destRow,$destCol)
 {
-	$distance=maxOf(abs($srcRow-$destRow),abs($srcCol-$destCol));
+	$distance=Max(abs($srcRow-$destRow),abs($srcCol-$destCol));
 	$foodCost=$distance*$moveCostFood;
 	$powerCost=$distnace*$moveCostPower;
 	deductResource("food",$foodCost);

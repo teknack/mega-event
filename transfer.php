@@ -78,6 +78,6 @@
 	}
 	else
 	{
-		<script>alert("hello jello");</script>
+		echo('<script>alert("hello jello");</script>');
 	}
 ?>

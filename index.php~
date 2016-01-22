@@ -2,7 +2,7 @@
 #DB connectivity test
 include "./db_access/db.php";
 
-//connect();
+connect();
 var_dump(getSlot(1,1));
 ?>
 <html>
