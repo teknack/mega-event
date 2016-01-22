@@ -51,12 +51,31 @@ function move($srcRow,$srcCol,$destRow,$destCol)
 function settle($row,$col) //occupies selected slot ***incomplete***
 {
 	$root=array(1);
-	$sql="SELECT root FROM grid WHERE (row=$row-1 or row=$row row=$row+1) and (col=$col-1 or col=$col or col=$col+1);";
-	$res=$conn->
-	$sql="UPDATE grid SET fortification=1 WHERE row=$row and col=$col";
-	if(!$conn->query($sql) === TRUE)
+	$row[8];
+	$col[8];
+	$sql="SELECT row,col,fortification,root FROM grid WHERE (row=$row-1 or row=$row or row=$row+1) and (col=$col-1 or col=$col or col=$col+1);";
+	$res=$conn->query($sql);
+	if($res->num_rows>0)
 	{
-		echo "error: ".$conn->error;
+		$i=0;
+		while($ro=$conn->fetch_assoc())
+		{
+			if($ro['fortification']>0 and ($ro['row']===$row and $ro['col']===$col))
+			{
+				$root[$i]=$ro['root'];
+			}
+		}
+	}
+	$j=0;
+	while($j<$root.count())
+	{
+		$r=$root[$j];
+		$sql="UPDATE grid SET fortification=1,root=$r  WHERE row=$row and col=$col";
+		if(!$conn->query($sql) === TRUE)
+		{
+			echo "error: ".$conn->error;
+		}
+		$j++;
 	}
 }	
 function getActions($row,$col)
