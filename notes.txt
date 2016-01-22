@@ -5,6 +5,7 @@ grid -> Fortification:
 	resource -> -1
 	special -> -2
 	Base -> -9
+	(?)Unusable -> 
 
 Test values
 	grid
