@@ -1,5 +1,5 @@
 [DONE] Transitioning from Sid's World map to Jacques's local map
-[DONE] 	-> cell querying will be done on local map
+[DONE] -> cell querying will be done on local map
 
 [NOT DOING] Tick code (?)
 
@@ -15,6 +15,15 @@ Things to be done by 15/01/2016
 [DONE] --Local Map movement
 
 Things to be done by 23/01/2016
---Move 
---Settle
+--Move [sid]
+--Settle [sid]
+--Scout [jacques]
 
+icons:
+--player
+--allies
+--enemies
+--wood
+--steel
+--food
+--energy

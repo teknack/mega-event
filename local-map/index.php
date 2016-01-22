@@ -21,7 +21,7 @@
  * 
 **/
 
-include "../db_access/db.php";
+//include "../db_access/db.php";
 include "./player.php";
 //echo("this is a test<br>");
 
@@ -205,7 +205,11 @@ function fake_main()
 		
 	</div>
 	<br><br>
-	<div align="center"><?php fake_main(); genMatrix() ?></div>
+	<div id="playgroup">
+		<div id="leftbanner" class="playarea"> </div>
+		<div id="localplay" class="playarea" align="center"><?php fake_main(); genMatrix() ?></div>
+		<div id="rightbanner" class="playarea"> </div>
+	</div>
 	<hr>
 	<div style="float:right">
 	<form method="POST" action="shift.php">

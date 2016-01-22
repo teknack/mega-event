@@ -1,6 +1,6 @@
 <?php
-require "../db_access/db.php"
-require "connect.php"
+require "../db_access/db.php";
+require "connect.php";
 $playerid;
 $moveCostFood=100;
 $moveCostPower=50;
@@ -25,7 +25,8 @@ function getStats(){
 	disconnect();
 	return($res);
 }
-function max($x,$y)    //finds the greater of the two numbers
+
+function maxOf($x,$y)    //finds the greater of the two numbers
 {
 	if($x>$y)
 		return $x;
@@ -42,7 +43,7 @@ function deductResource($resource,$value)   //use to reduce resource on some act
 }
 function move($srcRow,$srcCol,$destRow,$destCol)
 {
-	$distance=max(abs($srcRow-$destRow),abs($srcCol-$destCol));
+	$distance=maxOf(abs($srcRow-$destRow),abs($srcCol-$destCol));
 	$foodCost=$distance*$moveCostFood;
 	$powerCost=$distnace*$moveCostPower;
 	deductResource("food",$foodCost);
