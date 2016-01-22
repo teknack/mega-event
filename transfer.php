@@ -16,10 +16,11 @@
 		$locArray = array("p" => "", "s" => "", "n" => "", "b" => "", "r" => "", "f1" => "", "f2" => "");
 		connect();
 		
-
-		for($i=$coords[0];$i<=($coords[0]+8);$i++) //Set to table row value
+		$x=$coords[0];
+		$y=$coords[1];
+		for($i=$x;$i<=($x+8);$i++) //Set to table row value
 		{
-			for($j=$coords[1];$j<=($coords[1]+8);$j++) // Set to table column value
+			for($j=$y;$j<=($y+8);$j++) // Set to table column value
 			{
 				$arr = getSlot($i,$j);
 				if($arr["occupied"] !== "0")
