@@ -9,29 +9,22 @@
 		die("connection error".$conn->connect_error);
 	}
 	$sql="SELECT current FROM time WHERE 1";
+	//$sql="SELECT COUNT(current) FROM time WHERE 1";
 	$x=$conn->query($sql);
 	while($row=$x->fetch_assoc())
 	{
 		$old=$row['current'];
 		print_r($row);
 	}
-	//$sql="SELECT TIMESTAMPDIFF(MINUTE,'$old',NOW())";
-	$sql="SELECT COUNT(current) FROM time WHERE 1";
-	$y=$conn->query($sql);
-	if($y===false)
-	{
-		echo "<br>".$conn->error."<br>";
+	function timeDiff($start_date,$end_date="now"){
+	    $time_diff = (new Datetime($start_date))->diff(new Datetime($end_date));
+	    $time_diff_minute = $time_diff->days * 24 * 60;
+	    $time_diff_minute += $time_diff->h * 60;
+	    $time_diff_minute += $time_diff->i;
+	    return $time_diff_minute;
 	}
-	else
-	{
-		if($y->num_rows>0)
-		{
-			while($row = $y->fetch_assoc());
-			{
-				print_r($row);
-			}
-		}
-	}	
-	//echo $result;
+	$diff=timeDiff($old);
+	echo $diff;
+	
 	$conn->close();
 ?>

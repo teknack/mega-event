@@ -34,12 +34,12 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 		{
 			if(temp[k]["occupied"]===playerId )
 			{
-				if(temp[k]["faction"]===2)
+				if(temp[k]["faction"]===1)
 				{
 					grid[i][j]="blue";
 					
 				}
-				if(temp[k]["faction"]===1)
+				if(temp[k]["faction"]===0)
 				{
 					
 					grid[i][j]="red";
@@ -91,6 +91,10 @@ function passCursorPosition(canvas, event) {
     var y = event.clientY - rect.top;
     var row=Math.floor(y/slotSize);
     var col=Math.floor(x/slotSize);
+    if(row>99-hSize)
+    	row=100-hSize;
+    if(col>99-hSize)
+    	col=100-hSize;
     var res=row+","+col;	
     window.location="trial.php?coord="+res;
 }
@@ -135,10 +139,13 @@ function highlight(event)
 	{
 		var inp=row+","+col;
 		highlighted.push(inp);
-		console.log(highlighted);
 		clearc();					
 		row=Math.floor(y/slotSize);                 //to truncate to int since all number are float by default
 		col=Math.floor(x/slotSize);
+		if(row>99-hSize)
+			row=100-hSize;
+		if(col>99-hSize)
+			col=100-hSize;
 		document.getElementById("info").innerHTML=x+","+y+"        "+row+","+col;
 		occupy("rgba(128,128,128,0.3)",row,col,hSize);                  // highlighting color
 	}
