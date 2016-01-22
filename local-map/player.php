@@ -1,6 +1,6 @@
 <?php
 require "../db_access/db.php"
-
+require "connect.php"
 $playerid;
 $moveCostFood=100;
 $moveCostPower=50;
@@ -35,9 +35,9 @@ function max($x,$y)    //finds the greater of the two numbers
 function deductResource($resource,$value)   //use to reduce resource on some action give resource name and value  resp.
 {
 	$sql="UPDATE `player` SET $resource='$value' WHERE tek_emailid=$playerid";	
-	if($dbconn->query($sql)===false)
+	if($conn->query($sql)===false)
 	{
-		echo "error: ".dbconn->error;
+		echo "error: ".$conn->error;
 	}
 }
 function move($srcRow,$srcCol,$destRow,$destCol)
@@ -48,8 +48,30 @@ function move($srcRow,$srcCol,$destRow,$destCol)
 	deductResource("food",$foodCost);
 	deductResource("power",$powerCost);  
 }
-function settle() //occupies selected slot ***incomplete***
+function settle($row,$col) //occupies selected slot ***incomplete***
 {
-	
+	$root=array(1);
+	$sql="SELECT root FROM grid WHERE (row=$row-1 or row=$row row=$row+1) and (col=$col-1 or col=$col or col=$col+1);";
+	$res=$conn->
+	$sql="UPDATE grid SET fortification=1 WHERE row=$row and col=$col";
+	if(!$conn->query($sql) === TRUE)
+	{
+		echo "error: ".$conn->error;
+	}
 }	
+function getActions($row,$col)
+{
+	$sql="SELECT * FROM grid WHERE row=$row and col=$col;";
+	$res=$conn->query($sql);
+	$fortification=0;
+	$occupant="0";
+	$faction="1";
+	if($res->num_rows>0)
+	{
+		while($row = $res->fetch_assoc())
+		{
+
+		}
+	}
+}
 ?>
