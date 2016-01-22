@@ -73,7 +73,7 @@
 		$ordinates = $_SESSION["coordn"];
 		accept($ordinates);
 		$_SESSION["locArray"] = slotAllocation();
-		var_dump($_SESSION["locArray"]);
+		//var_dump($_SESSION["locArray"]);
 		redirect("./local-map/index.php");
 	}
 	else
