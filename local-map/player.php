@@ -50,7 +50,26 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	$powerCost=$distance*$moveCostPower;
 	deductResource("food",$foodCost);
 	deductResource("power",$powerCost);
-
+	$sql="SELECT occupant FROM grid WHERE row=$row and col=$col and troops>0;";
+	$res=$conn->query($sql);
+	if($res->num_rows>0)  //player moving from settled slot to unoccupied slot
+	{
+		$row=$res->fetch_assoc();
+		if($row['occupant']==$playerid)
+		{
+			$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,'$playerid',$quantity);
+				  UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;";
+			if($conn->query($sql)==false)
+				echo "error : ".$conn->error;
+		}
+	}
+	else //player moving from stationed troops
+	{
+		$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;
+			  UPDATE grid SET troops=troops+$quantity WHERE row=$destRow and col=$destCol;";
+		if($conn->query($sql)==false)
+			echo "error : ".$conn->error;
+	}
 }
 function condenseArray($arr) //removes duplicates and would reduce load on server as little as it already is..
 {
@@ -73,8 +92,7 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 {
 	$roots[8];
 	$root=$row.",".$col;
-	$row[8];
-	$col[8];
+	$troopCount;
 	$sql="SELECT row,col,fortification,root FROM grid WHERE (row=$row-1 or row=$row or row=$row+1) and (col=$col-1 or col=$col or col=$col+1);";
 	$res=$conn->query($sql); //query to get all the neighbouring slots to the given slot.
 	if($res->num_rows>0)
@@ -88,12 +106,21 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 			}
 		}
 	}
+	$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid=$playerid;"; //find number of troops already stationed
+	$res=$conn->query($sql); //query to get all the neighbouring slots to the given slot.
+	if($res->num_rows>0)
+	{
+		while($ro=$conn->fetch_assoc())
+		{
+			$troopCount=$ro['quantity'];
+		}
+	}
 	$roots=condenseArray($roots); //refer line 54
 	$j=0;
 	while($j<$roots.count()) //sets the root of all neighbouring slots if occupied as the root of the given slot
 	{
 		$r=$roots[$j];
-		$sql="UPDATE grid SET fortification=1,root=$root  WHERE root=$r";
+		$sql="UPDATE grid SET fortification=1,root=$root,troops=$troopCount  WHERE root=$r";
 		if(!$conn->query($sql) === TRUE)
 		{
 			echo "error: ".$conn->error;

@@ -47,12 +47,10 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 			}
 			else if(temp[k]["occupied"]==0)
 			{
-				
 				grid[i][j]="white";
 			}
 			else
-			{
-				
+			{	
 				grid[i][j]="yellow";
 			}
 		}
@@ -93,8 +91,12 @@ function passCursorPosition(canvas, event) {
     var y = event.clientY - rect.top;
     var row=Math.floor(y/slotSize);
     var col=Math.floor(x/slotSize);
+    if(row>99-hSize)
+    	row=100-hSize;
+    if(col>99-hSize)
+    	col=100-hSize;
     var res=row+","+col;	
-    window.location="./../transfer.php?coord="+res;
+    window.location="trial.php?coord="+res;
 }
 function getCursorPosition(canvas , event) {
   	var rect = canvas.getBoundingClientRect();
@@ -137,10 +139,13 @@ function highlight(event)
 	{
 		var inp=row+","+col;
 		highlighted.push(inp);
-		console.log(highlighted);
 		clearc();					
 		row=Math.floor(y/slotSize);                 //to truncate to int since all number are float by default
 		col=Math.floor(x/slotSize);
+		if(row>99-hSize)
+			row=100-hSize;
+		if(col>99-hSize)
+			col=100-hSize;
 		document.getElementById("info").innerHTML=x+","+y+"        "+row+","+col;
 		occupy("rgba(128,128,128,0.3)",row,col,hSize);                  // highlighting color
 	}
