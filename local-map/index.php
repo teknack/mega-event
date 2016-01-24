@@ -135,13 +135,13 @@ function genMatrix()
 	echo("<td>--</td>");
 	for ($i = 0; $i <= 8; $i++)
 	{
-		echo("<td><b>".$i."</b></td>");
+		echo("<td><b>".($i+$_SESSION["coord"][1])."</b></td>");
 	}
 	echo("</tr>");
 	for ($i = 0; $i <= 8; $i++)
 	{
 		echo("<tr>");
-		echo("<td><b>".$i."</b></td>");
+		echo("<td><b>".($i+$_SESSION["coord"][0])."</b></td>");
 		for ($j = 0; $j<= 8; $j++)
 		{ 	
 			/*
