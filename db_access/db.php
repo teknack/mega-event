@@ -1,4 +1,31 @@
 <?php
+/*
+ * Function list: (code is too much, needs this now XD)
+ * - connect()
+ * --> Establishes connection to db, sets the dbconn variable
+ * 
+ * - disconnect()
+ * --> Closes the connection used in dbconn variable 
+ * 
+ * - setTable(<table_name>)
+ * --> Sets the dbtable variable to <table_name>
+ * 
+ * - checkPlayerExists($player,$table)
+ * --> Checks if $player exists in the $table table
+ * 
+ * - insert($columns,$values)
+ * --> Inserts values as per the usual SQL insertion syntax. 
+ * --> $columns should be a string consisting of the list of columns to be inserted into.
+ * --> $values should be a string consisting of the corresponding values to be inserted.
+ * 
+ * - update($columns,$values,$condition)
+ * --> updates a single row which satisfies the $condition
+ * --> $columns should be a string consisting of the list of columns to be inserted into.
+ * --> $values should be a string consisting of the corresponding values to be inserted. 
+ * 
+ * - checkLogin($inid="",$password="") -----> ignore this fnction for teknack
+ * --> checks if the given $inid and $password combination are present in the... 
+ */
 session_start();
 
 //validate(); //VALIDATION CHECK

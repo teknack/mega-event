@@ -75,4 +75,6 @@ function getActions($row,$col)
 		}
 	}
 }
+
+include "./scout.php";
 ?>
