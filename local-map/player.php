@@ -1,6 +1,6 @@
 <?php
-require "../db_access/db.php"
-require "connect.php"
+require "../db_access/db.php";
+require "connect.php";
 $faction/*=$_SESSION['faction']*/;
 $faction=1;	//temporary!! don't forget to remove!!
 $playerid/*=$_SESSION['tek_emailid']*/;
@@ -28,14 +28,14 @@ function getStats(){
 	disconnect();
 	return($res);
 }
-function max($x,$y)    //finds the greater of the two numbers
+/*function max($x,$y)    //finds the greater of the two numbers
 {
 	if($x>$y)
 		return $x;
 	else
 		return $y;
 }
-function deductResource($resource,$value)   //use to reduce resource on some action give resource name and value  resp.
+*/function deductResource($resource,$value)   //use to reduce resource on some action give resource name and value resp.
 {
 	$sql="UPDATE `player` SET $resource='$value' WHERE tek_emailid=$playerid";	
 	if($conn->query($sql)===false)
@@ -44,13 +44,33 @@ function deductResource($resource,$value)   //use to reduce resource on some act
 	}
 }
 function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 steps, first select troops from an occupied slot  
-{                                                //then select the slot to move the troops to 
+{       		                                           //then select the slot to move the troops to 
 	$distance=max(abs($srcRow-$destRow),abs($srcCol-$destCol));
+	$sroot="x,y";
+	$droot="x,z";
+	$sql="SELECT root FROM grid WHERE row=$srcRow and col=$srcCol;"; //the query for root column decide if movement is within 
+	if($res->num_rows>0)											 //the faction occupied region 
+	{
+		while($row=$res->fetch_assoc())
+		{
+			$sroot=$row['root'];
+		}
+	}
+	$sql="SELECT root FROM grid WHERE row=$destRow and col=$destCol;";
+	if($res->num_rows>0)
+	{
+		while($row=$res->fetch_assoc())
+		{
+			$droot=$row['root'];
+		}
+	}
+	if($sroot==$droot)
+	{
+		$distance/=2;
+	}
 	$foodCost=$distance*$moveCostFood;
 	$powerCost=$distance*$moveCostPower;
-	deductResource("food",$foodCost);
-	deductResource("power",$powerCost);
-	$sql="SELECT occupant FROM grid WHERE row=$row and col=$col and troops>0;";
+	$sql="SELECT occupant FROM grid WHERE row=$srcRow and col=$srcCol and troops>0;";
 	$res=$conn->query($sql);
 	if($res->num_rows>0)  //player moving from settled slot to unoccupied slot
 	{
@@ -61,6 +81,8 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				  UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;";
 			if($conn->query($sql)==false)
 				echo "error : ".$conn->error;
+			deductResource("food",$foodCost);
+			deductResource("power",$powerCost);
 		}
 	}
 	else //player moving from stationed troops
@@ -69,6 +91,8 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 			  UPDATE grid SET troops=troops+$quantity WHERE row=$destRow and col=$destCol;";
 		if($conn->query($sql)==false)
 			echo "error : ".$conn->error;
+		deductResource("food",$foodCost);
+		deductResource("power",$powerCost);
 	}
 }
 function condenseArray($arr) //removes duplicates and would reduce load on server as little as it already is..
@@ -89,7 +113,7 @@ function condenseArray($arr) //removes duplicates and would reduce load on serve
 	return $ar;
 }
 function settle($row,$col) //occupies selected slot **incomplete transferring troops from troops table to grid table**
-{
+{ 
 	$roots[8];
 	$root=$row.",".$col;
 	$troopCount;
@@ -128,42 +152,8 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 		$j++;
 	}
 }
-function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost with actions**
+if(isset($_POST['attack']))
 {
-	$sql="SELECT * FROM grid WHERE row=$row and col=$col;";
-	$res=$conn->query($sql);
-	$sql1="SELECT playerid FROM troops WHERE row=$row and col=$col and playerid=$playerid;";
-	$res1=$conn->query($sql1);
-	$fortification=0;
-	$occupant="0";
-	$faction="1";
-	$output="[";
-	if($res->num_rows>0)
-	{
-		while($row = $res->fetch_assoc())
-		{
-			if($row['faction']!=$faction)  //enemy faction
-			{
-				$output=$output.'{"action":"scout"},{"action":"attack"}]';
-			}
-			else if($row['faction']==$faction) //allied faction
-			{
-				if($row['occupant']==$playerid) //player occupied 
-				{
-					$output=$output.'{"action":"fortify"},{"action":"select troops"}]';		
-				}
-				else
-				{
-					if($res1->num_rows>0) //player troops stationed
-					{
-						$output=$output.'{"action":"settle"},{"action":"select troops"}]'		
-					}
-					else
-						$output=$output.'{"action":"scout"}]';
-				}
-			}
-		}
-	}
-	echo $output;
+
 }
 ?>

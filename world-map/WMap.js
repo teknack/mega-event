@@ -18,11 +18,12 @@ function renderGrid()
 	{
 		for(x=0,j=0;j<100;x+=slotSize,j++)
 		{
-			ctx.fillStyle=grid[i][j];
+			/*ctx.fillStyle=grid[i][j];
 			ctx.strokeRect(x,y,slotSize,slotSize);
 			ctx.strokeRect(x,y,slotSize,slotSize);
 			ctx.strokeRect(x,y,slotSize,slotSize);
-			ctx.fillRect(x,y,slotSize,slotSize);
+			ctx.fillRect(x,y,slotSize,slotSize);*/
+			occupy(grid[i][j],i,j,1);
 		}
 	}
 }
@@ -81,7 +82,7 @@ window.onload=function loadDoc(){
   //ajax ends--->
    document.getElementById("canvas").setAttribute("onClick","passCursorPosition(canvas,event)")	;
 	document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
-	document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
+	//document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
   //playerId=temp[10]["player"];
 }
 function passCursorPosition(canvas, event) {
@@ -105,12 +106,13 @@ function getCursorPosition(canvas , event) {
     var res=x+","+y;
     return({x:x,y:y});
  }
- function fill(row,col)
+ function fill(row,col,slotSize)
  {
- 	console.log("fill  "+row+","+col);
+ 	//console.log("fill  "+row+","+col);
  	cx=(slotSize)*col;
 	cy=(slotSize)*row;
- 	ctx.fillRect(cx,cy,slotSize,slotSize);
+ 	ctx.fillRect(cx,cy,slotSize,slotSize); 
+ 	//console.log(ctx.strokeStyle);
 	ctx.strokeRect(cx,cy,slotSize,slotSize);
  }
 function occupy(style,row,col,quant)
@@ -122,8 +124,8 @@ function occupy(style,row,col,quant)
 	{
 		for(i=0,col=tempCol;i<quant && col<100;col++,i++)
 		{
-			console.log("fill "+row+","+col);
-			fill(row,col);
+			//console.log("fill "+row+","+col);
+			fill(row,col,slotSize);
 		}
 	}
 	//console.log(i*j);
@@ -131,7 +133,7 @@ function occupy(style,row,col,quant)
 var row=0,col=0;
 function highlight(event)
 {
-	console.log("highlight");
+	//console.log("highlight");
 	var coords=getCursorPosition(canvas,event);
 	var x=coords.x;
 	var y=coords.y;
@@ -148,11 +150,12 @@ function highlight(event)
 			col=100-hSize;
 		document.getElementById("info").innerHTML=x+","+y+"        "+row+","+col;
 		occupy("rgba(128,128,128,0.3)",row,col,hSize);                  // highlighting color
+
 	}
 }
 function clearc()
 {
-	console.log("clear");
+	//console.log("clear");
 	while(highlighted.length>0)
 	{
 		var cod=highlighted.pop();

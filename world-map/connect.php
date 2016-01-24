@@ -2,7 +2,7 @@
 $servername="localhost";
 $username="root";
 $password="";
-$db="test";
+$db="Mega";
 
 $conn=new mysqli($servername,$username,$password,$db);
 if($conn->connect_error)
