@@ -161,7 +161,7 @@ function genMatrix()
 					echo("</td>");
 				}
 				*/
-				echo("<td>");
+				echo("<td onclick='getLoc(".$i.",".$j.")'>");
 				echo($mapArray[$i][$j]);
 				echo("</td>");
 				
@@ -183,8 +183,9 @@ function fake_main()
 <html>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="./index.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
 	<title>Test page</title>
+	<script src="action.js"></script>
 </head>
 
 <body>
@@ -240,6 +241,13 @@ function fake_main()
 		</form>
 		</div>
 	</div>
+<<<<<<< HEAD
+=======
+	<div id="contextMenu">
+		<form id="ctxForm" action="player.php" method="post">
+		</form>
+	</div>
+>>>>>>> 9aa76624cd031b1f607d296a70c1b46b943f7757
 </body>
 
 </html>

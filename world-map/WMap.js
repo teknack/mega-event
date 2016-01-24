@@ -71,6 +71,7 @@ window.onload=function loadDoc(){
   }
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4 && xhttp.status == 200) {
+	  //window.alert(xhttp.responseText);
       temp=JSON.parse(xhttp.responseText);             //editable
       playerId=temp[10000]["player"];                                  
       convertToGrid(temp);	            			   //editable
@@ -82,7 +83,7 @@ window.onload=function loadDoc(){
   //ajax ends--->
    document.getElementById("canvas").setAttribute("onClick","passCursorPosition(canvas,event)")	;
 	document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
-	//document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
+	document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
   //playerId=temp[10]["player"];
 }
 function passCursorPosition(canvas, event) {
@@ -103,7 +104,7 @@ function passCursorPosition(canvas, event) {
     if(col>99-hSize)
     	col=100-hSize;
     var res=row+","+col;	
-    window.location="trial.php?coord="+res;
+    window.location="../transfer.php?coord="+res;
 }
 function getCursorPosition(canvas , event) {
   	var rect = canvas.getBoundingClientRect();

@@ -1,5 +1,5 @@
 <?php
-function dispArr($arr)
+/*function dispArr($arr)
 {
 	for($j=0;$j<count($arr);$j++)
 	{
@@ -25,5 +25,8 @@ function condenseArray($arr)
 }
 $a=array(1,2,3,4,4,4,5,6,6,7);
 $a=condenseArray($a);
-dispArr($a);
+dispArr($a);*/
+$x=5;
+$y=6;
+echo max($x,$y);
 ?>
