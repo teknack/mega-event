@@ -82,7 +82,7 @@ window.onload=function loadDoc(){
   //ajax ends--->
    document.getElementById("canvas").setAttribute("onClick","passCursorPosition(canvas,event)")	;
 	document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
-	//document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
+	document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
   //playerId=temp[10]["player"];
 }
 function passCursorPosition(canvas, event) {
@@ -103,7 +103,7 @@ function passCursorPosition(canvas, event) {
     if(col>99-hSize)
     	col=100-hSize;
     var res=row+","+col;	
-    window.location="trial.php?coord="+res;
+    window.location="../transfer.php?coord="+res;
 }
 function getCursorPosition(canvas , event) {
   	var rect = canvas.getBoundingClientRect();

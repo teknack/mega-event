@@ -7,6 +7,8 @@ $playerid/*=$_SESSION['tek_emailid']*/;
 $playerid=1; //temporary!! don't forget to remove!! 
 $moveCostFood=100;
 $moveCostPower=50;
+$isTroopSelected=false;
+$quantity=0;
 /*$food=$water=$power=$metal=$wood;
 $food_regen=$water_regen=$power_regen=$metal_regen=$wood_regen;
 */
@@ -34,8 +36,8 @@ function getStats(){
 		return $x;
 	else
 		return $y;
-}
-*/function deductResource($resource,$value)   //use to reduce resource on some action give resource name and value resp.
+}*/
+function deductResource($resource,$value)   //use to reduce resource on some action give resource name and value resp.
 {
 	$sql="UPDATE `player` SET $resource='$value' WHERE tek_emailid=$playerid";	
 	if($conn->query($sql)===false)
@@ -152,10 +154,17 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 		$j++;
 	}
 }
-if(isset($_POST['attack']))
+if(isset($_POST['settle']))
 {
-
+	$row=$_POST['row'];
+	$col=$_POST['col'];
+	settle($row,$col);
 }
-
+if(isset($_POST['selectTroops']))
+{
+	$row=$_POST['row'];
+	$col=$_POST['col'];
+	$quantity=$_POST['quantity'];
+}
 include "./scout.php";
 ?>

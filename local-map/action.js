@@ -34,6 +34,6 @@ function action() //call it to get the available actions
   }
   else
   {                                                //if troops have been selected
-  	xhttp.send("func=move&srcRow="+selRow+"&srcCol="+selCol+"&destRow="+row+"&destCol="+col+"&quantity="+quantity);
+  	xhttp.send("func=getAction1&srcRow="+selRow+"&srcCol="+selCol+"&destRow="+row+"&destCol="+col+"&quantity="+quantity);
   }
 }
