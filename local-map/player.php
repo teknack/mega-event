@@ -156,4 +156,6 @@ if(isset($_POST['attack']))
 {
 
 }
+
+include "./scout.php";
 ?>

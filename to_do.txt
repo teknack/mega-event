@@ -18,6 +18,7 @@ Things to be done by 23/01/2016
 --Move [sid]
 --Settle [sid]
 --Scout [jacques]
+--Research [?]
 
 icons:
 --player
