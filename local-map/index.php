@@ -183,8 +183,9 @@ function fake_main()
 <html>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="./index.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
 	<title>Test page</title>
+	<script src="action.js"></script>
 </head>
 
 <body>
@@ -232,7 +233,10 @@ function fake_main()
 		</table>
 	</form>
 	</div>
-	
+	<div id="contextMenu">
+		<form id="ctxForm" action="player.php" method="post">
+		</form>
+	</div>
 </body>
 
 </html>
