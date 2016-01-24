@@ -6,7 +6,7 @@ function scout($row,$col) //Used to check the details of the column at $row,$col
 	
 	setTable("grid");
 	
-	
+	$slot=getSlot($row,$col);
 }
 
 ?>

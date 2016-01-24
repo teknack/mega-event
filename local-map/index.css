@@ -1,0 +1,79 @@
+body {
+	background-color: lightblue;
+
+}
+
+#leftbanner {
+	float: left;
+	background-color: blue;
+	height: 4em;
+	width: 2em;
+}
+
+#rightbanner {
+	float: right;
+	background-color: blue;
+	height: 4em;
+	width: 2em;
+	position: relative;
+	top: -21em;	
+}
+
+#localplay{
+	position: relative;
+
+}
+#playgroup div { 
+}
+
+/*Top resources bar*/	
+
+#playerinfo #leftward {
+	display: inline;
+	font-size: 0.8em;
+	font-family: Verdana;
+}
+
+#playerinfo #leftward span{
+	border-style: solid;
+	border-color: #990000;
+	padding-left: 3px;
+	padding-right: 3px;
+	background: #000000;
+
+}
+
+#playerinfo {
+	background: url("./css/stripnew.jpg") repeat-x left top;
+	font-size: 1em;
+	color: #ffffb3;
+	background-color:#000000;
+	padding: 6px;
+	
+}
+
+/*Bottom bar css*/
+
+
+td{
+	width:2em;
+	height:2em;
+	text-align:center;
+}
+
+#button_left{
+	float:left;
+	vertical-align:parent | middle;
+}
+
+#button_right{
+	float:right;
+}
+
+#button_up{
+	position:"center";
+}
+
+#button_down{
+	position:"center";
+}
