@@ -137,6 +137,8 @@ function highlight(event)
 	var coords=getCursorPosition(canvas,event);
 	var x=coords.x;
 	var y=coords.y;
+	x=x-(hSize/2*slotSize);
+	y=y-(hSize/2*slotSize);
 	if(row!=Math.floor(y/slotSize) || col!=Math.floor(x/slotSize))
 	{
 		var inp=row+","+col;
