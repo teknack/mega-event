@@ -212,7 +212,6 @@ function fake_main()
 		<div id="rightbanner" class="playarea"> </div>
 	</div>
 	<hr>
-<<<<<<< HEAD
 
 	<div style="float:right">
 	<form method="POST" action="shift.php">
