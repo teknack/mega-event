@@ -35,7 +35,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 			{
 				if($row['occupied']==$playerid) //player occupied 
 				{
-					$output=$output.'{"action":"fortify"},{"action":"select troops"}]';		
+					$output=$output.'{"action":"fortify"},{"action":"select_troops"}]';		
 				}
 				else
 				{

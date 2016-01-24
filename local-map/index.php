@@ -212,7 +212,7 @@ function fake_main()
 		<div id="rightbanner" class="playarea"> </div>
 	</div>
 	<hr>
-<<<<<<< HEAD
+
 	<div style="float:right">
 	<form method="POST" action="shift.php">
 		<table id="nav_buttons" border=0 align="center">
@@ -233,10 +233,11 @@ function fake_main()
 			</tr>
 		</table>
 	</form>
-=======
-	<div id="bottomgroup">
-		<div id="bottom_action" float:left>
 
+	<div id="bottomgroup">
+		<div style="float:left">
+			<form id="bottom_action">
+			</form>
 		</div>
 		<div id="bottom_hint">
 
@@ -262,15 +263,11 @@ function fake_main()
 			</table>
 		</form>
 		</div>
->>>>>>> d4a4fdb51d4acbf4778e7b7f0bd6c2d54a233bd5
 	</div>
-<<<<<<< HEAD
-=======
 	<div id="contextMenu">
 		<form id="ctxForm" action="player.php" method="post">
 		</form>
 	</div>
->>>>>>> 9aa76624cd031b1f607d296a70c1b46b943f7757
 </body>
 
 </html>

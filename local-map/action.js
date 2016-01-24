@@ -15,6 +15,7 @@ function action(row,col) //call it to get the available actions
 	col=8;*/
   console.log(row+","+col)
 	var xhttp;
+    var comm
   	if (window.XMLHttpRequest) {
     // code for modern browsers
     xhttp = new XMLHttpRequest();
@@ -22,11 +23,19 @@ function action(row,col) //call it to get the available actions
     // code for IE6, IE5
     xhttp = new ActiveXObject("Microsoft.XMLHTTP");
   	}
-  	xhttp.onreadystatechange = function() {
-    if (xhttp.readyState == 4 && xhttp.status == 200) {
-    	console.log( xhttp.responseText);
+  	xhttp.onreadystatechange = function() 
+    {
+        if (xhttp.readyState == 4 && xhttp.status == 200) 
+        {
+      	    comm=JSON.parse(xhttp.responseText);
+            var content="";
+            for(var i=0;i<comm.length;i++)
+            {
+                content+="<input type='submit' value="+comm[i]['action']+" name="+comm[i]['action']+"><br>";
+            }
+            document.getElementById("bottom_action").innerHTML=content;
+        }
     }
-  }
     xhttp.open("GET", "getActions.php?row="+row+"&col="+col, true);
   	xhttp.send();
 }
