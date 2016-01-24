@@ -161,7 +161,7 @@ function genMatrix()
 					echo("</td>");
 				}
 				*/
-				echo("<td onclick='getLoc(".$i.",".$j.")'>");
+				echo("<td onclick='getLoc(".($i+$_SESSION["coord"][0]).",".($j+$_SESSION["coord"][1]).")'>");
 				echo($mapArray[$i][$j]);
 				echo("</td>");
 				
@@ -217,17 +217,17 @@ function fake_main()
 		<table id="nav_buttons" border=0 align="center">
 			<tr>
 				<td></td>
-				<td><button type="submit" name="up">UP</button></td>
+				<td align="center"><button type="submit" name="up">UP</button></td>
 				<td></td>
 			</tr>
 			<tr>
-				<td><button name="left">LEFT</button></td>
-				<td><button name="world-map">WORLD MAP</button></td>
-				<td><button name="right">RIGHT</button></td>
+				<td align="center"><button name="left">LEFT</button></td>
+				<td align="center"><button name="world-map">WORLD MAP</button></td>
+				<td align="center"><button name="right">RIGHT</button></td>
 			</tr>
 			<tr>
 				<td></td>
-				<td><button name="down">DOWN</button></td>
+				<td align="center"><button name="down">DOWN</button></td>
 				<td></td>
 			</tr>
 		</table>
