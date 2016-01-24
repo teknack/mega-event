@@ -9,11 +9,11 @@ function selectTroops()
 	quantity=1;
 	troopSelected=true;
 }
-function action() //call it to get the available actions
+function action(row,col) //call it to get the available actions
 {
-	var row,col;
-	row=0;//make method to pass the row and column selected
-	col=8;
+	/*row=0;//make method to pass the row and column selected
+	col=8;*/
+  console.log(row+","+col)
 	var xhttp;
   	if (window.XMLHttpRequest) {
     // code for modern browsers
@@ -24,22 +24,14 @@ function action() //call it to get the available actions
   	}
   	xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4 && xhttp.status == 200) {
-    	return xhttp.responseText;
+    	console.log( xhttp.responseText);
     }
   }
-  xhttp.open("POST", "getWMap.php", true);
-  if(troopSelected==false)                         //if no troops have been selected
-  {
-  	xhttp.send("func=getAction&row="+row+"&col="+col);
-  }
-  else
-  {                                                //if troops have been selected
-  	xhttp.send("func=getAction1&srcRow="+selRow+"&srcCol="+selCol+"&destRow="+row+"&destCol="+col+"&quantity="+quantity);
-  }
+    xhttp.open("GET", "getActions.php?row="+row+"&col="+col, true);
+  	xhttp.send();
 }
 
-function getLoc(i,j)
+function getLoc(row,col)
 {
-	console.log(""+i+","+j+"");
-	return(""+i+","+j+"")
+	action(row,col);
 }
