@@ -90,6 +90,12 @@ function passCursorPosition(canvas, event) {
   	var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
+    x=x-(hSize/2*slotSize);
+	if(x<0)
+		x=0;
+	y=y-(hSize/2*slotSize);
+	if(y<0)
+		y=0;
     var row=Math.floor(y/slotSize);
     var col=Math.floor(x/slotSize);
     if(row>99-hSize)
@@ -138,7 +144,11 @@ function highlight(event)
 	var x=coords.x;
 	var y=coords.y;
 	x=x-(hSize/2*slotSize);
+	if(x<0)
+		x=0;
 	y=y-(hSize/2*slotSize);
+	if(y<0)
+		y=0;
 	if(row!=Math.floor(y/slotSize) || col!=Math.floor(x/slotSize))
 	{
 		var inp=row+","+col;
