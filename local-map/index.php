@@ -40,8 +40,8 @@ if (isset($_SESSION) && !empty($_SESSION))
 }
 else
 {
-	redirect("www.teknack.in");
-	die();
+	//redirect("www.teknack.in");
+	//die();
 }
 
 
