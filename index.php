@@ -3,7 +3,7 @@
 include "./db_access/db.php";
 
 //connect();
-var_dump(getSlot(1,1));
+//var_dump(getSlot(1,1));
 ?>
 <html>
 	<head>
