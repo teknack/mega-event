@@ -135,13 +135,13 @@ function genMatrix()
 	echo("<td>--</td>");
 	for ($i = 0; $i <= 8; $i++)
 	{
-		echo("<td><b>".$i."</b></td>");
+		echo("<td><b>".($i+$_SESSION["coord"][1])."</b></td>");
 	}
 	echo("</tr>");
 	for ($i = 0; $i <= 8; $i++)
 	{
 		echo("<tr>");
-		echo("<td><b>".$i."</b></td>");
+		echo("<td><b>".($i+$_SESSION["coord"][0])."</b></td>");
 		for ($j = 0; $j<= 8; $j++)
 		{ 	
 			/*
@@ -212,6 +212,7 @@ function fake_main()
 		<div id="rightbanner" class="playarea"> </div>
 	</div>
 	<hr>
+<<<<<<< HEAD
 
 	<div style="float:right">
 	<form method="POST" action="shift.php">
@@ -233,37 +234,45 @@ function fake_main()
 			</tr>
 		</table>
 	</form>
-
-	<div id="bottomgroup">
-		<div style="float:left">
-			<form id="bottom_action">
-			</form>
-		</div>
-		<div id="bottom_hint">
-
-		</div>
-		<div id="bottom_navigation" style="float:right">
-		<form method="POST" action="shift.php">
-			<table id="nav_buttons" border=0 align="center">
-				<tr>
-					<td></td>
-					<td><button type="submit" name="up">UP</button></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><button name="left">LEFT</button></td>
-					<td><button name="world-map">WORLD MAP</button></td>
-					<td><button name="right">RIGHT</button></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td><button name="down">DOWN</button></td>
-					<td></td>
-				</tr>
-			</table>
-		</form>
-		</div>
 	</div>
+	<table>
+	<tr>
+		<div id="bottomgroup">
+			<td>
+				<div style="float:left">
+					<form id="bottom_action">
+					</form>
+				</div>
+			</td>
+			<td>
+				<div id="bottom_hint">
+
+				</div>
+			</td>
+			<!-- <td>
+				<div id="bottom_navigation" style="float:right">
+				<form method="POST" action="shift.php">
+					<table id="nav_buttons" border=0 align="center">
+						<tr>
+							<td></td>
+							<td><button type="submit" name="up">UP</button></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><button name="left">LEFT</button></td>
+							<td><button name="world-map">WORLD MAP</button></td>
+							<td><button name="right">RIGHT</button></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><button name="down">DOWN</button></td>
+							<td></td>
+						</tr>
+					</table>
+				</form>
+				</div>
+			</td> -->
+		</div>
 	<div id="contextMenu">
 		<form id="ctxForm" action="player.php" method="post">
 		</form>
