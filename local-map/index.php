@@ -211,28 +211,35 @@ function fake_main()
 		<div id="rightbanner" class="playarea"> </div>
 	</div>
 	<hr>
-	<div style="float:right">
-	<form method="POST" action="shift.php">
-		<table id="nav_buttons" border=0 align="center">
-			<tr>
-				<td></td>
-				<td><button type="submit" name="up">UP</button></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td><button name="left">LEFT</button></td>
-				<td><button name="world-map">WORLD MAP</button></td>
-				<td><button name="right">RIGHT</button></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><button name="down">DOWN</button></td>
-				<td></td>
-			</tr>
-		</table>
-	</form>
+	<div id="bottomgroup">
+		<div id="bottom_action" float:left>
+
+		</div>
+		<div id="bottom_hint">
+
+		</div>
+		<div id="bottom_navigation" style="float:right">
+		<form method="POST" action="shift.php">
+			<table id="nav_buttons" border=0 align="center">
+				<tr>
+					<td></td>
+					<td><button type="submit" name="up">UP</button></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><button name="left">LEFT</button></td>
+					<td><button name="world-map">WORLD MAP</button></td>
+					<td><button name="right">RIGHT</button></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button name="down">DOWN</button></td>
+					<td></td>
+				</tr>
+			</table>
+		</form>
+		</div>
 	</div>
-	
 </body>
 
 </html>
