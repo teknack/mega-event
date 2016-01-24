@@ -161,7 +161,7 @@ function genMatrix()
 					echo("</td>");
 				}
 				*/
-				echo("<td>");
+				echo("<td onclick='getLoc(".$i.",".$j.")'>");
 				echo($mapArray[$i][$j]);
 				echo("</td>");
 				

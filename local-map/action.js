@@ -38,7 +38,8 @@ function action() //call it to get the available actions
   }
 }
 
-function getLoc()
+function getLoc(i,j)
 {
-	
+	console.log(""+i+","+j+"");
+	return(""+i+","+j+"")
 }

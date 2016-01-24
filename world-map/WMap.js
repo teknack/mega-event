@@ -71,7 +71,7 @@ window.onload=function loadDoc(){
   }
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4 && xhttp.status == 200) {
-	  window.alert(length(xhttp.responseText));
+	  //window.alert(xhttp.responseText);
       temp=JSON.parse(xhttp.responseText);             //editable
       playerId=temp[10000]["player"];                                  
       convertToGrid(temp);	            			   //editable
