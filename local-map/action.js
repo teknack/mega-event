@@ -37,3 +37,8 @@ function action() //call it to get the available actions
   	xhttp.send("func=move&srcRow="+selRow+"&srcCol="+selCol+"&destRow="+row+"&destCol="+col+"&quantity="+quantity);
   }
 }
+
+function getLoc()
+{
+	
+}
