@@ -38,6 +38,8 @@ function action(row,col) //call it to get the available actions
     }
     xhttp.open("GET", "getActions.php?row="+row+"&col="+col, true);
   	xhttp.send();
+    document.getElementById("row").value=row;
+    document.getElementById("row").value=row;
 }
 
 function getLoc(row,col)
