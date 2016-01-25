@@ -1,16 +1,11 @@
-[DONE] Transitioning from Sid's World map to Jacques's local map
-[DONE] -> cell querying will be done on local map
-
-[NOT DOING] Tick code (?)
-
 REMINDER:
 --player.php => Set player id to session. Currently constant.
 --Set path in common-code.php
 
 Things to be done by 27/01/2016
 --setup.php - the newcomer's page (to be kept in root folder of event)
+--/-->Choosing random cell for user to be addressed
 --Background Canvas
---
 
 Things to be done by 23/01/2016
 --Move [sid]
