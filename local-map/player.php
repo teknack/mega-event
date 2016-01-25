@@ -166,5 +166,8 @@ if(isset($_POST['selectTroops']))
 	$col=$_POST['col'];
 	$quantity=$_POST['quantity'];
 }
-include "./scout.php";
+if (isset($_POST["scout"]))
+{
+	include "./scout.php";
+}
 ?>
