@@ -62,17 +62,17 @@ function checkPlayerExists($player,$table)
 {
 	global $dbconn;
 	
-	$query = "SELECT tek_emailid FROM ".$table." WHERE tek_emailid='".$player.";";
-	
+	$query = "SELECT tek_emailid FROM ".$table." WHERE tek_emailid='".$player."';";
+	//var_dump($query);
 	$res = mysqli_query($dbconn,$query);
-	
+	//var_dump($res);
 	if (mysqli_num_rows($res) === 1)
 	{
-		return(true);
+		return(True);
 	}
 	else
 	{
-		return(false);
+		return(False);
 	}
 }
 
