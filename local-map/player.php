@@ -179,7 +179,7 @@ if(isset($_POST["scout"]))
 	include "./scout.php";
 	scoutv2(testVar($_POST['row']),testVar($_POST['col']));
 }
-if (isset($_POST["attack"])
+if (isset($_POST["attack"]))
 {
 	
 }
