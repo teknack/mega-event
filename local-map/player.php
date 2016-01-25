@@ -14,7 +14,7 @@ function getStats(){
 	global $dbconn;
 	
 	connect();
-	$playerid = 2; // $_SESSION["tek_emailid"];
+	$playerid = $_SESSION["tek_emailid"];
 	setTable("player");
 
 	$query = "SELECT faction,food,food_regen,water,water_regen,power,power_regen,metal,metal_regen,wood,wood_regen,total FROM player 
@@ -22,7 +22,7 @@ function getStats(){
 	
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);	
-
+	//alert(var_dump($res));
 	//exiting
 	setTable("grid");
 	disconnect();
@@ -262,12 +262,14 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 }
 if(isset($_POST['settle']))
 {
-	$row=$_POST['row'];
-	$col=$_POST['col'];
+	$row=testVar($_POST['row']);
+	$col=testVar($_POST['col']);
 	settle($row,$col);
 }
 if(isset($_POST['select_troops']))
 {
+	$row=testVar($_POST['row']);
+	$col=testVar($_POST['col']);
 	$row=$_POST['row'];
 	$col=$_POST['col'];
 	$_SESSION['selectedRow']=$row;
@@ -280,7 +282,11 @@ if(isset($_POST["scout"]))
 {
 	//alert("scout");
 	include "./scout.php";
-	scoutv2($_POST['row'],$_POST['col']);
+	scoutv2(testVar($_POST['row']),testVar($_POST['col']));
+}
+if (isset($_POST["attack"]))
+{
+	
 }
 if(isset($_POST['move']))
 {
