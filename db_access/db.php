@@ -194,6 +194,10 @@ function alert($msg="")
 	echo("<script>alert('".$msg."')</script>");
 }
 
+function consoleLog($msg="")
+{
+	echo("<script>console.log('".$msg."')</script>");
+}
 function testVar($input="")
 {
 	$input = trim($input);
