@@ -18,7 +18,7 @@
  * --> $columns should be a string consisting of the list of columns to be inserted into.
  * --> $values should be a string consisting of the corresponding values to be inserted.
  * 
- * - update($columns,$values,$condition)
+ * - update($column,$value,$condition)
  * --> updates a single row which satisfies the $condition
  * --> $columns should be a string consisting of the list of columns to be inserted into.
  * --> $values should be a string consisting of the corresponding values to be inserted. 
@@ -98,11 +98,11 @@ function insert($columns,$values)
 	return(true);	
 }
 
-function update($columns,$values,$condition)
+function update($column,$value,$condition)
 {
 	global $dbtable,$dbconn;
 	
-	$query = "UPDATE ".$dbtable." SET ".$columns."=".$values." WHERE ".$condition.";";
+	$query = "UPDATE ".$dbtable." SET ".$column."=".$value." WHERE ".$condition.";";
 	
 	$op = mysqli_query($dbconn,$query);
 	
