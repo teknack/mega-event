@@ -168,6 +168,8 @@ if(isset($_POST['selectTroops']))
 }
 if (isset($_POST["scout"]))
 {
+	alert("scout");
 	include "./scout.php";
+	scoutv2($_POST['row'],$_POST['col']);
 }
 ?>
