@@ -23,7 +23,7 @@ function elapsedTime() //calculates time elapsed since last resource collect
 	}
 	else
 	{
-		echo("Time Diff: ".($diff/60)." Minutes");
+		echo("Time Diff: ".($diff/60)." Minutes<br>");
 	}
 	return($diff);
 }
@@ -47,7 +47,7 @@ $water_regen = $res["water_regen"];
 $power_regen = $res["power_regen"];
 $wood_regen = $res["wood_regen"];
 
-$food = $res["food"] + floor($food_regen * $diff_main);
+$food = $res["food"] + floor($food_regen * $diff_min);
 $water = $res["water"] + floor($water_regen * $diff_min);
 $power = $res["power"] + floor($power_regen * $diff_min);
 $wood = $res["wood"] + floor($wood_regen * $diff_min);
@@ -57,4 +57,5 @@ update("wood",$wood,"tek_emailid='".$playerid."'");
 update("water",$water,"tek_emailid='".$playerid."'");
 update("power",$power,"tek_emailid='".$playerid."'");
 alert("Done");
+redirect("index.php");
 ?>

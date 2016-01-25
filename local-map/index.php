@@ -208,7 +208,9 @@ function fake_main()
 					<span>Power : <?php echo $stat["power"].' / '.$stat["power_regen"]?></span>
 					<span>Metal : <?php echo $stat["metal"].' / '.$stat["metal_regen"]?></span>
 					<span>Wood : <?php echo $stat["wood"].' / '.$stat["wood_regen"]?></span>
+					
 				</div>
+				<span><form action="resources.php" method="POST"><button type="submit">Collect Resources</button></form></span>
 		<!--	</tr>
 		</table>	-->
 		

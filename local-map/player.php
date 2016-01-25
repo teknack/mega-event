@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 require "../db_access/db.php";
 require "connect.php";
 $faction/*=$_SESSION['faction']*/;
@@ -17,7 +17,7 @@ function getStats(){
 	global $dbconn;
 	
 	connect();
-	$playerid = 2; // $_SESSION["tek_emailid"];
+	$playerid = $_SESSION["tek_emailid"];
 	setTable("player");
 
 	$query = "SELECT faction,food,food_regen,water,water_regen,power,power_regen,metal,metal_regen,wood,wood_regen,total FROM player 
@@ -25,7 +25,7 @@ function getStats(){
 	
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);	
-
+	//alert(var_dump($res));
 	//exiting
 	setTable("grid");
 	disconnect();
