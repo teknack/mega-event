@@ -24,7 +24,7 @@ if (isset($_POST) && !empty($_POST))
 	}
 	else if (isset($_POST["down"]))
 	{
-		if ($tlc[0] == 99)
+		if ($tlc[0] >= 91)
 		{
 			echo "<script>alert(\"Can't go any further down...\")</script>;";
 			redirect("index.php");
@@ -50,7 +50,7 @@ if (isset($_POST) && !empty($_POST))
 	}
 	else if (isset($_POST["right"]))
 	{
-		if ($tlc[1] == 99)
+		if ($tlc[1] >= 91)
 		{
 			echo "<script>alert(\"Can't go any further right...\")</script>;";
 			redirect("index.php");
