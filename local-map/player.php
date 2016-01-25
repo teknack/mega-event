@@ -156,20 +156,24 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 }
 if(isset($_POST['settle']))
 {
-	$row=$_POST['row'];
-	$col=$_POST['col'];
+	$row=testVar($_POST['row']);
+	$col=testVar($_POST['col']);
 	settle($row,$col);
 }
 if(isset($_POST['selectTroops']))
 {
-	$row=$_POST['row'];
-	$col=$_POST['col'];
+	$row=testVar($_POST['row']);
+	$col=testVar($_POST['col']);
 	$quantity=$_POST['quantity'];
 }
 if (isset($_POST["scout"]))
 {
 	alert("scout");
 	include "./scout.php";
-	scoutv2($_POST['row'],$_POST['col']);
+	scoutv2(testVar($_POST['row']),testVar($_POST['col']));
+}
+if (isset($_POST["attack"])
+{
+	
 }
 ?>
