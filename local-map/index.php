@@ -246,18 +246,30 @@ function fake_main()
 	<tr>
 		<div id="bottomgroup">
 			<td>
-				<div id="bottom_action"style="float:left">
-					<form id="bottom_actions" action="player.php" method="POST">
-						<input type="hidden" name="row" id="row">
-						<input type="hidden" name="col" id="col">
-						<input type="number" name="quantity">
+				<div id="bottom_action" style="float:left">
+					<form action="player.php" method="POST">
+						<div>
+							<input type="hidden" name="row" id="row">
+							<input type="hidden" name="col" id="col">
+							<input type="number" name="quantity" id="quantity">
+						</div>
+						<div id="action">
+						</div>
 					</form>
 				</div>
 			</td>
 			<td>
+				<center>
 				<div id="bottom_hint">
-
+					<?php
+						if(isset($_SESSION['response']))
+						{
+							echo $_SESSION['response'];
+							unset($_SESSION['response']);
+						}
+					?>
 				</div>
+			</center>
 			</td>
 			<!-- <td>
 				<div id="bottom_navigation" style="float:right">

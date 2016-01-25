@@ -1,5 +1,4 @@
 <?php
-session_start();
 require "../db_access/db.php";
 require "connect.php";
 $faction/*=$_SESSION['faction']*/;
@@ -8,8 +7,6 @@ $playerid/*=$_SESSION['tek_emailid']*/;
 $playerid=1; //temporary!! don't forget to remove!! 
 $moveCostFood=100;
 $moveCostPower=50;
-$isTroopSelected=false;
-$quantity=0;
 /*$food=$water=$power=$metal=$wood;
 $food_regen=$water_regen=$power_regen=$metal_regen=$wood_regen;
 */
@@ -40,6 +37,7 @@ function getStats(){
 }*/
 function deductResource($resource,$value)   //use to reduce resource on some action give resource name and value resp.
 {
+	global $conn,$playerid;
 	$sql="UPDATE `player` SET $resource='$value' WHERE tek_emailid=$playerid";	
 	if($conn->query($sql)===false)
 	{
@@ -51,8 +49,14 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	$distance=max(abs($srcRow-$destRow),abs($srcCol-$destCol));
 	$sroot="x,y";
 	$droot="x,z";
+	global $conn,$moveCostFood,$moveCostPower,$playerid;
 	$sql="SELECT root FROM grid WHERE row=$srcRow and col=$srcCol;"; //the query for root column decide if movement is within 
-	if($res->num_rows>0)											 //the faction occupied region 
+										 //the faction occupied region
+	if($res=$conn->query($sql))
+	{
+		$conn->error;
+	}
+	if($res->num_rows>0)											  
 	{
 		while($row=$res->fetch_assoc())
 		{
@@ -60,6 +64,10 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		}
 	}
 	$sql="SELECT root FROM grid WHERE row=$destRow and col=$destCol;";
+	if($res=$conn->query($sql))
+	{
+		$conn->error;
+	}
 	if($res->num_rows>0)
 	{
 		while($row=$res->fetch_assoc())
@@ -73,29 +81,124 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	}
 	$foodCost=$distance*$moveCostFood;
 	$powerCost=$distance*$moveCostPower;
-	$sql="SELECT occupant FROM grid WHERE row=$srcRow and col=$srcCol and troops>0;";
+	$troopExist=false;
+	$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;"; //check if required troops present in grid table
 	$res=$conn->query($sql);
-	if($res->num_rows>0)  //player moving from settled slot to unoccupied slot
+	if($res->num_rows>0)
 	{
 		$row=$res->fetch_assoc();
-		if($row['occupant']==$playerid)
+		if($row['troops']<$quantity)
 		{
-			$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,'$playerid',$quantity);
-				  UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;";
-			if($conn->query($sql)==false)
-				echo "error : ".$conn->error;
-			deductResource("food",$foodCost);
-			deductResource("power",$powerCost);
+			$_SESSION['response']="You don't have those many troops. You have ".$row['troops']." soldiers.
+			 Create more soldiers!";
+			$troopExist=false; 
+		}
+		else
+		{
+			$troopExist=true;
 		}
 	}
-	else //player moving from stationed troops
+	$sql="SELECT playerid,quantity FROM troops WHERE row=$srcRow and col=$srcCol;"; //check if required troops present 
+	$res=$conn->query($sql);														//in troops table
+	if($res->num_rows>0)
 	{
-		$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;
-			  UPDATE grid SET troops=troops+$quantity WHERE row=$destRow and col=$destCol;";
-		if($conn->query($sql)==false)
-			echo "error : ".$conn->error;
-		deductResource("food",$foodCost);
-		deductResource("power",$powerCost);
+		$row=$res->fetch_assoc();
+		if($row['quantity']<$quantity or $row['playerid']!=$playerid)
+		{
+			if(!$troopExist) //troops not enough or not present in both tables
+			{
+				$_SESSION['response']="You don't have those many troops. You have ".$row['troops']." soldiers.
+				Create more soldiers!";
+			} 
+		}
+	}
+	$sql="SELECT occupied FROM grid WHERE row=$srcRow and col=$srcCol;"; 
+	$res=$conn->query($sql);
+	if($res->num_rows>0)  //player moving from settled slot
+	{
+		$row=$res->fetch_assoc();
+		if($row['occupied']==$playerid)
+		{
+			$sql="SELECT occupied FROM grid WHERE row=$destRow and col=$destCol";
+			$res2=$sql->query($sql);
+			$r=$res2->fetch_assoc();
+			if($r['occupied']!=$playerid) //player moving form settled to unoccupied/allied slot
+			{
+				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol;"; //check if troops are already present
+				$res1=$sql->query($sql);
+				if($res1->num_rows==0)
+				{
+					$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,'playerid',$quantity);";
+					if($conn->query($sql)==false)
+						echo "error(114) : ".$conn->error."<br>";
+				}
+				else
+				{
+					$sql="UPDATE troops SET quantity=quantity+$quantity WHERE row=$destRow and col=$destCol;";
+					if($conn->query($sql)==false)
+						echo "error (119): ".$conn->error."<br>";
+				} 
+				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;";
+				if($conn->query($sql)===false)
+					echo "error (124 wala): ".$conn->error."<br>";
+				deductResource("food",$foodCost);
+				deductResource("power",$powerCost);
+				$_SESSION['response']="moved ".$quantity." soldiers!";
+			}
+			else //player moves from occupied slot to occupied slot
+			{
+				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol";
+				if($conn->query($sql)==false)
+						echo "error(131) : ".$conn->error."<br>";
+				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$destRow and col=$destCol";
+				if($conn->query($sql)==false)
+						echo "error(135) : ".$conn->error."<br>";
+			}
+		}
+		else //player moving stationed troops
+		{
+			$sql="SELECT occupied FROM grid WHERE row=$destRow and col=$destCol";
+			$res2=$sql->query($sql);
+			$r=$res2->fetch_assoc();
+			if($r['occupied']!=$playerid) //player moves from unoccupied/allied slots to unoccupied/allied slots
+			{
+				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol;";
+				if($conn->query($sql)==false)
+					echo "error (143): ".$conn->error."<br>";
+				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol;"; //check if troops are already present
+				$res1=$sql->query($sql);
+				if($res1->num_rows==0)
+				{
+					$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,'playerid',$quantity);";
+					if($conn->query($sql)==false)
+						echo "error(150) : ".$conn->error."<br>";
+				}
+				else
+				{
+					$sql="UPDATE troops SET quantity=quantity+$quantity WHERE row=$destRow and col=$destCol;";
+					if($conn->query($sql)==false)
+						echo "error (156): ".$conn->error."<br>";
+				}
+				$sql="DELETE FROM troops WHERE quantity<=0";
+				if($conn->query($sql)==false)
+					echo "error(160) : ".$conn->error;
+				deductResource("food",$foodCost);
+				deductResource("power",$powerCost);
+				$_SESSION['response']="moved ".$quantity." soldiers!";
+			}
+			else //move troops from unoccupied/allied slots to occupied slot
+			{
+				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol;";
+				if($conn->query($sql)==false)
+					echo "error (192): ".$conn->error."<br>";
+				$sql="UPDATE grid SET troops=troops+$quantity WHERE row=$srcRow and col=$srcCol;";
+				if($conn->query($sql)==false)
+					echo "error (195): ".$conn->error."<br>";
+				$sql="DELETE FROM troops WHERE quantity<=0";
+				if($conn->query($sql)==false)
+					echo "error(160) : ".$conn->error;
+			}
+		}
 	}
 	unset($_SESSION['selectedRow']);
 	unset($_SESSION['selectedCol']);
@@ -163,25 +266,40 @@ if(isset($_POST['settle']))
 	$col=$_POST['col'];
 	settle($row,$col);
 }
-if(isset($_POST['selectTroops']))
+if(isset($_POST['select_troops']))
 {
 	$row=$_POST['row'];
 	$col=$_POST['col'];
 	$_SESSION['selectedRow']=$row;
 	$_SESSION['selectedCol']=$col;
 	$quantity=$_POST['quantity'];
+	$_SESSION['selectedTroops']=$quantity;
+	header("location:index.php");
 }
 if(isset($_POST["scout"]))
 {
-	alert("scout");
+	//alert("scout");
 	include "./scout.php";
 	scoutv2($_POST['row'],$_POST['col']);
 }
 if(isset($_POST['move']))
 {
+	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
+	{
+		$quantity=$_SESSION['selectedTroops'];
+		unset($_SESSION['selectedTroops']);
+	}
+	else
+	{
+		$quantity=1;
+	}
 	$srcrow=$_SESSION['selectedRow'];
 	$srccol=$_SESSION['selectedCol'];
-	move($srcrow,$srccol,$row,$col);
+	$row=$_POST['row'];
+	$col=$_POST['col'];
+	//echo $quantity;
+	move($srcrow,$srccol,$row,$col,$quantity);
+	header("location:index.php");
 }
 if(isset($_POST['attack']))
 {

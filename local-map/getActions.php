@@ -31,10 +31,10 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 				//echo $row['faction'];
 				if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))
 				{
-					$output=$output.'{"action":"scout"},{"action":"attack"}]';
+					$output=$output.'{"action":"scout"},{"action":"attack"},{"visible":"false"}]';
 				}
 				else
-					$output=$output.'{"action":"scout"}]';
+					$output=$output.'{"action":"scout"},{"visible":"false"}]';
 			}
 			else if($row['faction']==$faction) //allied faction
 			{
@@ -49,7 +49,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 							unset($_SESSION['selectedCol']);
 						}
 					}
-					$output=$output.'{"action":"fortify"},{"action":"select_troops"},{"action":"create_troops"}]';		
+					$output=$output.'{"action":"fortify"},{"action":"select_troops"},{"action":"create_troops"},{"visible":"true"}]';		
 				}
 				else //occupied by allies
 				{
@@ -63,18 +63,27 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 								unset($_SESSION['selectedCol']);
 							}
 						}
-						$output=$output.'{"action":"settle"},{"action":"select troops"}]';		
+						$output=$output.'{"action":"settle"},{"action":"select troops"},{"visible":"true"}]';		
 					}
 					else //player troops not present
 					{
 						if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))
 						{
-							$output=$output.'{"action":"scout"},{"action":"move"}]';	
+							$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';	
 						}
 						else
-							$output=$output.'{"action":"scout"}]';
+							$output=$output.'{"action":"scout"},{"action":"donate"},{"visible":"false"}]';
 					}
 				}
+			}
+			else //player selects unoccupied slot
+			{
+				if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))
+						{
+							$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';	
+						}
+						else
+						$output=$output.'{"action":"scout"},{"visible":"false"}]';
 			}
 		}
 	}

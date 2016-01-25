@@ -15,7 +15,8 @@ function action(row,col) //call it to get the available actions
 	col=8;*/
   console.log(row+","+col)
 	var xhttp;
-    var comm
+    var comm;
+    var visibility; //decides if form is visible
   	if (window.XMLHttpRequest) {
     // code for modern browsers
     xhttp = new XMLHttpRequest();
@@ -31,15 +32,29 @@ function action(row,col) //call it to get the available actions
             var content="";
             for(var i=0;i<comm.length;i++)
             {
-                content+="<input type='submit' value="+comm[i]['action']+" name="+comm[i]['action']+"><br>";
+                if(comm[i]['action']!=null)
+                    content+="<input type='submit' value="+comm[i]['action']+" name="+comm[i]['action']+"><br>";
+                else
+                    visibility=comm[i]['visible'];
             }
-            document.getElementById("bottom_actions").innerHTML=content;
+            //alert(visibility);
+            if(visibility=="false")
+            {
+                var quant=document.getElementById("quantity");
+                quant.style.visibility='hidden';
+            }
+            else
+            {
+                var quant=document.getElementById("quantity");
+                quant.style.visibility='visible';
+            }
+            document.getElementById("action").innerHTML=content;
+            document.getElementById("row").value=row;
+            document.getElementById("col").value=col;
         }
     }
     xhttp.open("GET", "getActions.php?row="+row+"&col="+col, true);
   	xhttp.send();
-    document.getElementById("row").value=row;
-    document.getElementById("row").value=row;
 }
 
 function getLoc(row,col)

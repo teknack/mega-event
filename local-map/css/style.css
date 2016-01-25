@@ -2,7 +2,9 @@ body {
 	background-color: lightblue;
 
 }
-
+#quantity{
+	visibility: visible;
+}
 #leftbanner {
 	float: left;
 	background-color: blue;
