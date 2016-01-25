@@ -33,7 +33,7 @@ function action(row,col) //call it to get the available actions
             {
                 content+="<input type='submit' value="+comm[i]['action']+" name="+comm[i]['action']+"><br>";
             }
-            document.getElementById("bottom_action").innerHTML=content;
+            document.getElementById("bottom_actions").innerHTML=content;
         }
     }
     xhttp.open("GET", "getActions.php?row="+row+"&col="+col, true);

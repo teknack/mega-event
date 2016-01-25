@@ -51,7 +51,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 	}
 	echo $output;
 }
-//if(isset($_POST['row']) and !empty($_POST['row']))
+//if(isset($_REQUEST['row']) and !empty($_REQUEST['row']))
 {
 	$row=$_REQUEST['row'];
 	$col=$_REQUEST['col'];

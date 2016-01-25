@@ -246,8 +246,8 @@ function fake_main()
 	<tr>
 		<div id="bottomgroup">
 			<td>
-				<div style="float:left">
-					<form id="bottom_action">
+				<div id="bottom_action"style="float:left">
+					<form id="bottom_actions">
 					</form>
 				</div>
 			</td>
