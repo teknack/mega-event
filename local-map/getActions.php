@@ -26,25 +26,54 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 	{
 		while($row = $res->fetch_assoc())
 		{
-			if($row['faction']!=$faction)  //enemy faction
+			if($row['faction']!=$faction and $row['faction']!=0)  //enemy faction
 			{
 				//echo $row['faction'];
-				$output=$output.'{"action":"scout"}]';
+				if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))
+				{
+					$output=$output.'{"action":"scout"},{"action":"attack"}]';
+				}
+				else
+					$output=$output.'{"action":"scout"}]';
 			}
 			else if($row['faction']==$faction) //allied faction
 			{
 				if($row['occupied']==$playerid) //player occupied 
 				{
-					$output=$output.'{"action":"fortify"},{"action":"select_troops"}]';		
+					if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol'])) //player selects already 
+																							 //selected occupied slot 
+					{
+						if($_SESSION['selectedRow']==$row and $_SESSION['selectedCol']==$col)
+						{
+							unset($_SESSION['selectedRow']);
+							unset($_SESSION['selectedCol']);
+						}
+					}
+					$output=$output.'{"action":"fortify"},{"action":"select_troops"},{"action":"create_troops"}]';		
 				}
-				else
+				else //occupied by allies
 				{
 					if($res1->num_rows>0) //player troops stationed
 					{
+						if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectCol'])) //player selects already
+						{																	   //selected troops 
+							if($_SESSION['selectedRow']==$row and $_SESSION['selectedCol']==$col)
+							{
+								unset($_SESSION['selectedRow']);
+								unset($_SESSION['selectedCol']);
+							}
+						}
 						$output=$output.'{"action":"settle"},{"action":"select troops"}]';		
 					}
-					else
-						$output=$output.'{"action":"scout"}]';
+					else //player troops not present
+					{
+						if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))
+						{
+							$output=$output.'{"action":"scout"},{"action":"move"}]';	
+						}
+						else
+							$output=$output.'{"action":"scout"}]';
+					}
 				}
 			}
 		}

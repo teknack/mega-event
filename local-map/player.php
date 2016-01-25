@@ -1,4 +1,5 @@
 <?php
+session_start();
 require "../db_access/db.php";
 require "connect.php";
 $faction/*=$_SESSION['faction']*/;
@@ -96,6 +97,8 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		deductResource("food",$foodCost);
 		deductResource("power",$powerCost);
 	}
+	unset($_SESSION['selectedRow']);
+	unset($_SESSION['selectedCol']);
 }
 function condenseArray($arr) //removes duplicates and would reduce load on server as little as it already is..
 {
@@ -160,19 +163,37 @@ if(isset($_POST['settle']))
 	$col=testVar($_POST['col']);
 	settle($row,$col);
 }
-if(isset($_POST['selectTroops']))
+if(isset($_POST['select_troops']))
 {
 	$row=testVar($_POST['row']);
 	$col=testVar($_POST['col']);
+	$row=$_POST['row'];
+	$col=$_POST['col'];
+	$_SESSION['selectedRow']=$row;
+	$_SESSION['selectedCol']=$col;
 	$quantity=$_POST['quantity'];
 }
-if (isset($_POST["scout"]))
+if(isset($_POST["scout"]))
 {
 	alert("scout");
 	include "./scout.php";
 	scoutv2(testVar($_POST['row']),testVar($_POST['col']));
 }
 if (isset($_POST["attack"])
+{
+	
+}
+if(isset($_POST['move']))
+{
+	$srcrow=$_SESSION['selectedRow'];
+	$srccol=$_SESSION['selectedCol'];
+	move($srcrow,$srccol,$row,$col);
+}
+if(isset($_POST['attack']))
+{
+
+}
+if(isset($_POST['create_troops']))
 {
 	
 }

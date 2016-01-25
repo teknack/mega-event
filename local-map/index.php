@@ -247,7 +247,10 @@ function fake_main()
 		<div id="bottomgroup">
 			<td>
 				<div id="bottom_action"style="float:left">
-					<form id="bottom_actions">
+					<form id="bottom_actions" action="player.php" method="POST">
+						<input type="hidden" name="row" id="row">
+						<input type="hidden" name="col" id="col">
+						<input type="number" name="quantity">
 					</form>
 				</div>
 			</td>
