@@ -29,14 +29,22 @@ $mapArray = array();
 //$locArray = array("p"=>"4,4","f1"=>"4,4","f2"=>"1,1","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 //$_POST["locArray"] = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 
-
 if (isset($_SESSION) && !empty($_SESSION))
 {
 	$locArray = $_SESSION["locArray"];
 	/*echo("---");
 	var_dump($locArray);
 	echo("<br>---<br>");*/
-	$tlc = $_SESSION["coord"]; //Top Left Coordinate
+	$tlc = ""; //Top Left Coordinate
+	
+	if (!isset($_SESSION["coord"]))
+	{
+		redirect("../world-map/canvas1.html");
+	}
+	else
+	{
+		$tlc = $_SESSION["coord"];
+	}
 }
 else
 {
