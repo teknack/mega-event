@@ -19,7 +19,7 @@ function elapsedTime() //calculates time elapsed since last resource collect
 	
 	if ($diff < 60)
 	{
-		echo("Time Diff: ".$diff);
+		echo("Time Diff: ".$diff." Seconds<br>");
 	}
 	else
 	{
