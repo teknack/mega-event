@@ -9,17 +9,43 @@
  */ 
 
 include "./db_access/db.php";
-
+alert($_SESSION["tek_emailid"]);
+var_dump($_SESSION);
 connect();
 setTable("player");
-if (checkPlayerExists($_SESSION["tek_emailid"],"player"))
+if (checkPlayerExists($_SESSION["tek_emailid"],"player")) //does a check to see if player has aready picked a faction
 {
-	alert("You already exist in the game, go back and play :P");
-	redirect("./index.php");
+	$faction = fetch($_SESSION["tek_emailid"],"faction");
+	if ($faction == "1" || $faction == "2")
+	{
+		alert("You already exist in the game, go back and play :P");
+		redirect("./index.php");
+	}
 }
-else
+disconnect();
+
+if (isset($_POST) && !empty($_POST)) //creates player and sets faction before redirecting to index.php
 {
-	insert("tek_emailid",$_SESSION["tek_emailid"]);
+	connect();
+	setTable("player");
+	if(isset($_POST["faction1"]))
+	{
+		alert("you have picked faction 1");
+		insert("tek_emailid,faction","'".$_SESSION["tek_emailid"]."',1");
+		disconnect();
+		redirect("index.php");
+	}
+	else if (isset($_POST["faction2"]))
+	{
+		alert("you have picked faction 2");
+		insert("tek_emailid,faction","'".$_SESSION["tek_emailid"]."',2");
+		disconnect();
+		redirect("index.php");
+	}
+	else
+	{
+		alert("lolwut");
+	}
 }
 ?>
 <html>
@@ -41,9 +67,13 @@ else
 		</div>
 		<div style="float:left">
 			<h4>Faction 1</h4>
+			<form action="" method="POST">
+				<button type="submit" name="faction1">Faction 1</button>
 		</div>
 		<div style="float:right">
 			<h4>Faction 2</h4>
+			<button type="submit" name="faction2">Faction 2</button>
+			</form>
 		</div>
 	</body>
 </html>

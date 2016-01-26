@@ -81,15 +81,15 @@ function insert($columns,$values)
 	global $dbtable,$dbconn;
 	
 	$query = "INSERT INTO ".$dbtable." (".$columns.") VALUES (".$values.");";
-	
+	//var_dump($query);echo("<br>");
 	$op = mysqli_query($dbconn,$query);
-	
+	//var_dump($op);echo("<br>");
 	if (!$op || $op === false)
 	{
 		echo(mysqli_error($dbconn)."<br>");
-		var_dump($query);
+		//var_dump($query);
 		echo("<br>");
-		var_dump($op);
+		//var_dump($op);
 		echo("<br>");
 		return(false);
 	}
@@ -109,10 +109,10 @@ function update($column,$value,$condition)
 	if (!$op || $op === false)
 	{
 		echo(mysqli_error($dbconn)."<br>");
-		var_dump($query);
+		//var_dump($query);
 		echo("<br>");
 		var_dump($op);
-		echo("<br>");
+		//echo("<br>");
 		return(false);
 	}
 	
@@ -196,7 +196,7 @@ function alert($msg="")
 
 function consoleLog($msg="")
 {
-	echo("<script>console.log('".$msg."')</script>");
+	echo("<script>console.log('".$msg."');</script>");
 }
 function testVar($input="")
 {
@@ -214,5 +214,11 @@ function validate()
 		alert("Well, someone is feeling adventurous... Go log in and come back :P");
 		redirect("www.teknack.in");
 	} 
+}
+
+function gameUnset()
+{
+	$_SESSION["coord"] = null;
+	$_SESSION["locArray"] = null;
 }
 ?>
