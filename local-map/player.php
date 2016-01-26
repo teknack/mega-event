@@ -5,8 +5,8 @@ $faction/*=$_SESSION['faction']*/;
 $faction=1;	//temporary!! don't forget to remove!!
 $playerid/*=$_SESSION['tek_emailid']*/;
 $playerid=1; //temporary!! don't forget to remove!! 
-$moveCostFood=100;
-$moveCostPower=50;
+$moveCostFood=10;
+$moveCostPower=5;
 
 /*number of troops garrisonable by fortification level
 1-10
@@ -47,10 +47,27 @@ function getStats(){
 function deductResource($resource,$value)   //use to reduce resource on some action give resource name and value resp.
 {
 	global $conn,$playerid;
-	$sql="UPDATE `player` SET $resource='$value' WHERE tek_emailid=$playerid";	
-	if($conn->query($sql)===false)
+	$sql="SELECT $resource FROM player WHERE tek_emailid=$playerid";
+	$res=$conn->query($sql);
+	$row=$res->fetch_assoc();
+	var_dump($sql);
+	var_dump($row);
+	var_dump($value);
+	$reso=intval($row[$resource]);
+	if($value>$reso)
 	{
-		echo "error: ".$conn->error;
+		echo "<br>not enough";
+		return false;
+	}
+	else
+	{
+		echo "<br>enough";
+		$sql="UPDATE `player` SET $resource=$resource-'$value' WHERE tek_emailid=$playerid";	
+			if($conn->query($sql)===false)
+			{
+				echo "error: ".$conn->error;
+			}
+		return true;
 	}
 }
 function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 steps, first select troops from an occupied slot  
@@ -99,8 +116,6 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		if($row['troops']<$quantity)
 		{
 			$troopExist=false;
-			var_dump($troopExist);
-			alert("nope"); 
 		}
 		else
 		{
@@ -108,19 +123,19 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		}
 	}
 	$sql="SELECT playerid,quantity FROM troops WHERE row=$srcRow and col=$srcCol;"; //check if required troops present 
-	$res=$conn->query($sql);                                                        //in troops table
-	alert($res->num_rows);												
+	$res=$conn->query($sql);                                                        //in troops table												
 	if($res->num_rows>0)
 	{
 		$row=$res->fetch_assoc();
 		if($row['quantity']<$quantity or $row['playerid']!=$playerid)
 		{
-			alert("nope");
 			if(!$troopExist) //troops not enough or not present in both tables
 			{
-				alert("nope");
 				$_SESSION['response']="You don't have those many troops. You have ".$row['troops']." soldiers.
 				Create more soldier(s)!";
+				unset($_SESSION['selectedRow']);
+				unset($_SESSION['selectedCol']);
+				unset($_SESSION['selectedTroops']);
 				return;
 			} 
 		}
@@ -129,8 +144,30 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	{
 		$_SESSION['response']="You don't have those many troops. You have ".$row['troops']." soldiers.
 				Create more soldiers!";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
 		return;
 	}
+	//number of required troops exist
+	if(!deductResource("food",$foodCost))
+	{
+		echo "here but don't know how";
+		$_SESSION['response']="You don't have the required resources(food).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!deductResource("power",$powerCost))
+	{
+		$_SESSION['response']="You don't have the required resources(power).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	} 
+	//resources validated
 	$sql="SELECT occupied FROM grid WHERE row=$srcRow and col=$srcCol;"; 
 	$res=$conn->query($sql);
 	if($res->num_rows>0)  //player moving from settled slot
@@ -147,7 +184,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$res1=$conn->query($sql);
 				if($res1->num_rows==0)
 				{
-					$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,'playerid',$quantity);";
+					$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,'$playerid',$quantity);";
 					if($conn->query($sql)==false)
 						echo "error(114) : ".$conn->error."<br>";
 				}
@@ -160,9 +197,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;";
 				if($conn->query($sql)===false)
 					echo "error (124 wala): ".$conn->error."<br>";
-				deductResource("food",$foodCost);
-				deductResource("power",$powerCost);
-				$_SESSION['response']="moved ".$quantity." soldiers!";
+				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
 			}
 			else //player moves from occupied slot to occupied slot
 			{
@@ -174,7 +209,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 						echo "error(135) : ".$conn->error."<br>";
 				deductResource("food",$foodCost);
 				deductResource("power",$powerCost);
-				$_SESSION['response']="moved ".$quantity." soldiers!";
+				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
 			}
 		}
 		else //player moving stationed troops
@@ -206,7 +241,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 					echo "error(160) : ".$conn->error;
 				deductResource("food",$foodCost);
 				deductResource("power",$powerCost);
-				$_SESSION['response']="moved ".$quantity." soldiers!";
+				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
 			}
 			else //move troops from unoccupied/allied slots to occupied slot
 			{
@@ -221,12 +256,13 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 					echo "error(160) : ".$conn->error;
 				deductResource("food",$foodCost);
 				deductResource("power",$powerCost);
-				$_SESSION['response']="moved ".$quantity." soldiers!";
+				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
 			}
 		}
 	}
 	unset($_SESSION['selectedRow']);
 	unset($_SESSION['selectedCol']);
+	unset($_SESSION['selectedTroops']);
 }
 function condenseArray($arr) //removes duplicates and would reduce load on server as little as it already is..
 {
@@ -246,8 +282,37 @@ function condenseArray($arr) //removes duplicates and would reduce load on serve
 	return $ar;
 }
 function settle($row,$col) //occupies selected slot **incomplete transferring troops from troops table to grid table**
-{ 
-	$roots[8];
+{
+	global $conn,$playerid,$faction;
+	$settleWoodCost=20;
+	$settleMetalCost=30;
+	$settlePowerCost=15;
+	if(!deductResource("wood",$settleWoodCost)) //settling resources
+	{
+		echo "here but don't know how";
+		$_SESSION['response']="You don't have the required resources(wood).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!deductResource("power",$settlePowerCost))
+	{
+		$_SESSION['response']="You don't have the required resources(power).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!deductResource("metal",$settleMetalCost))
+	{
+		$_SESSION['response']="You don't have the required resources(metal).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}  
+	$roots= array();
 	$root=$row.",".$col;
 	$troopCount;
 	$sql="SELECT row,col,fortification,root FROM grid WHERE (row=$row-1 or row=$row or row=$row+1) and (col=$col-1 or col=$col or col=$col+1);";
@@ -255,7 +320,7 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 	if($res->num_rows>0)
 	{
 		$i=0;
-		while($ro=$conn->fetch_assoc())
+		while($ro=$res->fetch_assoc())
 		{
 			if($ro['fortification']>0 and !($ro['row']===$row and $ro['col']===$col))
 			{
@@ -267,23 +332,43 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 	$res=$conn->query($sql); //query to get all the neighbouring slots to the given slot.
 	if($res->num_rows>0)
 	{
-		while($ro=$conn->fetch_assoc())
+		while($ro=$res->fetch_assoc())
 		{
 			$troopCount=$ro['quantity'];
 		}
 	}
 	$roots=condenseArray($roots); //refer line 54
 	$j=0;
-	while($j<$roots.count()) //sets the root of all neighbouring slots if occupied as the root of the given slot
+	while($j<count($roots)) //sets the root of all neighbouring slots if occupied as the root of the given slot
 	{
+		var_dump($roots);
+		echo "<br>";
 		$r=$roots[$j];
-		$sql="UPDATE grid SET fortification=1,root=$root,troops=$troopCount  WHERE root=$r";
+		$sql="UPDATE grid SET root='$root' WHERE root='$r'";
 		if(!$conn->query($sql) === TRUE)
 		{
-			echo "error: ".$conn->error;
+			var_dump($sql);
+			echo "<br>";
+			echo "error: ".$conn->error."<br>";
 		}
 		$j++;
+		$sql="UPDATE grid SET occupied=$playerid,faction=$faction,fortification=1, root='$root',troops=$troopCount 
+		      WHERE row=$row and col=$col;";
+		if(!$conn->query($sql) === TRUE)
+		{
+			var_dump($sql);
+			echo "<br>";
+			echo "error: ".$conn->error."<br>";
+		}
+		$sql="DELETE FROM troops WHERE row=$row and col=$col";
+		if(!$conn->query($sql) === TRUE)
+		{
+			var_dump($sql);
+			echo "<br>";
+			echo "error: ".$conn->error."<br>";
+		}
 	}
+	$_SESSION['response']="successfully settled.";
 }
 function createTroops($row,$col)
 {
@@ -294,6 +379,7 @@ if(isset($_POST['settle']))
 	$row=testVar($_POST['row']);
 	$col=testVar($_POST['col']);
 	settle($row,$col);
+	header("location:index.php");
 }
 if(isset($_POST['select_troops']))
 {
@@ -309,9 +395,10 @@ if(isset($_POST['select_troops']))
 }
 if(isset($_POST["scout"]))
 {
-	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
+	if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedRow']))
 	{
-		unset($_SESSION['selectedTroops']);
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
 	}
 	include "./scout.php";
 	scoutv2(testVar($_POST['row']),testVar($_POST['col']));

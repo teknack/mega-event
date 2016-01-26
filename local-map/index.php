@@ -211,9 +211,9 @@ function fake_main()
 					
 				</div>
 				<span>
-					<!-- <form action="resources.php" method="POST"> did this for ajax uncomment if u wanna test -->
-						<button id="resource">Collect Resources</button>
-					<!-- </form> -->
+					<form action="resources.php" method="POST"> 
+						<button type="submit" id="resource">Collect Resources</button>
+					</form>
 				</span>
 		<!--	</tr>
 		</table>	-->
@@ -284,5 +284,4 @@ function fake_main()
 		</form>
 	</div>
 </body>
-
 </html>

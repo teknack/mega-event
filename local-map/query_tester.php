@@ -6,11 +6,19 @@
 	$srcCol=8;
 	$destRow=0;
 	$destCol=10;
-	$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,$playerid,$quantity);"
-	/*UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;"*/;//add query
-	if($conn->query($sql)===false)
-		echo "no go : ".$conn->error;
-	else
-		echo "good to go";
+	$val;
+	for($i=0;$i<100);$i++)
+	{
+		for($j=0;$j<100;$j++)
+		{
+			$val=$i.",".$j;
+			$sql="UPDATE grid SET root=$val WHERE row=$i and col=$j";
+			/*UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;"*/;//add query
+			if($conn->query($sql)===false)
+				echo "no go : ".$conn->error;
+			else
+				echo "good to go";
+		}
+	}
 
 ?>

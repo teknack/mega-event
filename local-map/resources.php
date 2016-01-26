@@ -60,7 +60,11 @@ $water = $res["water"] + floor($water_regen * $diff_min);
 $power = $res["power"] + floor($power_regen * $diff_min);
 $wood = $res["wood"] + floor($wood_regen * $diff_min);
 $metal = $res["metal"] + floor($metal_regen * $diff_min);
-
+echo $food;
+echo $metal;
+echo $water;
+echo $wood;
+echo $power;
 update("food",$food,"tek_emailid='".$playerid."'");
 update("wood",$wood,"tek_emailid='".$playerid."'");
 update("water",$water,"tek_emailid='".$playerid."'");
@@ -69,5 +73,5 @@ update("metal",$metal,"tek_emailid='".$playerid."'");
 update("collect",$_SESSION["collect_time"],"tek_emailid='".$playerid."'");
 
 alert("Done");
-//redirect("index.php");
+redirect("index.php");
 ?>

@@ -16,7 +16,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 	{
 		echo "error: ".$conn->error;
 	}
-	$sql1="SELECT playerid FROM troops WHERE row=$row and col=$col and playerid=$playerid;";
+	$sql1="SELECT playerid,quantity FROM troops WHERE row=$row and col=$col and playerid=$playerid;";
 	$res1=$conn->query($sql1);
 	$fortification=0;
 	$occupant="0";
@@ -53,7 +53,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 						}
 					}
 					else
-						$output=$output.'{"action":"fortify"},{"action":"select_troops"},{"action":"create_troops"},{"visible":"true"}]';		
+						$output=$output.'{"action":"scout"},{"action":"fortify"},{"action":"select_troops"},{"action":"create_troops"},{"visible":"true"}]';		
 				}
 				else //occupied by allies
 				{
@@ -72,16 +72,18 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 							}
 						}
 						else
-							$output=$output.'{"action":"settle"},{"action":"select_troops"},{"visible":"true"}]';		
+							$output=$output.'{"action":"scout"},{"action":"select_troops"},{"visible":"true"}]';		
 					}
 					else //player troops not present
 					{
 						if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))
 						{
-							$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';	
+							$output=$output.'{"action":"scout"},{"action":"move"},{"action":"donate"},{"visible":"false"}]';	
 						}
 						else
-							$output=$output.'{"action":"scout"},{"action":"donate"},{"visible":"false"}]';
+						{
+							$output=$output.'{"action":"scout"},{"visible":"false"}]';
+						}
 					}
 				}
 			}
@@ -92,7 +94,18 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 					$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';	
 				}
 				else
-					$output=$output.'{"action":"scout"},{"action":"select_troops"},{"visible":"true"}]';
+				{
+					$r=$res1->fetch_assoc();
+					if($r['quantity']>0)
+					{
+						$output=$output.'{"action":"scout"},{"action":"select_troops"},{"action":"settle"}
+						                 ,{"visible":"false"}]';	
+					}
+					else
+					{
+						$output=$output.'{"action":"scout"},{"visible":"false"}]';
+					}
+				}
 			}
 		}
 	}
