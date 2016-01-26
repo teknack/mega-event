@@ -2,18 +2,18 @@
 include "../db_access/db.php";
 //include "../Sid/time_trail.php";
 
-function elapsedTime() //calculates time elapsed since last resource collect
+function elapsedTime() //calculates time elapsed since last resource collect - all in seconds
 {
 	if (!isset($_SESSION["collect_time"]))
 	{
-		$_SESSION["collect_time"] = time();
+		$_SESSION["collect_time"] = time(); //seconds
 	}
 	
-	$curr_time = time();
-	$old_time = $_SESSION["collect_time"];
+	$curr_time = time(); //seconds
+	$old_time = $_SESSION["collect_time"]; //also in seconds
 	
-	echo("Last collect: ".($old_time/60)." Minutes<br>");
-	echo("Now: ".($curr_time/60)." Minutes<br>");
+	echo("Last collect: ".floor($old_time/60)." Minutes<br>");
+	echo("Now: ".floor($curr_time/60)." Minutes<br>");
 
 	$diff = $curr_time - $old_time;
 	
@@ -23,13 +23,20 @@ function elapsedTime() //calculates time elapsed since last resource collect
 	}
 	else
 	{
-		echo("Time Diff: ".($diff/60)." Minutes<br>");
+		echo("Time Diff: ".floor($diff/60)." Minutes<br>");
 	}
 	return($diff);
 }
 
 $diff_min = floor(elapsedTime()/60);
-$_SESSION["collect_time"]=time();
+if ($diff_min >= 60)
+{
+	$_SESSION["collect_time"]=time();
+}
+else
+{
+	$_SESSION["collect_time"]= 60*floor(time()/60); //sets time to the last whole minute, converts to minute, floors it and then returns to seconds
+}
 
 //Fetch current resources
 connect();
@@ -46,16 +53,20 @@ $food_regen = $res["food_regen"];
 $water_regen = $res["water_regen"];
 $power_regen = $res["power_regen"];
 $wood_regen = $res["wood_regen"];
+$metal_regen = $res["metal_regen"];
 
 $food = $res["food"] + floor($food_regen * $diff_min);
 $water = $res["water"] + floor($water_regen * $diff_min);
 $power = $res["power"] + floor($power_regen * $diff_min);
 $wood = $res["wood"] + floor($wood_regen * $diff_min);
+$metal = $res["metal"] + floor($metal_regen * $diff_min);
 
 update("food",$food,"tek_emailid='".$playerid."'");
 update("wood",$wood,"tek_emailid='".$playerid."'");
 update("water",$water,"tek_emailid='".$playerid."'");
 update("power",$power,"tek_emailid='".$playerid."'");
+update("metal",$metal,"tek_emailid='".$playerid."'");
+
 alert("Done");
 redirect("index.php");
 ?>
