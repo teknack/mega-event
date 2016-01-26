@@ -196,7 +196,7 @@ function alert($msg="")
 
 function consoleLog($msg="")
 {
-	echo("<script>console.log('".$msg."')</script>");
+	echo("<script>console.log('".$msg."');</script>");
 }
 function testVar($input="")
 {
