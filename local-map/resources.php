@@ -6,7 +6,7 @@ function elapsedTime() //calculates time elapsed since last resource collect - a
 {
 	if (!isset($_SESSION["collect_time"]))
 	{
-		$_SESSION["collect_time"] = time(); //seconds
+		$_SESSION["collect_time"] = fetch($_SESSION["tek_emailid"],"collect"); //seconds
 	}
 	
 	$curr_time = time(); //seconds
@@ -66,6 +66,7 @@ update("wood",$wood,"tek_emailid='".$playerid."'");
 update("water",$water,"tek_emailid='".$playerid."'");
 update("power",$power,"tek_emailid='".$playerid."'");
 update("metal",$metal,"tek_emailid='".$playerid."'");
+update("collect",$_SESSION["collect_time"],"tek_emailid='".$playerid."'");
 
 alert("Done");
 //redirect("index.php");
