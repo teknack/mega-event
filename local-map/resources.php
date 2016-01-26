@@ -57,5 +57,5 @@ update("wood",$wood,"tek_emailid='".$playerid."'");
 update("water",$water,"tek_emailid='".$playerid."'");
 update("power",$power,"tek_emailid='".$playerid."'");
 alert("Done");
-redirect("index.php");
+//redirect("index.php");
 ?>

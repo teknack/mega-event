@@ -210,7 +210,11 @@ function fake_main()
 					<span>Wood : <?php echo $stat["wood"].' / '.$stat["wood_regen"]?></span>
 					
 				</div>
-				<span><form action="resources.php" method="POST"><button type="submit">Collect Resources</button></form></span>
+				<span>
+					<!-- <form action="resources.php" method="POST"> did this for ajax uncomment if u wanna test -->
+						<button id="resource">Collect Resources</button>
+					<!-- </form> -->
+				</span>
 		<!--	</tr>
 		</table>	-->
 		

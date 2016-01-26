@@ -120,12 +120,12 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		if($row['occupied']==$playerid)
 		{
 			$sql="SELECT occupied FROM grid WHERE row=$destRow and col=$destCol";
-			$res2=$sql->query($sql);
+			$res2=$conn->query($sql);
 			$r=$res2->fetch_assoc();
 			if($r['occupied']!=$playerid) //player moving form settled to unoccupied/allied slot
 			{
 				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol;"; //check if troops are already present
-				$res1=$sql->query($sql);
+				$res1=$conn->query($sql);
 				if($res1->num_rows==0)
 				{
 					$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,'playerid',$quantity);";
@@ -158,7 +158,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		else //player moving stationed troops
 		{
 			$sql="SELECT occupied FROM grid WHERE row=$destRow and col=$destCol";
-			$res2=$sql->query($sql);
+			$res2=$conn->query($sql);
 			$r=$res2->fetch_assoc();
 			if($r['occupied']!=$playerid) //player moves from unoccupied/allied slots to unoccupied/allied slots
 			{
@@ -166,7 +166,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				if($conn->query($sql)==false)
 					echo "error (143): ".$conn->error."<br>";
 				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol;"; //check if troops are already present
-				$res1=$sql->query($sql);
+				$res1=$conn->query($sql);
 				if($res1->num_rows==0)
 				{
 					$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,'playerid',$quantity);";
