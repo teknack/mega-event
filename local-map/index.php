@@ -210,7 +210,11 @@ function fake_main()
 					<span>Wood : <?php echo $stat["wood"].' / '.$stat["wood_regen"]?></span>
 					
 				</div>
-				<span><form action="resources.php" method="POST"><button type="submit">Collect Resources</button></form></span>
+				<span>
+					<!-- <form action="resources.php" method="POST"> did this for ajax uncomment if u wanna test -->
+						<button id="resource">Collect Resources</button>
+					<!-- </form> -->
+				</span>
 		<!--	</tr>
 		</table>	-->
 		
@@ -222,81 +226,59 @@ function fake_main()
 		<div id="rightbanner" class="playarea"> </div>
 	</div>
 	<hr>
-
-	<div style="float:right">
-	<form method="POST" action="shift.php">
-		<table id="nav_buttons" border=0 align="center">
+	<div id="bottomgroup" border=1>
+		<table id="bottomTable"> 
 			<tr>
-				<td></td>
-				<td align="center"><button type="submit" name="up">UP</button></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td align="center"><button name="left">LEFT</button></td>
-				<td align="center"><button name="world-map">WORLD MAP</button></td>
-				<td align="center"><button name="right">RIGHT</button></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td align="center"><button name="down">DOWN</button></td>
-				<td></td>
-			</tr>
+				<td>
+					<div id="bottom_action" style="float:left">
+						<form action="player.php" method="POST">
+							<div>
+								<input type="hidden" name="row" id="row">
+								<input type="hidden" name="col" id="col">
+								<input type="number" name="quantity" id="quantity">
+							</div>
+							<div id="action">
+							</div>
+						</form>
+					</div>
+				</td>
+				<td>
+					<div id="bottom_hint">
+						<?php
+							if(isset($_SESSION['response']))
+							{
+								echo $_SESSION['response'];
+								unset($_SESSION['response']);
+							}
+						?>
+					</div>
+				</td>
+				<td>
+					<div style="float:right">
+						<form method="POST" action="shift.php">
+							<table id="nav_buttons" border=0 align="center">
+								<tr>
+									<td></td>
+									<td align="center"><button type="submit" name="up">UP</button></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td align="center"><button name="left">LEFT</button></td>
+									<td align="center"><button name="world-map">WORLD MAP</button></td>
+									<td align="center"><button name="right">RIGHT</button></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td align="center"><button name="down">DOWN</button></td>
+									<td></td>
+								</tr>
+							</table>
+						</form>
+					</div>
+				</td>
+			</tr>		
 		</table>
-	</form>
 	</div>
-	<table>
-	<tr>
-		<div id="bottomgroup">
-			<td>
-				<div id="bottom_action" style="float:left">
-					<form action="player.php" method="POST">
-						<div>
-							<input type="hidden" name="row" id="row">
-							<input type="hidden" name="col" id="col">
-							<input type="number" name="quantity" id="quantity">
-						</div>
-						<div id="action">
-						</div>
-					</form>
-				</div>
-			</td>
-			<td>
-				<center>
-				<div id="bottom_hint">
-					<?php
-						if(isset($_SESSION['response']))
-						{
-							echo $_SESSION['response'];
-							unset($_SESSION['response']);
-						}
-					?>
-				</div>
-			</center>
-			</td>
-			<!-- <td>
-				<div id="bottom_navigation" style="float:right">
-				<form method="POST" action="shift.php">
-					<table id="nav_buttons" border=0 align="center">
-						<tr>
-							<td></td>
-							<td><button type="submit" name="up">UP</button></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><button name="left">LEFT</button></td>
-							<td><button name="world-map">WORLD MAP</button></td>
-							<td><button name="right">RIGHT</button></td>
-						</tr>
-						<tr>
-							<td></td>
-							<td><button name="down">DOWN</button></td>
-							<td></td>
-						</tr>
-					</table>
-				</form>
-				</div>
-			</td> -->
-		</div>
 	<div id="contextMenu">
 		<form id="ctxForm" action="player.php" method="post">
 		</form>

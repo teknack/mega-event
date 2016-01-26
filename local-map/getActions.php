@@ -40,30 +40,39 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 			{
 				if($row['occupied']==$playerid) //player occupied 
 				{
-					if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol'])) //player selects already 
-																							 //selected occupied slot 
+					if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))  
 					{
-						if($_SESSION['selectedRow']==$row and $_SESSION['selectedCol']==$col)
-						{
+						if($_SESSION['selectedRow']==$row and $_SESSION['selectedCol']==$col)//player selects already
+						{                                                                    //selected occupied slot
 							unset($_SESSION['selectedRow']);
 							unset($_SESSION['selectedCol']);
 						}
+						else
+						{
+							$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';
+						}
 					}
-					$output=$output.'{"action":"fortify"},{"action":"select_troops"},{"action":"create_troops"},{"visible":"true"}]';		
+					else
+						$output=$output.'{"action":"fortify"},{"action":"select_troops"},{"action":"create_troops"},{"visible":"true"}]';		
 				}
 				else //occupied by allies
 				{
 					if($res1->num_rows>0) //player troops stationed
 					{
-						if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectCol'])) //player selects already
-						{																	   //selected troops 
-							if($_SESSION['selectedRow']==$row and $_SESSION['selectedCol']==$col)
-							{
+						if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectCol'])) 
+						{																	   
+							if($_SESSION['selectedRow']==$row and $_SESSION['selectedCol']==$col)//player selects already
+							{																	 //selected troops 
 								unset($_SESSION['selectedRow']);
 								unset($_SESSION['selectedCol']);
 							}
+							else
+							{
+								$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';
+							}
 						}
-						$output=$output.'{"action":"settle"},{"action":"select troops"},{"visible":"true"}]';		
+						else
+							$output=$output.'{"action":"settle"},{"action":"select_troops"},{"visible":"true"}]';		
 					}
 					else //player troops not present
 					{
@@ -79,11 +88,11 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 			else //player selects unoccupied slot
 			{
 				if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))
-						{
-							$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';	
-						}
-						else
-						$output=$output.'{"action":"scout"},{"visible":"false"}]';
+				{
+					$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';	
+				}
+				else
+					$output=$output.'{"action":"scout"},{"action":"select_troops"},{"visible":"true"}]';
 			}
 		}
 	}

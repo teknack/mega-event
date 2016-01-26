@@ -1,6 +1,9 @@
 body {
 	background-color: lightblue;
-
+}
+#bottomTable{
+	width:100%;
+	height:30%;
 }
 #quantity{
 	visibility: visible;
