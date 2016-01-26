@@ -7,9 +7,18 @@ $playerid/*=$_SESSION['tek_emailid']*/;
 $playerid=1; //temporary!! don't forget to remove!! 
 $moveCostFood=100;
 $moveCostPower=50;
-/*$food=$water=$power=$metal=$wood;
-$food_regen=$water_regen=$power_regen=$metal_regen=$wood_regen;
+
+/*number of troops garrisonable by fortification level
+1-10
+2-13
+3-16
+4-20
+5-24
+6-26
+7-30
+8-35
 */
+
 function getStats(){
 	global $dbconn;
 	
@@ -163,6 +172,8 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$destRow and col=$destCol";
 				if($conn->query($sql)==false)
 						echo "error(135) : ".$conn->error."<br>";
+				deductResource("food",$foodCost);
+				deductResource("power",$powerCost);
 				$_SESSION['response']="moved ".$quantity." soldiers!";
 			}
 		}
@@ -208,6 +219,8 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="DELETE FROM troops WHERE quantity<=0";
 				if($conn->query($sql)==false)
 					echo "error(160) : ".$conn->error;
+				deductResource("food",$foodCost);
+				deductResource("power",$powerCost);
 				$_SESSION['response']="moved ".$quantity." soldiers!";
 			}
 		}
@@ -272,6 +285,10 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 		$j++;
 	}
 }
+function createTroops($row,$col)
+{
+
+}
 if(isset($_POST['settle']))
 {
 	$row=testVar($_POST['row']);
@@ -292,8 +309,10 @@ if(isset($_POST['select_troops']))
 }
 if(isset($_POST["scout"]))
 {
-	unset($_SESSION['selectedTroops']);
-	echo $_SESSION['selectedTroops'];
+	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
+	{
+		unset($_SESSION['selectedTroops']);
+	}
 	include "./scout.php";
 	scoutv2(testVar($_POST['row']),testVar($_POST['col']));
 }
