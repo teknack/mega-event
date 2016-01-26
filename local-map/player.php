@@ -89,9 +89,9 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		$row=$res->fetch_assoc();
 		if($row['troops']<$quantity)
 		{
-			$_SESSION['response']="You don't have those many troops. You have ".$row['troops']." soldiers.
-			 Create more soldiers!";
-			$troopExist=false; 
+			$troopExist=false;
+			var_dump($troopExist);
+			alert("nope"); 
 		}
 		else
 		{
@@ -99,18 +99,28 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		}
 	}
 	$sql="SELECT playerid,quantity FROM troops WHERE row=$srcRow and col=$srcCol;"; //check if required troops present 
-	$res=$conn->query($sql);														//in troops table
+	$res=$conn->query($sql);                                                        //in troops table
+	alert($res->num_rows);												
 	if($res->num_rows>0)
 	{
 		$row=$res->fetch_assoc();
 		if($row['quantity']<$quantity or $row['playerid']!=$playerid)
 		{
+			alert("nope");
 			if(!$troopExist) //troops not enough or not present in both tables
 			{
+				alert("nope");
 				$_SESSION['response']="You don't have those many troops. You have ".$row['troops']." soldiers.
-				Create more soldiers!";
+				Create more soldier(s)!";
+				return;
 			} 
 		}
+	}
+	else if(!$troopExist)
+	{
+		$_SESSION['response']="You don't have those many troops. You have ".$row['troops']." soldiers.
+				Create more soldiers!";
+		return;
 	}
 	$sql="SELECT occupied FROM grid WHERE row=$srcRow and col=$srcCol;"; 
 	$res=$conn->query($sql);
@@ -153,6 +163,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$destRow and col=$destCol";
 				if($conn->query($sql)==false)
 						echo "error(135) : ".$conn->error."<br>";
+				$_SESSION['response']="moved ".$quantity." soldiers!";
 			}
 		}
 		else //player moving stationed troops
@@ -169,7 +180,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$res1=$conn->query($sql);
 				if($res1->num_rows==0)
 				{
-					$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,'playerid',$quantity);";
+					$sql="INSERT INTO troops (row,col,playerid,quantity) VALUES ($destRow,$destCol,'$playerid',$quantity);";
 					if($conn->query($sql)==false)
 						echo "error(150) : ".$conn->error."<br>";
 				}
@@ -191,12 +202,13 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol;";
 				if($conn->query($sql)==false)
 					echo "error (192): ".$conn->error."<br>";
-				$sql="UPDATE grid SET troops=troops+$quantity WHERE row=$srcRow and col=$srcCol;";
+				$sql="UPDATE grid SET troops=troops+$quantity WHERE row=$destRow and col=$destCol;";
 				if($conn->query($sql)==false)
 					echo "error (195): ".$conn->error."<br>";
 				$sql="DELETE FROM troops WHERE quantity<=0";
 				if($conn->query($sql)==false)
 					echo "error(160) : ".$conn->error;
+				$_SESSION['response']="moved ".$quantity." soldiers!";
 			}
 		}
 	}
@@ -280,13 +292,10 @@ if(isset($_POST['select_troops']))
 }
 if(isset($_POST["scout"]))
 {
-	//alert("scout");
+	unset($_SESSION['selectedTroops']);
+	echo $_SESSION['selectedTroops'];
 	include "./scout.php";
 	scoutv2(testVar($_POST['row']),testVar($_POST['col']));
-}
-if (isset($_POST["attack"]))
-{
-	
 }
 if(isset($_POST['move']))
 {
@@ -309,10 +318,25 @@ if(isset($_POST['move']))
 }
 if(isset($_POST['attack']))
 {
-
+	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
+	{
+		$quantity=$_SESSION['selectedTroops'];
+		unset($_SESSION['selectedTroops']);
+	}
+	else
+	{
+		$quantity=1;
+	}
+	$srcrow=$_SESSION['selectedRow'];
+	$srccol=$_SESSION['selectedCol'];
+	$row=$_POST['row'];
+	$col=$_POST['col'];
+	//echo $quantity;
+	attack($srcrow,$srccol,$row,$col,$quantity);
+	header("location:index.php");
 }
 if(isset($_POST['create_troops']))
 {
-	
+		
 }
 ?>

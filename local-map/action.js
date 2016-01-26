@@ -63,7 +63,6 @@ function getLoc(row,col)
 window.onload=function dothings()
 {
     var button=document.getElementById("resource");
-    alert(button);
     button.onClick=function collect()
     {
         var xhttp;
