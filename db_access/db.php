@@ -163,13 +163,31 @@ function getSlot($x,$y)
 	$res = mysqli_fetch_assoc($res);
 	return($res);
 }
-
+function getSlotTroops($x,$y)
+{
+	global $dbconn;
+	$playerid=$_SESSION['tek_emailid'];
+	$query="SELECT quantity FROM troops WHERE row=$x and col=$y and playerid=$playerid";
+	$res = mysqli_query($dbconn,$query);
+	//alert($res);
+	if(mysqli_num_rows($res)>0)
+	{
+		$res = mysqli_fetch_assoc($res);
+		$res=$res['troops'];
+		return $res;
+	}	
+	else
+	{
+		$res = mysqli_num_rows($res);
+		return $res;
+	}
+}
 function fetch($player,$col="")
 {
 	global $dbconn,$dbtable;
 	
 	$query="SELECT ".$col." FROM ".$dbtable." WHERE tek_emailid='".$player."';";
-
+	var_dump($query);
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);
 	return($res[$col]);

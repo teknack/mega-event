@@ -15,8 +15,20 @@ function scoutv2($row,$col)
 {
 	connect();
 	setTable("grid");
+	$troops=0;
 	$slot=getSlot($row,$col); //contains occupied,fortification,troops,faction
-	
+	if($slot['troops']==0)
+	{
+		echo "here";
+		$s=getSlotTroops($row,$col);
+		var_dump($s);
+		$troops=$s;
+		var_dump($troops);
+	}
+	else
+	{
+		$troops=$slot['troops'];
+	}
 	/*
 	if ($slot["occupied"] === $_SESSION["tek_emailid"])
 	{
@@ -28,12 +40,12 @@ function scoutv2($row,$col)
 	}
 	*/
 	
-	$_SESSION["response"] = "Occupied : ".$slot["occupied"]."<br>"."Fortification : ".$slot["fortification"]."<br>"."Troops : ".$slot["troops"]."<br>"."Faction : ".$slot["faction"]."<br>";
+	$_SESSION["response"] = "Occupied : ".$slot["occupied"]."<br>"."Fortification : ".$slot["fortification"]."<br>"."Troops : ".$troops."<br>"."Faction : ".$slot["faction"]."<br>";
 	consoleLog("Occupied : ".$slot["occupied"]);
 	consoleLog("Fortification : ".$slot["fortification"]);
 	consoleLog("Troops : ".$slot["troops"]);
 	consoleLog("Faction : ".$slot["faction"]);
-	redirect("index.php");
+	header("location:index.php");
 }
 
 ?>
