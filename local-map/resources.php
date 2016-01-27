@@ -69,5 +69,5 @@ update("metal",$metal,"tek_emailid='".$playerid."'");
 update("collect",$_SESSION["collect_time"],"tek_emailid='".$playerid."'");
 
 alert("Done");
-//redirect("index.php");
+redirect("index.php");
 ?>
