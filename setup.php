@@ -32,6 +32,11 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 	{
 		alert("you have picked faction 1");
 		insert("tek_emailid,faction","'".$_SESSION["tek_emailid"]."',1");
+		if (!checkPlayerExists($_SESSION["tek_emailid"],"research"))
+		{
+			setTable("research");
+			insert("tek_emailid",$_SESSION["tek_emailid"]);
+		}
 		disconnect();
 		redirect("index.php");
 	}
@@ -39,6 +44,11 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 	{
 		alert("you have picked faction 2");
 		insert("tek_emailid,faction","'".$_SESSION["tek_emailid"]."',2");
+		if (!checkPlayerExists($_SESSION["tek_emailid"],"research"))
+		{
+			setTable("research");
+			insert("tek_emailid",$_SESSION["tek_emailid"]);
+		}
 		disconnect();
 		redirect("index.php");
 	}

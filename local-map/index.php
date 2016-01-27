@@ -211,8 +211,8 @@ function fake_main()
 					
 				</div>
 				<span>
-					<form action="resources.php" method="POST">
-						<button id="resource">Collect Resources</button>
+					<form action="resources.php" method="POST"> 
+						<button type="submit" id="resource">Collect Resources</button>
 					</form>
 				</span>
 		<!--	</tr>
@@ -284,5 +284,4 @@ function fake_main()
 		</form>
 	</div>
 </body>
-
 </html>
