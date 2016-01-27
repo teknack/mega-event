@@ -4,6 +4,8 @@ include "../db_access/db.php";
 
 function elapsedTime() //calculates time elapsed since last resource collect - all in seconds
 {
+	connect();
+	
 	if (!isset($_SESSION["collect_time"]))
 	{
 		$_SESSION["collect_time"] = fetch($_SESSION["tek_emailid"],"collect"); //seconds
@@ -25,6 +27,8 @@ function elapsedTime() //calculates time elapsed since last resource collect - a
 	{
 		echo("Time Diff: ".floor($diff/60)." Minutes<br>");
 	}
+	
+	disconnect();
 	return($diff);
 }
 
@@ -39,13 +43,12 @@ else
 }
 
 //Fetch current resources
-connect();
 $playerid = $_SESSION["tek_emailid"];
-setTable("player");
 
+connect();
+setTable("player");
 $query = "SELECT faction,food,food_regen,water,water_regen,power,power_regen,metal,metal_regen,wood,wood_regen,total FROM player 
 WHERE tek_emailid=".$playerid.";";
-
 $res = mysqli_query($dbconn,$query);
 $res = mysqli_fetch_assoc($res);
 
