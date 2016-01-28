@@ -5,9 +5,8 @@ $faction/*=$_SESSION['faction']*/;
 $faction=1;	//temporary!! don't forget to remove!!
 $playerid/*=$_SESSION['tek_emailid']*/;
 $playerid=1; //temporary!! don't forget to remove!! 
-$moveCostFood=10;
-$moveCostPower=5;
-
+$moveCostFood=6;
+$moveCostWater=8;
 /*number of troops garrisonable by fortification level
 1-10
 2-13
@@ -44,17 +43,25 @@ function getStats(){
 	else
 		return $y;
 }*/
-function deductResource($resource,$value)   //use to reduce resource on some action give resource name and value resp.
+function queryResource($resource,$value)
 {
 	global $conn,$playerid;
 	$sql="SELECT $resource FROM player WHERE tek_emailid='$playerid'";
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
-	var_dump($sql);
-	var_dump($row);
-	var_dump($value);
 	$reso=intval($row[$resource]);
 	if($value>$reso)
+	{
+		echo "<br>not enough";
+		return false;
+	}
+	else
+		return true;
+}
+function deductResource($resource,$value)   //use to reduce resource on some action give resource name and value resp.
+{
+	global $conn,$playerid;
+	if(!queryResource($resource,$value))
 	{
 		echo "<br>not enough";
 		return false;
@@ -106,7 +113,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		$distance/=2;
 	}
 	$foodCost=$distance*$moveCostFood;
-	$powerCost=$distance*$moveCostPower;
+	$waterCost=$distance*$moveCostWater;
 	$troopExist=false;
 	$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;"; //check if required troops present in grid table
 	$res=$conn->query($sql);
@@ -150,7 +157,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		return;
 	}
 	//number of required troops exist
-	if(!deductResource("food",$foodCost))
+	if(!queryResource("food",$foodCost))
 	{
 		echo "here but don't know how";
 		$_SESSION['response']="You don't have the required resources(food).";
@@ -159,14 +166,16 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		unset($_SESSION['selectedTroops']);
 		return;
 	}
-	if(!deductResource("power",$powerCost))
+	if(!queryResource("water",$waterCost))
 	{
 		$_SESSION['response']="You don't have the required resources(power).";
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 		unset($_SESSION['selectedTroops']);
 		return;
-	} 
+	}
+	deductResource("food",$foodCost);
+	deductResource("water",$waterCost); 
 	//resources validated
 	$sql="SELECT occupied FROM grid WHERE row=$srcRow and col=$srcCol;"; 
 	$res=$conn->query($sql);
@@ -207,8 +216,6 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$destRow and col=$destCol";
 				if($conn->query($sql)==false)
 						echo "error(135) : ".$conn->error."<br>";
-				deductResource("food",$foodCost);
-				deductResource("power",$powerCost);
 				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
 			}
 		}
@@ -239,8 +246,6 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="DELETE FROM troops WHERE quantity<=0";
 				if($conn->query($sql)==false)
 					echo "error(160) : ".$conn->error;
-				deductResource("food",$foodCost);
-				deductResource("power",$powerCost);
 				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
 			}
 			else //move troops from unoccupied/allied slots to occupied slot
@@ -254,8 +259,6 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="DELETE FROM troops WHERE quantity<=0";
 				if($conn->query($sql)==false)
 					echo "error(160) : ".$conn->error;
-				deductResource("food",$foodCost);
-				deductResource("power",$powerCost);
 				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
 			}
 		}
@@ -287,7 +290,7 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 	$settleWoodCost=20;
 	$settleMetalCost=30;
 	$settlePowerCost=15;
-	if(!deductResource("wood",$settleWoodCost)) //settling resources
+	if(!queryResource("wood",$settleWoodCost)) //settling resources
 	{
 		echo "here but don't know how";
 		$_SESSION['response']="You don't have the required resources(wood).";
@@ -296,7 +299,7 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 		unset($_SESSION['selectedTroops']);
 		return;
 	}
-	if(!deductResource("power",$settlePowerCost))
+	if(!queryResource("power",$settlePowerCost))
 	{
 		$_SESSION['response']="You don't have the required resources(power).";
 		unset($_SESSION['selectedRow']);
@@ -304,14 +307,17 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 		unset($_SESSION['selectedTroops']);
 		return;
 	}
-	if(!deductResource("metal",$settleMetalCost))
+	if(!queryResource("metal",$settleMetalCost))
 	{
 		$_SESSION['response']="You don't have the required resources(metal).";
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 		unset($_SESSION['selectedTroops']);
 		return;
-	}  
+	} 
+	deductResource("wood",$settleWoodCost);
+	deductResource("metal",$settleMetalCost);
+	deductResource("power",$settlePowerCost); 
 	$roots= array();
 	$root=$row.",".$col;
 	$troopCount;
@@ -370,9 +376,50 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 	}
 	$_SESSION['response']="successfully settled.";
 }
-function createTroops($row,$col)
+function createTroops($row,$col,$quantity)
 {
-
+	global $conn;
+	$createTroopCostFoodBase="10";
+	$createTroopCostWaterBase="13";
+	$createTroopCostPowerBase="4";
+	$createTroopCostFood=$quantity*$createTroopCostFoodBase;
+	$createTroopCostWater=$quantity*$createTroopCostWaterBase;
+	$createTroopCostPower=$quantity*$createTroopCostPowerBase;
+	if(!queryResource("food",$createTroopCostFood))
+	{
+		$_SESSION['response']="You don't have the required resources(food).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!queryResource("water",$createTroopCostWater))
+	{
+		$_SESSION['response']="You don't have the required resources(water).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!queryResource("power",$createTroopCostPower))
+	{
+		$_SESSION['response']="You don't have the required resources(power).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	deductResource("food",$createTroopCostFood);
+	deductResource("water",$createTroopCostWater);
+	deductResource("power",$createTroopCostPower);
+	$sql="UPDATE grid SET troops=troops+$quantity WHERE row=$row and col=$col;";
+	if($conn->query($sql)==false)
+	{
+		echo "error(160) : ".$conn->error;
+		$_SESSION['response']="error in query";
+	}
+	else
+		$_SESSION['response']="created ".$quantity." troops.";
 }
 if(isset($_POST['settle']))
 {
@@ -400,7 +447,7 @@ if(isset($_POST["scout"]))
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 	}
-	include "./scout.php";
+	include "scout.php";
 	scoutv2(testVar($_POST['row']),testVar($_POST['col']));
 }
 if(isset($_POST['move']))
@@ -443,6 +490,15 @@ if(isset($_POST['attack']))
 }
 if(isset($_POST['create_troops']))
 {
-		
+	$row=$_POST['row'];
+	$col=$_POST['col'];
+	if(isset($_POST['quantity']) and !empty($_POST['quantity']))
+	{
+		$quantity=$_POST['quantity'];
+	}
+	else
+		$quantity=1;
+	createTroops($row,$col,$quantity);
+	header("location:index.php");
 }
 ?>
