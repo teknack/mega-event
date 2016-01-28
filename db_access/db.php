@@ -221,5 +221,6 @@ function gameUnset()
 {
 	$_SESSION["coord"] = null;
 	$_SESSION["locArray"] = null;
+	$_SESSION["collect_time"] = null;
 }
 ?>
