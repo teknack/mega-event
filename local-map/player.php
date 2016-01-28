@@ -24,7 +24,7 @@ function getStats(){
 	setTable("player");
 
 	$query = "SELECT faction,food,food_regen,water,water_regen,power,power_regen,metal,metal_regen,wood,wood_regen,total FROM player 
-	WHERE tek_emailid=".$playerid.";";
+	WHERE tek_emailid='".$playerid."';";
 	
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);	
@@ -44,7 +44,7 @@ function getStats(){
 function queryResource($resource,$value)
 {
 	global $conn,$playerid;
-	$sql="SELECT $resource FROM player WHERE tek_emailid=$playerid";
+	$sql="SELECT $resource FROM player WHERE tek_emailid='$playerid'";
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
 	$reso=intval($row[$resource]);
@@ -67,7 +67,7 @@ function deductResource($resource,$value)   //use to reduce resource on some act
 	else
 	{
 		echo "<br>enough";
-		$sql="UPDATE `player` SET $resource=$resource-'$value' WHERE tek_emailid=$playerid";	
+		$sql="UPDATE `player` SET $resource=$resource-'$value' WHERE tek_emailid='$playerid'";	
 			if($conn->query($sql)===false)
 			{
 				echo "error: ".$conn->error;
