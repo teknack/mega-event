@@ -1,18 +1,8 @@
 <?php
-
-function scout($row,$col) //Used to check the details of the column at $row,$col
+include "../db_access/db.php";
+function scout($row,$col)
 {
-	connect();
-	
-	setTable("grid");
-	
-	$slot=getSlot($row,$col);
-	
-	return($slot);
-}
-
-function scoutv2($row,$col)
-{
+	global $dbconn;
 	connect();
 	setTable("grid");
 	$troops=0;
@@ -45,7 +35,7 @@ function scoutv2($row,$col)
 	consoleLog("Fortification : ".$slot["fortification"]);
 	consoleLog("Troops : ".$slot["troops"]);
 	consoleLog("Faction : ".$slot["faction"]);
-	header("location:index.php");
+	//header("location:index.php");
 }
 
 ?>

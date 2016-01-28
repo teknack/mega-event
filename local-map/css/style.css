@@ -6,7 +6,7 @@ body {
 	height:30%;
 }
 #quantity{
-	visibility: visible;
+	visibility: hidden;
 }
 #leftbanner {
 	float: left;

@@ -1,5 +1,4 @@
 <?php
-require "../db_access/db.php";
 require "connect.php";
 $faction/*=$_SESSION['faction']*/;
 $faction=1;	//temporary!! don't forget to remove!!
@@ -19,8 +18,7 @@ $moveCostWater=8;
 */
 
 function getStats(){
-	global $dbconn;
-	
+	require "../db_access/db.php";
 	connect();
 	$playerid = $_SESSION["tek_emailid"];
 	setTable("player");
@@ -82,6 +80,10 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	$distance=max(abs($srcRow-$destRow),abs($srcCol-$destCol));
 	$sroot="x,y";
 	$droot="x,z";
+	$enemy; //enemy playerid
+	$etroops=0; //enemy total troop strength at the destination slot
+	$obperk=0; //open battle perk level of each enemy
+	$ambushSurvive=false;
 	global $conn,$moveCostFood,$moveCostPower,$playerid;
 	$sql="SELECT root FROM grid WHERE row=$srcRow and col=$srcCol;"; //the query for root column decide if movement is within 
 										 //the faction occupied region
@@ -177,10 +179,103 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	deductResource("food",$foodCost);
 	deductResource("water",$waterCost); 
 	//resources validated
+	/*open battle sim*/
+	$troopDistribution=[[]];
+	$sql="SELECT playerid,quantity FROM troops WHERE row=$destRow and col=$destCol;";
+	$res=$conn->query($sql);
+	if($res->num_rows>0)
+	{
+		$i=0;
+		while($row=$res->fetch_assoc())
+		{
+			$enemy=$row['playerid'];
+			$otroops=$row['quantity']; //number of troops of one enemy occupant
+			$sql1="SELECT open,ttype FROM research WHERE playerid=$enemy;";
+			$res1=$conn->query($sql1);
+			$r=$res1->fetch_assoc();
+			$obperk=$r['open'];
+			if($obperk==1)
+			{
+				$hiddenTroops=0.25*$otroops; //25% percent troops hidden and are twice as effective
+				$otroops+=$hiddenTroops;
+			}
+			else if($obperk==2)
+			{
+				$hiddenTroops=0.5*$otroops; //50% percent troops hidden and are twice as effective
+				$otroops+=$hiddenTroops;	
+			}
+			else if($obperk==3)
+			{
+				$hiddenTroops=$otroops; //100% percent troops hidden and are twice as effective
+				$otroops+=$hiddenTroops;
+			}
+			$lvl=$row['ttype'];      
+			$lvl=explode(":", $lvl);
+			$level=$lvl[1];
+			$troopDistribution[$i]['troops']=$otroops-$hiddenTroops;
+			$troopDistribution[$i]['playerid']=$enemy;
+			$otroops=$otroops*$level;
+			$etroops+=$otroops;
+			$i++;
+		}
+		$sql="SELECT ttype FROM research WHERE playerid=$playerid;";
+		$res1=$conn->query($sql);
+		$row=$res1->fetch_assoc();
+		$flvl=$row['ttype'];
+		$flvl=explode(":", $flvl);
+		$flevel=$flvl[1];
+		$quantity*=$flevel;
+		if($quantity>$etroops) //player troops survive the ambush
+		{
+			$ambushSurvive=true;
+			$quantity=$quantity-$etroops;
+			$quantity/=$flevel;
+			$quantity=floor($quantity);
+			$sql2="DELETE FROM troops WHERE row=$destCol and col=$destCol;";
+			if($conn->query($sql2)===false)
+			{
+				var_dump($sql2);
+				echo "<br> error: ".$conn->error;
+			}
+			/*message to all*/
+		}
+		else //enemy ambush wins
+		{
+			$ambushSurvive=false;
+			$quantity/=$flevel;
+			for($i=0;$i<count($troopDistribution);$i++)
+			{
+				$loss=floor($troopDistribution[$i]['troops']/$quantity);
+				$id=$troopDistribution['playerid']; //deducting troops as battle losses
+				$sql2="UPDATE troops SET quantity=quantity-$loss WHERE playerid=$id and row=$destRow and col=$destCol;";
+				if($conn->query($sql2)===false)
+				{
+					var_dump($sql2);
+					echo "<br> error: ".$conn->error;		
+				}
+			}
+			$sql2="DELETE FROM troops WHERE quantity<=0;";
+			if($conn->query($sql2)===false)
+			{
+				var_dump($sql2);
+				echo "<br> error: ".$conn->error;		
+			}
+			/*message to all*/
+			$_SESSION['response']="Your troops were ambushed!.There were no survivors :-(";
+		}
+	}
+	else
+	{
+		$enemy=0;
+		$etroops=0;
+		$ebperk=0;
+	}
+	/*it ends here*/
 	$sql="SELECT occupied FROM grid WHERE row=$srcRow and col=$srcCol;"; 
 	$res=$conn->query($sql);
 	if($res->num_rows>0)  //player moving from settled slot
 	{
+
 		$row=$res->fetch_assoc();
 		if($row['occupied']==$playerid)
 		{
@@ -206,7 +301,15 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;";
 				if($conn->query($sql)===false)
 					echo "error (124 wala): ".$conn->error."<br>";
-				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
+				if($ambushSurvive==true)
+				{
+					$_SESSION['response']="There was an ambush on your troops and you lost a few soldiers<br>
+					                       moved ".$quantity." soldiers! by ".$distance;	
+				}
+				else
+				{
+					$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
+				}
 			}
 			else //player moves from occupied slot to occupied slot
 			{
@@ -216,7 +319,15 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$destRow and col=$destCol";
 				if($conn->query($sql)==false)
 						echo "error(135) : ".$conn->error."<br>";
-				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
+				if($ambushSurvive==true)
+				{
+					$_SESSION['response']="There was an ambush on your troops and you lost a few soldiers<br>
+					                       moved ".$quantity." soldiers! by ".$distance;	
+				}
+				else
+				{
+					$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
+				}
 			}
 		}
 		else //player moving stationed troops
@@ -246,7 +357,15 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="DELETE FROM troops WHERE quantity<=0";
 				if($conn->query($sql)==false)
 					echo "error(160) : ".$conn->error;
-				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
+				if($ambushSurvive==true)
+				{
+					$_SESSION['response']="There was an ambush on your troops and you lost a few soldiers<br>
+					                       moved ".$quantity." soldiers! by ".$distance;	
+				}
+				else
+				{
+					$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
+				}
 			}
 			else //move troops from unoccupied/allied slots to occupied slot
 			{
@@ -259,7 +378,15 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="DELETE FROM troops WHERE quantity<=0";
 				if($conn->query($sql)==false)
 					echo "error(160) : ".$conn->error;
-				$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
+				if($ambushSurvive==true)
+				{
+					$_SESSION['response']="There was an ambush on your troops and you lost a few soldiers<br>
+					                       moved ".$quantity." soldiers! by ".$distance;	
+				}
+				else
+				{
+					$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
+				}
 			}
 		}
 	}
@@ -421,6 +548,52 @@ function createTroops($row,$col,$quantity)
 	else
 		$_SESSION['response']="created ".$quantity." troops.";
 }
+function fortify($row,$col)/*pending*/
+{
+	global $conn,$playerid;
+	$fortifyWoodCost=array();
+	$fortifyMetalCost=array();
+	$fortifyPowerCost=array();
+	$sql="SELECT fortification FROM grid WHERE row=$row and col=$col;";
+	$res=$conn->query($sql);
+	$level=$res['fortification'];
+	if(!queryResource("wood",$fortifyWoodCost[$level-1]))
+	{
+		$_SESSION['response']="You don't have the required resources(food).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!queryResource("metal",$fortifyMetalCost[$level-1]))
+	{
+		$_SESSION['response']="You don't have the required resources(water).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!queryResource("power",$fortifyPowerCost[$level-1]))
+	{
+		$_SESSION['response']="You don't have the required resources(power).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	deductResource("wood",$fortifyWoodCost[$level-1]);
+	deductResource("metal",$fortifyMetalCost[$level-1]);
+	deductResource("power",$fortifyPowerCost[$level-1]);
+	//validated resources
+	$sql="UPDATE grid SET fortification=fortification+1 WHERE row=$row and col=$col;";
+	if($conn->query($sql)==false)
+	{
+		echo "error(160) : ".$conn->error;
+		$_SESSION['response']="error in query";
+	}
+	else
+		$_SESSION['response']="fortified to level : ".$level+1;
+}
 if(isset($_POST['settle']))
 {
 	$row=testVar($_POST['row']);
@@ -448,7 +621,8 @@ if(isset($_POST["scout"]))
 		unset($_SESSION['selectedCol']);
 	}
 	include "scout.php";
-	scoutv2(testVar($_POST['row']),testVar($_POST['col']));
+	scout(testVar($_POST['row']),testVar($_POST['col']));
+	header("location:index.php");
 }
 if(isset($_POST['move']))
 {

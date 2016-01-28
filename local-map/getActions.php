@@ -1,10 +1,11 @@
 <?php
-session_start();
+//session_start();
 require "connect.php";
 $playerid=1;/*$_SESSION['tek_emailid']*/
 $faction=1;/*$_SESSION['faction']*/
 function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost with actions**
 {
+	include "scout.php";
 	if(!isset($row))
 	{
 		$row=0;
@@ -49,11 +50,16 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 						}
 						else
 						{
-							$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';
+							$output=$output.'{"action":"move"},{"visible":"false"}]';
+							scout($row,$col);
 						}
 					}
 					else
-						$output=$output.'{"action":"scout"},{"action":"fortify"},{"action":"select_troops"},{"action":"create_troops"},{"visible":"true"}]';		
+					{
+						$output=$output.'{"action":"scout"},{"action":"fortify"},{"action":"select_troops"},
+						                 {"action":"create_troops"},{"visible":"true"}]';
+						scout($row,$col);
+					}		
 				}
 				else //occupied by allies
 				{
@@ -68,17 +74,21 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 							}
 							else
 							{
-								$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';
+								$output=$output.'{"action":"move"},{"visible":"false"}]';
+								scout($row,$col);
 							}
 						}
 						else
-							$output=$output.'{"action":"scout"},{"action":"select_troops"},{"visible":"true"}]';		
+						{
+							$output=$output.'{"action":"select_troops"},{"visible":"true"}]';
+							scout($row,$col);
+						}		
 					}
 					else //player troops not present
 					{
 						if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))
 						{
-							$output=$output.'{"action":"scout"},{"action":"move"},{"action":"donate"},{"visible":"false"}]';	
+							$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';	
 						}
 						else
 						{
@@ -98,8 +108,9 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 					$r=$res1->fetch_assoc();
 					if($r['quantity']>0)
 					{
-						$output=$output.'{"action":"scout"},{"action":"select_troops"},{"action":"settle"}
-						                 ,{"visible":"false"}]';	
+						$output=$output.'{"action":"select_troops"},{"action":"settle"}
+						                 ,{"visible":"false"}]';
+						scout($row,$col);	
 					}
 					else
 					{

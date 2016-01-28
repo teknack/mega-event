@@ -159,7 +159,7 @@ function getSlot($x,$y)
 	
 	$query = "SELECT occupied,fortification,troops,faction FROM grid WHERE row=".$x." AND col=".$y.";";
 	$res = mysqli_query($dbconn,$query);
-	//alert($res);
+	alert($res);
 	$res = mysqli_fetch_assoc($res);
 	return($res);
 }
@@ -173,7 +173,7 @@ function getSlotTroops($x,$y)
 	if(mysqli_num_rows($res)>0)
 	{
 		$res = mysqli_fetch_assoc($res);
-		$res=$res['troops'];
+		$res=$res['quantity'];
 		return $res;
 	}	
 	else
