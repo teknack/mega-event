@@ -46,9 +46,11 @@ function connect()
 	$dbconn = mysqli_connect($dbservername,$dbusername,$dbpassword,$dbname);
 	
 	if (mysqli_connect_errno())
-	  {
-	  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	  }
+	{
+		echo "Failed to connect to MySQL: " . mysqli_connect_error();
+	}
+	
+	return($dbconn); //if anyone wants to use it
 }
 
 function setTable($table)
@@ -187,7 +189,7 @@ function fetch($player,$col="")
 	global $dbconn,$dbtable;
 	
 	$query="SELECT ".$col." FROM ".$dbtable." WHERE tek_emailid='".$player."';";
-	var_dump($query);
+	//var_dump($query);
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);
 	return($res[$col]);
@@ -211,7 +213,7 @@ function redirect($url="index.php")
 
 function alert($msg="")
 {
-	var_dump(mysqli_fetch_assoc($msg));
+	//var_dump(mysqli_fetch_assoc($msg));
 	
 	echo("<script>alert('".$msg."')</script>");
 }
