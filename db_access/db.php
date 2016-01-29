@@ -159,7 +159,7 @@ function getSlot($x,$y)
 	
 	$query = "SELECT occupied,fortification,troops,faction FROM grid WHERE row=".$x." AND col=".$y.";";
 	$res = mysqli_query($dbconn,$query);
-	alert($res);
+	//alert($res);
 	$res = mysqli_fetch_assoc($res);
 	return($res);
 }
@@ -197,7 +197,8 @@ function fetchAll($player)
 {
 	global $dbconn, $dbtable;
 	
-	$query = "SELECT * FROM".$dbtable." WHERE tek_emailid='".$player."';";
+	$query = "SELECT * FROM ".$dbtable." WHERE tek_emailid='".$player."';";
+	
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);
 	return($res);
@@ -210,6 +211,8 @@ function redirect($url="index.php")
 
 function alert($msg="")
 {
+	var_dump(mysqli_fetch_assoc($msg));
+	
 	echo("<script>alert('".$msg."')</script>");
 }
 

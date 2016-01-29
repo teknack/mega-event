@@ -1,5 +1,5 @@
 <?php
-require "connect.php";
+//require "connect.php";
 $faction/*=$_SESSION['faction']*/;
 $faction=1;	//temporary!! don't forget to remove!!
 $playerid/*=$_SESSION['tek_emailid']*/;
@@ -18,16 +18,15 @@ $moveCostWater=8;
 */
 
 function getStats(){
-	require "../db_access/db.php";
+	//require "../db_access/db.php";
 	connect();
 	$playerid = $_SESSION["tek_emailid"];
 	setTable("player");
 
-	$query = "SELECT faction,food,food_regen,water,water_regen,power,power_regen,metal,metal_regen,wood,wood_regen,total FROM player 
-	WHERE tek_emailid='".$playerid."';";
-	
-	$res = mysqli_query($dbconn,$query);
-	$res = mysqli_fetch_assoc($res);	
+	//$query = "SELECT faction,food,food_regen,water,water_regen,power,power_regen,metal,metal_regen,wood,wood_regen,total FROM player WHERE tek_emailid='".$playerid."';";
+	//$res = mysqli_query($dbconn,$query);
+	//$res = mysqli_fetch_assoc($res);	
+	$res=fetchAll($playerid);
 	//alert(var_dump($res));
 	//exiting
 	setTable("grid");

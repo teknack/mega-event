@@ -21,7 +21,7 @@
  * 
 **/
 
-//include "../db_access/db.php";
+include "../db_access/db.php";
 include "./player.php";
 //echo("this is a test<br>");
 
