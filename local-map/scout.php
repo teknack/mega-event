@@ -1,5 +1,5 @@
 <?php
-include "../db_access/db.php";
+// include "../db_access/db.php";
 function scout($row,$col)
 {
 	global $dbconn;

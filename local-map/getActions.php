@@ -1,11 +1,12 @@
 <?php
 //session_start();
+require "../db_access/db.php";
 require "connect.php";
+//include "scout.php";
 $playerid=1;/*$_SESSION['tek_emailid']*/
 $faction=1;/*$_SESSION['faction']*/
 function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost with actions**
 {
-	include "scout.php";
 	if(!isset($row))
 	{
 		$row=0;
@@ -51,14 +52,14 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 						else
 						{
 							$output=$output.'{"action":"move"},{"visible":"false"}]';
-							scout($row,$col);
+							// scout($row,$col);
 						}
 					}
 					else
 					{
 						$output=$output.'{"action":"scout"},{"action":"fortify"},{"action":"select_troops"},
 						                 {"action":"create_troops"},{"visible":"true"}]';
-						scout($row,$col);
+						// scout($row,$col);
 					}		
 				}
 				else //occupied by allies
@@ -75,13 +76,13 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 							else
 							{
 								$output=$output.'{"action":"move"},{"visible":"false"}]';
-								scout($row,$col);
+								// scout($row,$col);
 							}
 						}
 						else
 						{
 							$output=$output.'{"action":"select_troops"},{"visible":"true"}]';
-							scout($row,$col);
+							// scout($row,$col);
 						}		
 					}
 					else //player troops not present

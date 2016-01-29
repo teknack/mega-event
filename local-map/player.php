@@ -1,4 +1,5 @@
 <?php
+require "../db_access/db.php";
 require "connect.php";
 $faction/*=$_SESSION['faction']*/;
 $faction=1;	//temporary!! don't forget to remove!!
@@ -18,7 +19,7 @@ $moveCostWater=8;
 */
 
 function getStats(){
-	require "../db_access/db.php";
+	global $dbconn;
 	connect();
 	$playerid = $_SESSION["tek_emailid"];
 	setTable("player");
