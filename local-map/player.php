@@ -980,7 +980,7 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 }
 function scout($row,$col)
 {
-	global $scoutCostFood,$scoutCostWater;
+	global $conn,$playerid,$scoutCostFood,$scoutCostWater;
 	if(!queryResource("food",$scoutCostFood))
 	{
 		$_SESSION['response']="You don't have the required resources(food).";
@@ -1000,10 +1000,12 @@ function scout($row,$col)
 	deductResource("food",$scoutCostFood);
 	deductResource("water",$scoutCostWater);
 	$troops=0;
-	$sql="SELECT troops,fortification FROM grid WHERE row=$row and col=$col;"; //scouting enemy occupied slot
+	$sql="SELECT occupied,fortification,troops,faction FROM grid WHERE row=$row and col=$col;"; //scouting enemy occupied slot
 	$res=$conn->query($sql);
 	$r=$res->fetch_assoc();
 	$fortification=$r['fortification'];
+	$occupied=$r['occupied'];
+	$faction=$r['faction'];
 	if($fortification>0)
 	{
 		$troops+=$r['troops'];
@@ -1042,6 +1044,9 @@ function scout($row,$col)
 			$troops+=$otroops;
 		}
 	}
+	$output="Occupant : ".$occupied."<br>Fortification : ".$fortification."<br>Troops : ".$troops.
+	    "<br>Faction : ".$faction;
+	$_SESSION['response']=$output;
 }
 function createTroops($row,$col,$quantity)
 {
@@ -1160,8 +1165,7 @@ if(isset($_POST["scout"]))
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 	}
-	include "scout.php";
-	scout(testVar($_POST['row']),testVar($_POST['col']));
+	scout($_POST['row'],$_POST['col']);
 	header("location:index.php");
 }
 if(isset($_POST['move']))
