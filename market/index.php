@@ -113,12 +113,13 @@ if (isset($_POST) && !empty($_POST))
 	else if (isset($_POST["sell"]))
 	{
 		$_SESSION["values"] = $_POST; //unset after use
+		$costs["food"] = foodCost($_POST["food_quant"]);
+		$costs["wood"] = woodCost($_POST["wood_quant"]);
+		$costs["water"] = waterCost($_POST["water_quant"]);
+		$costs["power"] = powerCost($_POST["power_quant"]);
+		$costs["metal"] = metalCost($_POST["metal_quant"]);
+		$_SESSION["costs"] = $costs;
 		redirect("sell.php");
-	}
-	else if (isset($_POST["check"]))
-	{
-		$_SESSION["values"] = $_POST;
-		echo("<script>window.open('check.php')</script>");
 	}
 	else
 	{
