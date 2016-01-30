@@ -24,7 +24,6 @@
 include "../db_access/db.php";
 include "./player.php";
 //echo("this is a test<br>");
-
 $mapArray = array();
 //$locArray = array("p"=>"4,4","f1"=>"4,4","f2"=>"1,1","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");
 //$_POST["locArray"] = array("p"=>"4,4","s"=>"1,1-2,2","n"=>"2,3","b"=>"3,2");

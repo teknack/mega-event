@@ -189,7 +189,7 @@ function fetch($player,$col="")
 	global $dbconn,$dbtable;
 	
 	$query="SELECT ".$col." FROM ".$dbtable." WHERE tek_emailid='".$player."';";
-	//var_dump($query);
+	//$_SESSION["error"]=$query;
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);
 	return($res[$col]);
