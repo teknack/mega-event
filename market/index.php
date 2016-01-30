@@ -175,7 +175,7 @@ if (isset($_POST) && !empty($_POST))
 				</table>
 				<br>
 				<center>
-					<button name="buy" type="submit">Buy</button> <button name="sell" type="submit">Sell</button> <button name="check" type="submit">Check</button>
+					<button name="buy" type="submit">Buy</button> <button name="sell" type="submit">Sell</button>
 				</center>
 				</form>
 			</center>
