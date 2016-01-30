@@ -7,6 +7,9 @@ $playerid/*=$_SESSION['tek_emailid']*/;
 $playerid=1; //temporary!! don't forget to remove!! 
 $moveCostFood=6;
 $moveCostWater=8;
+$moveCostPower=3;
+$scoutCostFood=4;
+$scoutCostWater=6;
 /*number of troops garrisonable by fortification level
 1-10
 2-13
@@ -19,16 +22,11 @@ $moveCostWater=8;
 */
 
 function getStats(){
-	global $dbconn;
+	//global $dbconn;
 	connect();
 	$playerid = $_SESSION["tek_emailid"];
 	setTable("player");
-
-	$query = "SELECT faction,food,food_regen,water,water_regen,power,power_regen,metal,metal_regen,wood,wood_regen,total FROM player 
-	WHERE tek_emailid='".$playerid."';";
-	
-	$res = mysqli_query($dbconn,$query);
-	$res = mysqli_fetch_assoc($res);	
+	$res=fetchAll($playerid);
 	//alert(var_dump($res));
 	//exiting
 	setTable("grid");
@@ -117,6 +115,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	}
 	$foodCost=$distance*$moveCostFood;
 	$waterCost=$distance*$moveCostWater;
+	$powerCost=$distance*$moveCostPower;
 	$troopExist=false;
 	$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;"; //check if required troops present in grid table
 	$res=$conn->query($sql);
@@ -177,8 +176,17 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		unset($_SESSION['selectedTroops']);
 		return;
 	}
+	if(!queryResource("power",$powerCost))
+	{
+		$_SESSION['response']="You don't have the required resources(power).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
 	deductResource("food",$foodCost);
-	deductResource("water",$waterCost); 
+	deductResource("water",$waterCost);
+	deductResource("power",$powerCost); 
 	//resources validated
 	/*open battle sim*/
 	$troopDistribution=[[]];
@@ -197,12 +205,12 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 			$obperk=$r['open'];
 			if($obperk==1)
 			{
-				$hiddenTroops=0.25*$otroops; //25% percent troops hidden and are twice as effective
+				$hiddenTroops=max(0.25*$otroops,1); //25% percent troops hidden and are twice as effective
 				$otroops+=$hiddenTroops;
 			}
 			else if($obperk==2)
 			{
-				$hiddenTroops=0.5*$otroops; //50% percent troops hidden and are twice as effective
+				$hiddenTroops=max(0.5*$otroops,1); //50% percent troops hidden and are twice as effective
 				$otroops+=$hiddenTroops;	
 			}
 			else if($obperk==3)
@@ -395,6 +403,465 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	unset($_SESSION['selectedCol']);
 	unset($_SESSION['selectedTroops']);
 }
+function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
+{
+	global $conn,$player,$moveCostFood,$moveCostWater,$moveCostPower;
+	/*resource validation for troops movement*/
+	$distance=max(abs($srcRow-$destRow),abs($srcCol-$destCol));
+	$foodCost=$distance*$moveCostFood;
+	$waterCost=$distance*$moveCostWater;
+	$powerCost=$distance*$moveCostPower;
+	if(!queryResource("food",$foodCost))
+	{
+		$_SESSION['response']="You don't have the required resources(food).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!queryResource("water",$waterCost))
+	{
+		$_SESSION['response']="You don't have the required resources(water).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!queryResource("power",$powerCost))
+	{
+		$_SESSION['response']="You don't have the required resources(power).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	deductResource("food",$foodCost);
+	deductResource("water",$waterCost); 
+
+	$sql="SELECT ttype FROM research WHERE playerid=$playerid;";
+	$res=$conn->query($sql);
+	$row=$res->fetch_assoc();
+	$enemy="";	
+	$maxLoss=100;
+	$plunderBonus=0;
+	$plunderPortion=5; //percent
+	$supportTroops=0;
+	$defenceTroops=0;
+	$fortification;
+	$battleResult=false;
+	$winChance=0; //in percentage
+	$troop=$row['ttype'];
+	$troop=explode(":", $troop);
+	$troopType=$troop[0];
+	$troopLevel=$troop[1];
+	$quantity=$originalQuantity;
+	if($troopLevel==0)
+	{
+		$troopProbability=3;
+	}
+
+	if($troopType=="s")
+	{
+		$troopProbability=3;
+		if($troopLevel==1)
+		{
+			$plunderBonus=5;
+		}
+		else if($troopLevel==2)
+		{
+			$plunderBonus=10;
+		}
+		else if($troopLevel==3)
+		{
+			$plunderBonus=20;
+		}
+		else if($troopLevel==4)
+		{
+			$plunderBonus=40;
+		}
+		else if($troopLevel==5)
+		{
+			$plunderBonus=60;
+		}
+		else if($troopLevel==6)
+		{
+			$plunderBonus=80;
+		}
+		else if($troopLevel==7)
+		{
+			$troopProbability=4;
+			$plunderBonus=90;
+		}
+		else if($troopLevel==8)
+		{
+			$troopProbability=5;
+			$plunderBonus=100;
+		}
+	}
+
+	else if($troopType="w")
+	{
+		$troopProbability=5;
+		if($troopLevel==1)
+		{
+			$troopLevel=4;
+		}
+		else if($troopLevel==2)
+		{
+			$maxLoss=90;
+		}
+		else if($troopLevel==3)
+		{
+			$maxLoss=80;
+		}
+		else if($troopLevel==4)
+		{
+			$maxLoss=70;
+		}
+		else if($troopLevel==5)
+		{
+			$maxLoss=60;
+		}
+		else if($troopLevel==6)
+		{
+			$maxLoss=50;
+		}
+		else if($troopLevel==7)
+		{
+			$maxLoss=40;
+		}
+		else if($troopLevel==8)
+		{
+			$troopProbability=6;
+		}
+	}
+	$sql="SELECT faction FROM player WHERE tek_emailid=$playerid;";
+	$res=$conn->query($sql);
+	$row=$res->fetch_assoc();
+	$faction=$row['faction'];
+	if($faction==1) //preserve
+	{
+		$sql="SELECT faction1,faction2 FROM research WHERE playerid=$playerid;";
+		$res=$conn->query($sql);
+		$row=$res->fetch_assoc();
+		if($row['faction2']==1)
+		{
+			$plunderBonus+=10;
+		}
+		else if($row['faction2']==2)
+		{
+			$plunderBonus+=15;
+		}
+		else if($row['faction2']==3)
+		{
+			$plunderBonus+=30;
+		}
+		else
+		{
+			$plunderBonus+=0;
+		}
+		$teamBonus=$row['faction1'];
+		if($row['faction1']>0) //check if team bonus is researched
+		{
+			$sql="SELECT row,col FROM grid WHERE (row=$destRow-1 or row=$destRow or row=$destRow+1)  
+		           and (col=$destCol-1 or col=$destCol or col=$destCol+1)  /*finding all*/ 
+		           and fortification>0 and faction=$faction;";             /*all surrounding allied settled slots*/										 
+		    $res=$conn->query($sql);									
+		    if($res->num_rows>0)
+		    {
+		    	$neighbours=array();
+			    while($r=$res->fetch_assoc())
+			    {
+			    	$neighbours[count($neighbours)]=$r;
+			    }
+			    $sql="SELECT SUM(troops) FROM grid WHERE (row=$destRow-1 or row=$destRow or row=$destRow+1) 
+			           and (col=$destCol-1 or col=$destCol or col=$destCol+1) and fortification>0 and faction=$faction;";
+			    $res=$conn->query($sql);
+			    $r=$res->fetch_assoc();
+			    $supportTroops+=$r['SUM(troops)'];
+			    for($i=0;$i<count($neighbours);$i++)
+			    {
+			    	$rw=$neighbours[$i]['row'];
+			    	$cl=$neighbours[$i]['col'];
+			    	$sql="SELECT SUM(quantity) FROM troops WHERE row=$rw and col=$cl;";
+			    	$res=$conn->query($sql);
+			    	$r=$res->fetch_assoc();
+			    	$supportTroops+=$r['SUM(troops)'];
+			    }
+			    if($teamBonus==1)
+			    {
+			    	$supportTroops/=10;    //10%
+			    }
+			    else if($teamBonus==2)
+			    {
+			    	$supportTroops*=0.3;   //30%
+			    }
+			    else if($teamBonus==3)
+			    {
+			    	$supportTroops/=2;     //50%
+			    }			    
+		    }
+		}
+		$quantity+=$supportTroops;
+		$quantity*=$troopLevel;
+		
+		//defence calculations
+		
+		$sql="SELECT troops,fortification FROM grid WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$defenceTroops+=$r1['troops']; //per troop defence probability
+		$fortification=$r1['fortification'];
+		$sql="SELECT SUM(quantity) FROM troops WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$defenceTroops+=$r1['troops'];
+		$sql="SELECT defence FROM research WHERE playerid=$playerid;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$defPerk=$r1['defence'];
+		if($defPerk==0)
+		{
+			$defenceProbability=0.5;
+		}
+		if($defPerk==1)
+		{
+			$defenceProbability=0.75;
+		}
+		if($defPerk==2)
+		{
+			$defenceProbability=1;
+		}
+		if($defPerk==3)
+		{
+			$defenceProbability=2;
+			$sql="SELECT garrison FROM grid WHERE row=$destRow and col=$destCol;";
+			$res=$conn->query($sql);
+			$r1=$res->fetch_assoc();
+			$defenceTroops+=$r1['garrison'];
+		}
+		$sql="SELECT playerid FROM grid WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$enemy=$r1['playerid'];
+		$sql="SELECT ttype FROM research WHERE playerid=$enemy;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$ettype=$r1['ttype'];
+		$ettype=explode(":", $ettype);
+		$eLevel=$ettype[1];
+		$defenceTroops*=$eLevel;
+		//sim battle
+		$quantity/=$fortification;
+		$winChance=($quantity*$troopProbability)-($defenceTroops*$defenceProbability);
+		$result=rand(0,100);
+		if($result>$winChance) //loss
+		{
+			$battleResult=false;
+		}
+		else //win
+		{
+			$battleResult=true;
+		}
+	}
+	else if($faction==2) //exploit
+	{
+		//defence first
+		$sql="SELECT playerid FROM grid WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$enemy=$r1['playerid'];
+		$sql="SELECT faction1 FROM research WHERE playerid=$enemy;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$teamBonus=$r1['faction1'];
+		if($teamBonus>0) //check if team bonus is researched
+		{
+			$sql="SELECT row,col FROM grid WHERE (row=$destRow-1 or row=$destRow or row=$destRow+1)  
+		           and (col=$destCol-1 or col=$destCol or col=$destCol+1)  /*finding all*/ 
+		           and fortification>0 and faction=1;";             /*all surrounding allied settled slots*/										 
+		    $res=$conn->query($sql);									
+		    if($res->num_rows>0)
+		    {
+		    	$neighbours=array();
+			    while($r=$res->fetch_assoc())
+			    {
+			    	$neighbours[count($neighbours)]=$r;
+			    }
+			    $sql="SELECT SUM(troops) FROM grid WHERE (row=$destRow-1 or row=$destRow or row=$destRow+1) 
+			           and (col=$destCol-1 or col=$destCol or col=$destCol+1) and fortification>0 and faction=1;";
+			    $res=$conn->query($sql);
+			    $r=$res->fetch_assoc();
+			    $supportTroops+=$r['SUM(troops)'];
+			    for($i=0;$i<count($neighbours);$i++)
+			    {
+			    	$rw=$neighbours[$i]['row'];
+			    	$cl=$neighbours[$i]['col'];
+			    	$sql="SELECT SUM(quantity) FROM troops WHERE row=$rw and col=$cl;";
+			    	$res=$conn->query($sql);
+			    	$r=$res->fetch_assoc();
+			    	$supportTroops+=$r['SUM(troops)'];
+			    }
+			    if($teamBonus==1)
+			    {
+			    	$supportTroops/=10;    //10%
+			    }
+			    else if($teamBonus==2)
+			    {
+			    	$supportTroops*=0.3;   //30%
+			    }
+			    else if($teamBonus==3)
+			    {
+			    	$supportTroops/=2;     //50%
+			    }			    
+		    }
+		}
+		$sql="SELECT troops FROM grid WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		$defenceTroops=$r['troops'];
+		$sql="SELECT SUM(quantity) FROM troops WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		$defenceTroops+=$r['quantity'];
+		$sql="SELECT defence FROM research WHERE playerid=$playerid;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$defPerk=$r1['defence'];
+		if($defPerk==0)
+		{
+			$defenceProbability=0.5;
+		}
+		if($defPerk==1)
+		{
+			$defenceProbability=0.75;
+		}
+		if($defPerk==2)
+		{
+			$defenceProbability=1;
+		}
+		if($defPerk==3)
+		{
+			$defenceProbability=2;
+			$sql="SELECT garrison FROM grid WHERE row=$destRow and col=$destCol;";
+			$res=$conn->query($sql);
+			$r1=$res->fetch_assoc();
+			$defenceTroops+=$r1['garrison'];
+		}
+		$defenceTroops+=$supportTroops;
+		$sql="SELECT ttype FROM research WHERE playerid=$enemy;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$ettype=$r1['ttype'];
+		$ettype=explode(":", $ettype);
+		$eLevel=$ettype[1];
+		$defenceTroops*=$eLevel;
+		
+		//attack
+
+		$quantity*=$troopLevel;
+	}
+	
+	//sim battle
+
+	$quantity/=$fortification;
+	$winChance=($quantity*$troopProbability)-($defenceTroops*$defenceProbability);
+	$result=rand(0,100);
+	if($result>$winChance) //loss
+	{
+		$battleResult=false;
+	}
+	else //win
+	{
+		$battleResult=true;
+	}
+
+	if($battleResult) //battle won
+	{
+			//loss calculation
+
+		$quantity=$originalQuantity;
+		if($fortification>$troopLevel) //low level troops attacking higher level settlements
+		{
+			$minLoss=20+(($fortification-$troopLevel)*10);
+			$loss=floor($quantity*rand($maxLoss1,100)/100);
+			if($maxLoss>0)
+				$loss=floor($loss*$maxLoss/100);
+			$quantity-=$loss;
+			if($quantity<=0)
+			{
+				$quantity=1;
+			}
+		}
+		else //high level troops attacking low level settlement
+		{
+			$maxLoss1=100-(($troopLevel-$fortification)*10);
+			$loss=floor($quantity*rand(0,$maxLoss1)/100);
+			if($maxLoss>0)
+				$loss=floor($loss*$maxLoss/100);
+			$quantity-=$loss;
+			if($quantity<=0)
+			{
+				$quantity=1;
+			}	
+		}
+		//removing resource gathering from the defeated slot
+		$sql="UPDATE grid SET playerid=$playerid,type=NULL,troops=$quantity WHERE row=$destRow and col=$destCol;";
+		if($conn->query($sql)===false)
+			echo "<br>error: ".$conn->error;
+
+		//plunder
+
+		$sql="SELECT food,water,power,metal,wood FROM player WHERE row=$destRow and col=$destCol";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		$plunderFood=$plunderPortion*$r['food']/100;
+		$plunderWater=$plunderPortion*$r['water']/100;
+		$plunderPower=$plunderPortion*$r['power']/100;
+		$plunderMetal=$plunderPortion*$r['metal']/100;
+		$plunderWood=$plunderPortion*$r['wood']/100;
+		$sql="UPDATE player SET food=food-$plunderWood,water=water-$plunderWater,power=power-$plunderPower
+		      ,metal=metal-$plunderMetal,wood=wood-$plunderWood WHERE tek_emailid=$enemy";
+		if($conn->query($sql)===false)
+			echo "<br>error: ".$conn->error;
+		$plunderFood+=$plunderFood*$plunderBonus/100;
+		$plunderWater+=$plunderWater*$plunderBonus/100;
+		$plunderPower+=$plunderPower*$plunderBonus/100;
+		$plunderMetal+=$plunderMetal*$plunderBonus/100;
+		$plunderWood+=$plunderWood*$plunderBonus/100;
+		$sql="UPDATE player SET food=food+$plunderWood,water=water+$plunderWater,power=power+$plunderPower
+		      ,metal=metal+$plunderMetal,wood=wood+$plunderWood WHERE tek_emailid=$playerid";
+		if($conn->query($sql)===false)
+			echo "<br>error: ".$conn->error;
+
+		/*pending resoruce assignment*/
+
+		$_SESSION['response']='You won the attack! '.$quantity.' soldiers survived.';
+	}
+	else //battle lost
+	{
+		$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;";//troops sent from occupied slot
+		$res=$conn->query($sql);
+		if($res->num_rows>0)
+		{
+			$deployed=$_SESSION['selectedTroops'];
+			$sql="UPDATE grid SET troops=troops-$deployed WHERE row=$srcRow and col=$srcCol;";
+			if($conn->query($sql)===false)
+				echo "<br>error: ".$conn->error;
+		}
+		else //troops sent from unoccupied slot
+		{
+			$deployed=$_SESSION['selectedTroops'];
+			$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and 
+			playerid=$playerid;";
+			if($conn->query($sql)===false)
+				echo "<br>error: ".$conn->error;	
+		}
+	}
+	unset($_SESSION['selectedRow']);
+	unset($_SESSION['selectedCol']);
+	unset($_SESSION['selectedTroops']);	
+}
 function condenseArray($arr) //removes duplicates and would reduce load on server as little as it already is..
 {
 	$ar=array();
@@ -412,15 +879,15 @@ function condenseArray($arr) //removes duplicates and would reduce load on serve
 	}
 	return $ar;
 }
-function settle($row,$col) //occupies selected slot **incomplete transferring troops from troops table to grid table**
+function settle($row,$col) //occupies selected slot pending increment of resource regen
 {
 	global $conn,$playerid,$faction;
 	$settleWoodCost=20;
 	$settleMetalCost=30;
 	$settlePowerCost=15;
+	/*pending resource allocation*/
 	if(!queryResource("wood",$settleWoodCost)) //settling resources
 	{
-		echo "here but don't know how";
 		$_SESSION['response']="You don't have the required resources(wood).";
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
@@ -478,7 +945,7 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 		var_dump($roots);
 		echo "<br>";
 		$r=$roots[$j];
-		$sql="UPDATE grid SET root='$root' WHERE root='$r'";
+		$sql="UPDATE grid SET root='$root' WHERE root='$r'"; //connectivity
 		if(!$conn->query($sql) === TRUE)
 		{
 			var_dump($sql);
@@ -487,7 +954,7 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 		}
 		$j++;
 		$sql="UPDATE grid SET occupied=$playerid,faction=$faction,fortification=1, root='$root',troops=$troopCount 
-		      WHERE row=$row and col=$col;";
+		      WHERE row=$row and col=$col;"; //transferring troops from troop to grid 
 		if(!$conn->query($sql) === TRUE)
 		{
 			var_dump($sql);
@@ -501,8 +968,80 @@ function settle($row,$col) //occupies selected slot **incomplete transferring tr
 			echo "<br>";
 			echo "error: ".$conn->error."<br>";
 		}
+		$sql="UPDATE player SET total=total+1 WHERE playerid=$playerid;";
+		if(!$conn->query($sql) === TRUE)
+		{
+			var_dump($sql);
+			echo "<br>";
+			echo "error: ".$conn->error."<br>";
+		}
 	}
 	$_SESSION['response']="successfully settled.";
+}
+function scout($row,$col)
+{
+	global $scoutCostFood,$scoutCostWater;
+	if(!queryResource("food",$scoutCostFood))
+	{
+		$_SESSION['response']="You don't have the required resources(food).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!queryResource("water",$scoutCostWater))
+	{
+		$_SESSION['response']="You don't have the required resources(water).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	deductResource("food",$scoutCostFood);
+	deductResource("water",$scoutCostWater);
+	$troops=0;
+	$sql="SELECT troops,fortification FROM grid WHERE row=$row and col=$col;"; //scouting enemy occupied slot
+	$res=$conn->query($sql);
+	$r=$res->fetch_assoc();
+	$fortification=$r['fortification'];
+	if($fortification>0)
+	{
+		$troops+=$r['troops'];
+		$sql="SELECT SUM(quantity) FROM troops WHERE row=$row and col=$col;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$troops+=$r1['SUM(quantity)'];
+	}
+	$sql="SELECT playerid,quantity FROM troops WHERE row=$row and col=$col;"; //scouting unoccupied slot
+	$res=$conn->query($sql);
+	if($res->num_rows>0)
+	{
+		while($row=$res->fetch_assoc())
+		{
+			$enemy=$row['playerid'];
+			$otroops=$row['quantity']; //number of troops of one enemy occupant
+			$sql1="SELECT open,ttype FROM research WHERE playerid=$enemy;";
+			$res1=$conn->query($sql1);
+			$r=$res1->fetch_assoc();
+			$obperk=$r['open'];
+			if($obperk==1)
+			{
+				$hiddenTroops=max(0.25*$otroops,1); //25% percent troops hidden and are twice as effective
+				$otroops-=$hiddenTroops;
+			}
+			else if($obperk==2)
+			{
+				$hiddenTroops=max(0.5*$otroops,1); //50% percent troops hidden and are twice as effective
+				$otroops-=$hiddenTroops;	
+			}
+			else if($obperk==3)
+			{
+				$hiddenTroops=$otroops; //100% percent troops hidden and are twice as effective
+				$otroops-=$hiddenTroops;
+			}
+			$troops+=$otroops;
+		}
+	}
 }
 function createTroops($row,$col,$quantity)
 {

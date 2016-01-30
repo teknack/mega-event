@@ -11,9 +11,9 @@ function scout($row,$col)
 	{
 		echo "here";
 		$s=getSlotTroops($row,$col);
-		var_dump($s);
+		//var_dump($s);
 		$troops=$s;
-		var_dump($troops);
+		//var_dump($troops);
 	}
 	else
 	{
@@ -30,11 +30,12 @@ function scout($row,$col)
 	}
 	*/
 	
-	$_SESSION["response"] = "Occupied : ".$slot["occupied"]."<br>"."Fortification : ".$slot["fortification"]."<br>"."Troops : ".$troops."<br>"."Faction : ".$slot["faction"]."<br>";
-	consoleLog("Occupied : ".$slot["occupied"]);
+	$_SESSION["response"] = "Occupant : ".$slot["occupied"]."<br>"."Fortification : "
+	 .$slot["fortification"]."<br>"."Troops : ".$troops."<br>"."Faction : ".$slot["faction"]."<br>";
+	/*consoleLog("Occupied : ".$slot["occupied"]);
 	consoleLog("Fortification : ".$slot["fortification"]);
 	consoleLog("Troops : ".$slot["troops"]);
-	consoleLog("Faction : ".$slot["faction"]);
+	consoleLog("Faction : ".$slot["faction"]);*/
 	//header("location:index.php");
 }
 

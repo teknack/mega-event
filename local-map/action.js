@@ -28,11 +28,18 @@ function action(row,col) //call it to get the available actions
     {
         if (xhttp.readyState == 4 && xhttp.status == 200) 
         {
-      	    comm=JSON.parse(xhttp.responseText);
+            var test=xhttp.responseText;
+            console.log(test);
+      	    comm=JSON.parse(test);
             var content="";
+            var hint="";
             for(var i=0;i<comm.length;i++)
             {
-                if(comm[i]['action']!=null)
+                if(comm[i]['response']!=null)
+                {
+                    hint=comm[i]['response'];
+                }
+                else if(comm[i]['action']!=null)
                     content+="<input type='submit' value="+comm[i]['action']+" name="+comm[i]['action']+"><br>";
                 else
                     visibility=comm[i]['visible'];
@@ -49,6 +56,7 @@ function action(row,col) //call it to get the available actions
                 quant.style.visibility='visible';
             }
             document.getElementById("action").innerHTML=content;
+            document.getElementById("bottom_hint").innerHTML=hint;
             document.getElementById("row").value=row;
             document.getElementById("col").value=col;
         }
