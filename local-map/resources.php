@@ -5,6 +5,7 @@ include "../db_access/db.php";
 function elapsedTime() //calculates time elapsed since last resource collect - all in seconds
 {
 	connect();
+	setTable("player");
 	
 	if (!isset($_SESSION["collect_time"]))
 	{
