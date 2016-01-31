@@ -30,22 +30,14 @@ function renderGrid()
 }
 function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numeric array to 
 {
+	console.log(playerId);
 	for(i=0,k=0;i<100;i++)
 	  {
 		for(j=0;j<100;j++,k++)
 		{
-			if(temp[k]["occupied"]===playerId )
+			if(temp[k]["occupied"]==playerId )
 			{
-				if(temp[k]["faction"]===1)
-				{
-					grid[i][j]="blue";
-					
-				}
-				if(temp[k]["faction"]===2)
-				{
-					
-					grid[i][j]="red";
-				}
+				grid[i][j]="blue";
 			}
 			else if(temp[k]["occupied"]==0)
 			{
@@ -53,8 +45,10 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 			}
 			else
 			{
-				//if(temp[k]["faction"])	
-				grid[i][j]="yellow";
+				if(temp[k]["faction"]==faction)	
+					grid[i][j]="yellow";
+				else
+					grid[i][j]="red";
 			}
 		}
 	  }
@@ -75,7 +69,8 @@ window.onload=function loadDoc(){
     if (xhttp.readyState == 4 && xhttp.status == 200) {
 	  //window.alert(xhttp.responseText);
       temp=JSON.parse(xhttp.responseText);             //editable
-      playerId=temp[10000]["player"];                                  
+      playerId=temp[10000]["player"];
+      faction=temp[10000]["faction"];                                  
       convertToGrid(temp);	            			   //editable
       renderGrid(grid);                                //editable
     }
