@@ -3,7 +3,8 @@
 	$username="root";
 	$password="";
 	$db="Mega";
-	$player=1; // $_SESSION['tek_emailid'];
+	$player=2;/*$_SESSION['tek_emailid'];*/
+	var_dump($_SESSION['tek_emailid']);
 	$conn=new mysqli($servername,$username,$password,$db);
 	if($conn->connect_error)
 	{

@@ -3,6 +3,7 @@ var	ctx;
 var x=0,i=0;
 var y=0,j=0;
 var playerId;
+var faction;
 var slotSize=10; //cell size in px
 var hSize=9;     //hover window size , no. of slots/cells
 var grid=[];
@@ -40,7 +41,7 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 					grid[i][j]="blue";
 					
 				}
-				if(temp[k]["faction"]===0)
+				if(temp[k]["faction"]===2)
 				{
 					
 					grid[i][j]="red";
@@ -51,7 +52,8 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 				grid[i][j]="white";
 			}
 			else
-			{	
+			{
+				//if(temp[k]["faction"])	
 				grid[i][j]="yellow";
 			}
 		}

@@ -437,7 +437,8 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	}
 	deductResource("food",$foodCost);
 	deductResource("water",$waterCost); 
-
+	deductResource("power",$powerCost);
+	
 	$sql="SELECT ttype FROM research WHERE playerid=$playerid;";
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
@@ -451,21 +452,21 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	$battleResult=false;
 	$winChance=0; //in percentage
 	$troop=$row['ttype'];
-	$troop=explode(":", $troop);
-	$troopType=$troop[0];
+	$troop=explode(":", $troop); //troops type as  type:level so w-warrior and s-stealth
+	$troopType=$troop[0];  
 	$troopLevel=$troop[1];
 	$quantity=$originalQuantity;
 	if($troopLevel==0)
 	{
-		$troopProbability=3;
+		$troopProbability=3; //troop probability is per unit chance of attack success
 	}
 
-	if($troopType=="s")
+	if($troopType=="s") //more plunder for stealth
 	{
 		$troopProbability=3;
 		if($troopLevel==1)
 		{
-			$plunderBonus=5;
+			$plunderBonus=5; 
 		}
 		else if($troopLevel==2)
 		{
@@ -499,7 +500,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		}
 	}
 
-	else if($troopType="w")
+	else if($troopType="w") //fewer losses for warriors
 	{
 		$troopProbability=5;
 		if($troopLevel==1)
@@ -1192,7 +1193,6 @@ if(isset($_POST['attack']))
 	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
 	{
 		$quantity=$_SESSION['selectedTroops'];
-		unset($_SESSION['selectedTroops']);
 	}
 	else
 	{
