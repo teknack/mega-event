@@ -1,0 +1,8 @@
+Will be changing the entire UI once its put into the main page.
+Right now I took way too long to think about such a simple idea and didn't want to waste more time so will leave it at this for the time being.
+
+Changes to be made:
+ -- Numbers to boxes that highlight
+ -- Calculation of regen
+ -- Submission of the values
+ -- Passing finished calculation to main
