@@ -1339,4 +1339,13 @@ if(isset($_POST['create_troops']))
 	createTroops($row,$col,$quantity);
 	header("location:index.php");
 }
+
+/*Nischal's code */
+if($_SERVER["REQUEST_METHOD"] == "GET"){
+	creditResource('food_regen',$_GET['foodres']);
+	creditResource('water_regen',$_GET['waterres']);
+	creditResource('power_regen',$_GET['powerres']);
+	creditResource('metal_regen',$_GET['metalres']);
+	creditResource('wood_regen',$_GET['woodres']);
+}
 ?>

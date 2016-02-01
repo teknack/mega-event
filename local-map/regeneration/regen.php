@@ -1,13 +1,7 @@
 <?php
-include '../player.php';
 
 if(isset($_POST['resourceregen'])){
 	echo 'sendback()';
-	creditResource('food_regen',$_GET['foodres']);
-	creditResource('water_regen',$_GET['waterres']);
-	creditResource('power_regen',$_GET['powerres']);
-	creditResource('metal_regen',$_GET['metalres']);
-	creditResource('wood_regen',$_GET['woodres']);
 }
 
 ?>
@@ -78,7 +72,7 @@ if(isset($_POST['resourceregen'])){
 		</table>
 	</div> <br>
 
-	<form method="post" target="regen.php">
+	<form method="post" action="regen.php">
 		<button type="submit" name="resourceregen">Confirm</button>
 	</food>
 
