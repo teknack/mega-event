@@ -40,6 +40,10 @@ function getStats(){
 	else
 		return $y;
 }*/
+function validateAction($action,$row,$col) //return true if action is permitted PENDING
+{
+
+}
 function queryResource($resource,$value)
 {
 	global $conn,$playerid;
@@ -65,7 +69,6 @@ function deductResource($resource,$value)   //use to reduce resource on some act
 	}
 	else
 	{
-		echo "<br>enough";
 		$sql="UPDATE `player` SET $resource=$resource-'$value' WHERE tek_emailid='$playerid'";	
 			if($conn->query($sql)===false)
 			{
@@ -73,6 +76,54 @@ function deductResource($resource,$value)   //use to reduce resource on some act
 			}
 		return true;
 	}
+}
+function troopExist($row,$col,$quantity)
+{
+	global $conn,$playerid;
+	$troopExist=false;
+	$sql="SELECT troops FROM grid WHERE row=$row and col=$col and occupied='$playerid';";
+	$res=$conn->query($sql);                  //check if required troops present in grid table
+	if($res->num_rows>0)
+	{
+		$row=$res->fetch_assoc();
+		if($row['troops']<$quantity)
+		{
+			$_SESSION['response']=$row['troops'];
+			$troopExist=false;
+		}
+		else
+		{	
+			$_SESSION['response']=$row['troops'];
+			$troopExist=true;
+		}
+	}
+	$sql="SELECT playerid,quantity FROM troops WHERE row=$row and col=$col;"; //check if required troops present 
+	$res=$conn->query($sql);                                                        //in troops table												
+	if($res->num_rows>0)
+	{
+		$row=$res->fetch_assoc();
+		if($row['quantity']<$quantity or $row['playerid']!=$playerid)
+		{
+			if(!$troopExist) //troops not enough but present in troops table
+			{
+				$_SESSION['response']=$_SESSION['response']."You don't have those many troops.
+				Create more soldier(s)!";
+				unset($_SESSION['selectedRow']);
+				unset($_SESSION['selectedCol']);
+				unset($_SESSION['selectedTroops']);
+				return false;
+			} 
+		}
+	}
+	if(!$troopExist)
+	{
+		$_SESSION['response'].="You don't have those many troops.Create more soldiers!"; //troops not present in either of the tables
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return false;
+	}
+	return true;
 }
 function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 steps, first select troops from an occupied slot  
 {       		                                           //then select the slot to move the troops to 
@@ -116,49 +167,11 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	$foodCost=$distance*$moveCostFood;
 	$waterCost=$distance*$moveCostWater;
 	$powerCost=$distance*$moveCostPower;
-	$troopExist=false;
-	$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;"; //check if required troops present in grid table
-	$res=$conn->query($sql);
-	if($res->num_rows>0)
-	{
-		$row=$res->fetch_assoc();
-		if($row['troops']<$quantity)
-		{
-			$troopExist=false;
-		}
-		else
-		{
-			$troopExist=true;
-		}
-	}
-	$sql="SELECT playerid,quantity FROM troops WHERE row=$srcRow and col=$srcCol;"; //check if required troops present 
-	$res=$conn->query($sql);                                                        //in troops table												
-	if($res->num_rows>0)
-	{
-		$row=$res->fetch_assoc();
-		if($row['quantity']<$quantity or $row['playerid']!=$playerid)
-		{
-			if(!$troopExist) //troops not enough or not present in both tables
-			{
-				$_SESSION['response']="You don't have those many troops. You have ".$row['troops']." soldiers.
-				Create more soldier(s)!";
-				unset($_SESSION['selectedRow']);
-				unset($_SESSION['selectedCol']);
-				unset($_SESSION['selectedTroops']);
-				return;
-			} 
-		}
-	}
-	else if(!$troopExist)
-	{
-		$_SESSION['response']="You don't have those many troops. You have ".$row['troops']." soldiers.
-				Create more soldiers!";
-		unset($_SESSION['selectedRow']);
-		unset($_SESSION['selectedCol']);
-		unset($_SESSION['selectedTroops']);
+	
+	if(!troopExist($srcRow,$srcCol,$quantity)) //checks if actually player has the required troops
 		return;
-	}
 	//number of required troops exist
+	
 	if(!queryResource("food",$foodCost))
 	{
 		echo "here but don't know how";
@@ -405,7 +418,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 }
 function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 {
-	global $conn,$player,$moveCostFood,$moveCostWater,$moveCostPower;
+	global $conn,$playerid,$moveCostFood,$moveCostWater,$moveCostPower;
 	/*resource validation for troops movement*/
 	$distance=max(abs($srcRow-$destRow),abs($srcCol-$destCol));
 	$foodCost=$distance*$moveCostFood;
@@ -455,57 +468,63 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	$troop=explode(":", $troop); //troops type as  type:level so w-warrior and s-stealth
 	$troopType=$troop[0];  
 	$troopLevel=$troop[1];
-	$quantity=$originalQuantity;
+	echo "<br>quantity:$quantity<br>lvl:$troopLevel<br>";
+	$originalQuantity=$quantity;
 	if($troopLevel==0)
 	{
 		$troopProbability=3; //troop probability is per unit chance of attack success
+		$troopLevel=1;
 	}
-
+	echo "<br>quantity:$quantity<br>lvl:$troopLevel<br>";
 	if($troopType=="s") //more plunder for stealth
 	{
 		$troopProbability=3;
 		if($troopLevel==1)
 		{
+			$troopProbability=4;
 			$plunderBonus=5; 
 		}
 		else if($troopLevel==2)
 		{
+			$troopProbability=4;
 			$plunderBonus=10;
 		}
 		else if($troopLevel==3)
 		{
+			$troopProbability=4;
 			$plunderBonus=20;
 		}
 		else if($troopLevel==4)
 		{
+			$troopProbability=4;
 			$plunderBonus=40;
 		}
 		else if($troopLevel==5)
 		{
+			$troopProbability=4;
 			$plunderBonus=60;
 		}
 		else if($troopLevel==6)
 		{
+			$troopProbability=4;
 			$plunderBonus=80;
 		}
 		else if($troopLevel==7)
 		{
-			$troopProbability=4;
+			$troopProbability=5;
 			$plunderBonus=90;
 		}
 		else if($troopLevel==8)
 		{
-			$troopProbability=5;
 			$plunderBonus=100;
 		}
 	}
-
-	else if($troopType="w") //fewer losses for warriors
+	else if($troopType=="w") //fewer losses for warriors
 	{
 		$troopProbability=5;
 		if($troopLevel==1)
 		{
-			$troopLevel=4;
+			$maxLoss=100;
 		}
 		else if($troopLevel==2)
 		{
@@ -536,6 +555,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			$troopProbability=6;
 		}
 	}
+	echo "<br>quantity:$quantity<br>lvl:$troopLevel<br><br>";
 	$sql="SELECT faction FROM player WHERE tek_emailid=$playerid;";
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
@@ -603,9 +623,11 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			    }			    
 		    }
 		}
+		echo "<br>quantity:$quantity<br>lvl:$troopLevel<br>";
 		$quantity+=$supportTroops;
+		echo "<br>quantity:$quantity<br>lvl:$troopLevel<br>";
 		$quantity*=$troopLevel;
-		
+		echo "<br>quantity:$quantity<br>lvl:$troopLevel<br>";
 		//defence calculations
 		
 		$sql="SELECT troops,fortification FROM grid WHERE row=$destRow and col=$destCol;";
@@ -616,62 +638,53 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$sql="SELECT SUM(quantity) FROM troops WHERE row=$destRow and col=$destCol;";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
-		$defenceTroops+=$r1['troops'];
+		$defenceTroops+=$r1['SUM(quantity)'];
 		$sql="SELECT defence FROM research WHERE playerid=$playerid;";
 		$res=$conn->query($sql);
+		//var_dump($res);
 		$r1=$res->fetch_assoc();
 		$defPerk=$r1['defence'];
 		if($defPerk==0)
 		{
-			$defenceProbability=0.5;
+			$defenceProbability=1;
 		}
 		if($defPerk==1)
 		{
-			$defenceProbability=0.75;
+			$defenceProbability=2;
 		}
 		if($defPerk==2)
 		{
-			$defenceProbability=1;
+			$defenceProbability=3;
 		}
 		if($defPerk==3)
 		{
-			$defenceProbability=2;
+			$defenceProbability=3;
 			$sql="SELECT garrison FROM grid WHERE row=$destRow and col=$destCol;";
 			$res=$conn->query($sql);
 			$r1=$res->fetch_assoc();
 			$defenceTroops+=$r1['garrison'];
 		}
-		$sql="SELECT playerid FROM grid WHERE row=$destRow and col=$destCol;";
+		$sql="SELECT occupied FROM grid WHERE row=$destRow and col=$destCol;";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
-		$enemy=$r1['playerid'];
+		$enemy=$r1['occupied'];
 		$sql="SELECT ttype FROM research WHERE playerid=$enemy;";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$ettype=$r1['ttype'];
 		$ettype=explode(":", $ettype);
 		$eLevel=$ettype[1];
+		if($eLevel==0)
+			$eLevel=1;
 		$defenceTroops*=$eLevel;
-		//sim battle
-		$quantity/=$fortification;
-		$winChance=($quantity*$troopProbability)-($defenceTroops*$defenceProbability);
-		$result=rand(0,100);
-		if($result>$winChance) //loss
-		{
-			$battleResult=false;
-		}
-		else //win
-		{
-			$battleResult=true;
-		}
 	}
 	else if($faction==2) //exploit
 	{
 		//defence first
-		$sql="SELECT playerid FROM grid WHERE row=$destRow and col=$destCol;";
+		$sql="SELECT occupied FROM grid WHERE row=$destRow and col=$destCol;";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
-		$enemy=$r1['playerid'];
+		$enemy=$r1['occupied'];
 		$sql="SELECT faction1 FROM research WHERE playerid=$enemy;";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
@@ -731,19 +744,19 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$defPerk=$r1['defence'];
 		if($defPerk==0)
 		{
-			$defenceProbability=0.5;
+			$defenceProbability=1;
 		}
 		if($defPerk==1)
 		{
-			$defenceProbability=0.75;
+			$defenceProbability=2;
 		}
 		if($defPerk==2)
 		{
-			$defenceProbability=1;
+			$defenceProbability=3;
 		}
 		if($defPerk==3)
 		{
-			$defenceProbability=2;
+			$defenceProbability=3;
 			$sql="SELECT garrison FROM grid WHERE row=$destRow and col=$destCol;";
 			$res=$conn->query($sql);
 			$r1=$res->fetch_assoc();
@@ -764,17 +777,23 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	}
 	
 	//sim battle
-
 	$quantity/=$fortification;
+	$attackProb=$quantity*$troopProbability;
+	$defProb=$defenceTroops*$defenceProbability;
+	echo "<BR>defTroops:$defenceTroops<br>attckTroops:$quantity<br><br>";
 	$winChance=($quantity*$troopProbability)-($defenceTroops*$defenceProbability);
 	$result=rand(0,100);
 	if($result>$winChance) //loss
 	{
 		$battleResult=false;
+		echo "<br>num:$result<br>attck:$attackProb<br>def:$defProb<br>";
+		echo "lost had winchance=".$winChance;
 	}
 	else //win
 	{
 		$battleResult=true;
+		echo "<br>num:$result<br>attck:$attackProb<br>def:$defProb<br>";
+		echo "<br>won had winchance=".$winChance;
 	}
 
 	if($battleResult) //battle won
@@ -796,7 +815,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		}
 		else //high level troops attacking low level settlement
 		{
-			$maxLoss1=100-(($troopLevel-$fortification)*10);
+			$maxLoss1=100-(($troopLevel-$fortification)*10)+(100-$winChance);
 			$loss=floor($quantity*rand(0,$maxLoss1)/100);
 			if($maxLoss>0)
 				$loss=floor($loss*$maxLoss/100);
@@ -807,14 +826,17 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			}	
 		}
 		//removing resource gathering from the defeated slot
-		$sql="UPDATE grid SET playerid=$playerid,type=NULL,troops=$quantity WHERE row=$destRow and col=$destCol;";
+		$sql="UPDATE grid SET occupied=$playerid,type=NULL,faction=$faction,troops=$quantity WHERE 
+		      row=$destRow and col=$destCol;";
 		if($conn->query($sql)===false)
 			echo "<br>error: ".$conn->error;
 
 		//plunder
 
-		$sql="SELECT food,water,power,metal,wood FROM player WHERE row=$destRow and col=$destCol";
+		$sql="SELECT food,water,power,metal,wood FROM player WHERE tek_emailid=$enemy";
 		$res=$conn->query($sql);
+		if(!$res)
+			echo $conn->error;
 		$r=$res->fetch_assoc();
 		$plunderFood=$plunderPortion*$r['food']/100;
 		$plunderWater=$plunderPortion*$r['water']/100;
@@ -837,6 +859,65 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 
 		/*pending resoruce assignment*/
 
+		/*root reassignment*/
+		$sql="SELECT root FROM grid WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$rw=$res->fetch_assoc();
+		$droot=$rw['root'];
+		$newRoot=$droot;
+		$sql="SELECT row,col,root FROM grid WHERE root='$droot'"; //reset root for loser enemy
+		$res=$conn->query($sql);
+		if(!$res)
+			echo $conn->error;
+		if($res->num_rows>1)
+		{
+			$sql="UPDATE grid SET root=NULL WHERE row=$destRow and col=$destCol;";
+			if($conn->query($sql)===false)
+				echo "error: ".$conn->error;
+			while($droot==$newRoot)
+			{
+				$r=$res->fetch_assoc();
+				$newRoot=$r['row'].",".$r['col'];
+			}
+			$sql="UPDATE grid SET root='$newRoot' WHERE root='$droot';";
+			if($conn->query($sql)===false)
+				echo "error: ".$conn->error;
+		}
+
+		$roots= array();
+		$root=$destRow.",".$destCol;
+		$sql="UPDATE grid SET root='$root' WHERE row=$destRow and col=$destCol;"; //root was made null now it's 
+			if($conn->query($sql)===false)									    //it's given the original value
+				echo "error: ".$conn->error;
+		$troopCount;
+		$sql="SELECT row,col,fortification,faction,root FROM grid WHERE (row=$destRow-1 or row=$destRow 
+		or row=$destRow+1) and (col=$destCol-1 or col=$destCol or col=$destCol+1);";
+		$res=$conn->query($sql); //query to get all the neighbouring slots to the given slot.
+		if($res->num_rows>0)
+		{
+			while($ro=$res->fetch_assoc())
+			{
+				if($ro['fortification']>0 and $ro['faction']==$faction and !($ro['row']==$row and $ro['col']==$col))
+				{
+					$roots[count($roots)]=$ro['root'];
+				}
+			}
+		}
+		$roots=condenseArray($roots); //refer line 54
+		$j=0;
+		while($j<count($roots) and !empty($roots[$j])) //sets the root of all neighbouring slots if occupied as the root of the given slot
+		{
+			$r=$roots[$j];
+			$sql="UPDATE grid SET root='$root' WHERE root='$r'"; //connectivity
+			if(!$conn->query($sql) === TRUE)
+			{
+				var_dump($sql);
+				echo "<br>";
+				echo "error: ".$conn->error."<br>";
+			}
+			$j++;
+		}
+
 		$_SESSION['response']='You won the attack! '.$quantity.' soldiers survived.';
 	}
 	else //battle lost
@@ -858,6 +939,11 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			if($conn->query($sql)===false)
 				echo "<br>error: ".$conn->error;	
 		}
+		$x=$winChance/100; // defensive troops loss calculation if winChance is 40%, 40% of troops will die  
+		$sql="UPDATE grid SET troops=troops-troops*$x WHERE row=$destRow and col=$destCol;";
+		if($conn->query($sql)===false)
+			echo "error: ".$conn->error;
+		$_SESSION['response']="You lost the attack";
 	}
 	unset($_SESSION['selectedRow']);
 	unset($_SESSION['selectedCol']);
@@ -866,7 +952,12 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 function condenseArray($arr) //removes duplicates and would reduce load on server as little as it already is..
 {
 	$ar=array();
-	$ar[0]=$arr[0];
+	if(count($arr)!=0)
+	{
+		$ar[0]=$arr[0];
+	}
+	else
+		return;
 	$j=1;
 	for($i=1;$i<count($arr);$i++)
 	{
@@ -914,17 +1005,21 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 	deductResource("wood",$settleWoodCost);
 	deductResource("metal",$settleMetalCost);
 	deductResource("power",$settlePowerCost); 
+	$sql="SELECT faction FROM player WHERE tek_emailid=$playerid;";// find player faction
+	$res=$conn->query($sql);
+	$r=$res->fetch_assoc();
+	$faction=$r['faction'];
 	$roots= array();
 	$root=$row.",".$col;
 	$troopCount;
-	$sql="SELECT row,col,fortification,root FROM grid WHERE (row=$row-1 or row=$row or row=$row+1) and (col=$col-1 or col=$col or col=$col+1);";
+	$sql="SELECT row,col,fortification,faction,root FROM grid WHERE (row=$row-1 or row=$row or row=$row+1) and (col=$col-1 or col=$col or col=$col+1);";
 	$res=$conn->query($sql); //query to get all the neighbouring slots to the given slot.
 	if($res->num_rows>0)
 	{
 		$i=0;
 		while($ro=$res->fetch_assoc())
 		{
-			if($ro['fortification']>0 and !($ro['row']===$row and $ro['col']===$col))
+			if($ro['fortification']>0 and $ro['faction']=$faction and !($ro['row']===$row and $ro['col']===$col))
 			{
 				$roots[$i]=$ro['root'];
 			}
@@ -954,34 +1049,35 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 			echo "error: ".$conn->error."<br>";
 		}
 		$j++;
-		$sql="UPDATE grid SET occupied=$playerid,faction=$faction,fortification=1, root='$root',troops=$troopCount 
-		      WHERE row=$row and col=$col;"; //transferring troops from troop to grid 
-		if(!$conn->query($sql) === TRUE)
-		{
-			var_dump($sql);
-			echo "<br>";
-			echo "error: ".$conn->error."<br>";
-		}
-		$sql="DELETE FROM troops WHERE row=$row and col=$col";
-		if(!$conn->query($sql) === TRUE)
-		{
-			var_dump($sql);
-			echo "<br>";
-			echo "error: ".$conn->error."<br>";
-		}
-		$sql="UPDATE player SET total=total+1 WHERE playerid=$playerid;";
-		if(!$conn->query($sql) === TRUE)
-		{
-			var_dump($sql);
-			echo "<br>";
-			echo "error: ".$conn->error."<br>";
-		}
+	}
+	$sql="UPDATE grid SET occupied=$playerid,faction=$faction,fortification=1, root='$root',troops=$troopCount 
+	      WHERE row=$row and col=$col;"; //transferring troops from troop to grid 
+	if(!$conn->query($sql) === TRUE)
+	{
+		var_dump($sql);
+		echo "<br>";
+		echo "error: ".$conn->error."<br>";
+	}
+	$sql="DELETE FROM troops WHERE row=$row and col=$col";
+	if(!$conn->query($sql) === TRUE)
+	{
+		var_dump($sql);
+		echo "<br>";
+		echo "error: ".$conn->error."<br>";
+	}
+	$sql="UPDATE player SET total=total+1 WHERE playerid=$playerid;";
+	if(!$conn->query($sql) === TRUE)
+	{
+		var_dump($sql);
+		echo "<br>";
+		echo "error: ".$conn->error."<br>";
 	}
 	$_SESSION['response']="successfully settled.";
 }
 function scout($row,$col)
 {
 	global $conn,$playerid,$scoutCostFood,$scoutCostWater;
+	$output="";
 	if(!queryResource("food",$scoutCostFood))
 	{
 		$_SESSION['response']="You don't have the required resources(food).";
@@ -1009,44 +1105,52 @@ function scout($row,$col)
 	$faction=$r['faction'];
 	if($fortification>0)
 	{
-		$troops+=$r['troops'];
+		$troops=$r['troops'];
 		$sql="SELECT SUM(quantity) FROM troops WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$troops+=$r1['SUM(quantity)'];
+		$output.=$troops."<br>";
 	}
-	$sql="SELECT playerid,quantity FROM troops WHERE row=$row and col=$col;"; //scouting unoccupied slot
-	$res=$conn->query($sql);
-	if($res->num_rows>0)
+	else
 	{
-		while($row=$res->fetch_assoc())
+		$sql="SELECT playerid,quantity FROM troops WHERE row=$row and col=$col;"; //scouting unoccupied slot
+		$res=$conn->query($sql);
+		if($res->num_rows>0)
 		{
-			$enemy=$row['playerid'];
-			$otroops=$row['quantity']; //number of troops of one enemy occupant
-			$sql1="SELECT open,ttype FROM research WHERE playerid=$enemy;";
-			$res1=$conn->query($sql1);
-			$r=$res1->fetch_assoc();
-			$obperk=$r['open'];
-			if($obperk==1)
+			while($row=$res->fetch_assoc())
 			{
-				$hiddenTroops=max(0.25*$otroops,1); //25% percent troops hidden and are twice as effective
-				$otroops-=$hiddenTroops;
+				$enemy=$row['playerid'];
+				$otroops=$row['quantity']; //number of troops of one enemy occupant
+				$sql1="SELECT open,ttype FROM research WHERE playerid=$enemy;";
+				$res1=$conn->query($sql1);
+				$r=$res1->fetch_assoc();
+				$obperk=$r['open'];
+				if($obperk==1)
+				{
+					$hiddenTroops=max(0.25*$otroops,1); //25% percent troops hidden and are twice as effective
+					$otroops-=$hiddenTroops;
+				}
+				else if($obperk==2)
+				{
+					$hiddenTroops=max(0.5*$otroops,1); //50% percent troops hidden and are twice as effective
+					$otroops-=$hiddenTroops;	
+				}
+				else if($obperk==3)
+				{
+					$hiddenTroops=$otroops; //100% percent troops hidden and are twice as effective
+					$otroops-=$hiddenTroops;
+				}
+				$troops+=$otroops;
+				$output.=$troops;
+				$_SESSION['debug']="<br>.".$troops."<br>";
 			}
-			else if($obperk==2)
-			{
-				$hiddenTroops=max(0.5*$otroops,1); //50% percent troops hidden and are twice as effective
-				$otroops-=$hiddenTroops;	
-			}
-			else if($obperk==3)
-			{
-				$hiddenTroops=$otroops; //100% percent troops hidden and are twice as effective
-				$otroops-=$hiddenTroops;
-			}
-			$troops+=$otroops;
 		}
 	}
-	$output="Occupant : ".$occupied."<br>Fortification : ".$fortification."<br>Troops : ".$troops.
+	
+	$output="(".$row.",".$col.") Occupant : ".$occupied."<br>Fortification : ".$fortification."<br>Troops : ".$troops.
 	    "<br>Faction : ".$faction;
+	echo $output;
 	$_SESSION['response']=$output;
 }
 function createTroops($row,$col,$quantity)
@@ -1149,14 +1253,18 @@ if(isset($_POST['settle']))
 }
 if(isset($_POST['select_troops']))
 {
-	$row=testVar($_POST['row']);
-	$col=testVar($_POST['col']);
 	$row=$_POST['row'];
 	$col=$_POST['col'];
-	$_SESSION['selectedRow']=$row;
-	$_SESSION['selectedCol']=$col;
 	$quantity=$_POST['quantity'];
-	$_SESSION['selectedTroops']=$quantity;
+	if($quantity>0)
+	{
+		if(troopExist($row,$col,$quantity))
+		{
+			$_SESSION['selectedRow']=$row;
+			$_SESSION['selectedCol']=$col;
+			$_SESSION['selectedTroops']=$quantity;
+		}
+	}
 	header("location:index.php");
 }
 if(isset($_POST["scout"]))
@@ -1204,7 +1312,7 @@ if(isset($_POST['attack']))
 	$col=$_POST['col'];
 	//echo $quantity;
 	attack($srcrow,$srccol,$row,$col,$quantity);
-	header("location:index.php");
+	//header("location:index.php");
 }
 if(isset($_POST['create_troops']))
 {

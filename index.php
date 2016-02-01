@@ -19,7 +19,8 @@ if (isset($_POST) && !empty($_POST))
 			$_SESSION["tek_emailid"] = $_POST["username"];
 			//$_SESSION["in_game"] = True;
 			disconnect();
-			redirect("./world-map/canvas1.html");
+			//redirect("./world-map/canvas1.html");
+			header("location:world-map/canvas1.html");
 		}
 		else
 		{

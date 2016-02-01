@@ -249,6 +249,11 @@ function fake_main()
 								echo $_SESSION['response'];
 								unset($_SESSION['response']);
 							}
+							else if(isset($_SESSION['debug']))
+							{
+								echo $_SESSION['debug'];
+								unset($_SESSION['debug']);
+							}
 						?>
 					</div>
 				</td>
