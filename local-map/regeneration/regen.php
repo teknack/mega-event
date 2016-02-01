@@ -1,9 +1,5 @@
 <?php
 
-if(isset($_POST['resourceregen'])){
-	echo 'sendback()';
-}
-
 ?>
 
 <html>
@@ -76,5 +72,12 @@ if(isset($_POST['resourceregen'])){
 		<button type="submit" name="resourceregen">Confirm</button>
 	</food>
 
+	<?php
+
+		if(isset($_POST['resourceregen'])){
+			echo '<script type="text/javascript">sendback();</script>';
+		}
+
+	 ?>
 </body>
 </html>

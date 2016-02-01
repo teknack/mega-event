@@ -20,11 +20,12 @@ function down(type){
 }
 
 function sendback(){
+	alert("REACHED TEST");
 	var foodres = parseInt(document.getElementsById("food").innerHTML);
 	var waterres = parseInt(document.getElementsById("water").innerHTML);
 	var powerres = parseInt(document.getElementsById("power").innerHTML);
 	var metalres = parseInt(document.getElementsById("metal").innerHTML);
 	var woodres = parseInt(document.getElementsById("wood").innerHTML);
 
-	window.location.href = "../player.php?foodres="+foodres+"&waterres="+waterres+"&powerres="+powerres+"&metalres="+metalres+"&woodres="+woodres;
+	window.location = "../player.php?foodres="+foodres+"&waterres="+waterres+"&powerres="+powerres+"&metalres="+metalres+"&woodres="+woodres;
 }
