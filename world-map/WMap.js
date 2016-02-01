@@ -107,7 +107,6 @@ function getCursorPosition(canvas , event) {
   	var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
-    var res=x+","+y;
     return({x:x,y:y});
  }
  function fill(row,col,slotSize)
