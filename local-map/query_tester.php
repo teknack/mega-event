@@ -11,11 +11,10 @@
 	// {
 	// 	echo rand(0,100)."<br>";
 	// }
-	$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol and playerid='$playerid';";
-		$res=$conn->query($sql);
-		if(!$res)
-			echo $conn->error;
-		$r=$res->fetch_assoc();
-		echo $r;
+	$enemy=2;
+	$message=" ohh yeah";
+	$sql="UPDATE player SET message='message'+'$message' WHERE tek_emailid=$enemy;";
+		if($conn->query($sql)===false)
+			echo "error (1270): ".$conn->error;
 
 ?>
