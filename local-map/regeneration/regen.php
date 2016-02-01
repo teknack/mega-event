@@ -1,5 +1,15 @@
 <?php
 include '../../db_access/db.php';
+
+if(isset($_POST['resourceregen'])){
+	echo 'sendback()';
+	creditResource('food_regen',$_GET['foodres']);
+	creditResource('water_regen',$_GET['waterres']);
+	creditResource('power_regen',$_GET['powerres']);
+	creditResource('metal_regen',$_GET['metalres']);
+	creditResource('wood_regen',$_GET['woodres']);
+}
+
 ?>
 
 <html>
@@ -68,13 +78,9 @@ include '../../db_access/db.php';
 		</table>
 	</div> <br>
 
-	<?php
-		echo 'sendback()';
-		creditResource('food_regen',$_GET['foodres']);
-		creditResource('water_regen',$_GET['waterres']);
-		creditResource('power_regen',$_GET['powerres']);
-		creditResource('metal_regen',$_GET['metalres']);
-		creditResource('wood_regen',$_GET['woodres']);
-	 ?>
+	<form method="post" target="regen.php">
+		<button type="submit" name="resourceregen">Confirm</button>
+	</food>
+
 </body>
 </html>
