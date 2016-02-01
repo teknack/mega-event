@@ -16,6 +16,11 @@ function getDemand($resource)
 	$res = mysqli_query($conn,$query);
 	$res = mysqli_fetch_assoc($res);
 	
+	if ($res[$resource."_demand"] < 10)
+	{
+		$res[$resource."_demand"] = 10;
+	}
+	
 	return($res[$resource."_demand"]);
 }
 
@@ -147,31 +152,37 @@ if (isset($_POST) && !empty($_POST))
 						<th>Resource</th>
 						<th>Cost (gold per unit)</th>
 						<th>Amount</th>
+						<th>Inventory</th>
 					</tr>
 					<tr>
 						<td>Wood</td>
 						<td align="center"><?php echo(woodCost()) ?></td>
 						<td><input name="wood_quant" id="wood_quant" type="number" placeholder="amount of wood"/></td>
+						<td><?php echo(fetch($_SESSION["tek_emailid"],"wood"))?></td>
 					</tr>
 					<tr>
 						<td>Food</td>
 						<td align="center"><?php echo(foodCost()) ?></td>
 						<td><input name="food_quant" id="food_quant" type="number" placeholder="amount of food"/></td>
+						<td><?php echo(fetch($_SESSION["tek_emailid"],"food"))?></td>
 					</tr>
 					<tr>
 						<td>Water</td>
 						<td align="center"><?php echo(waterCost()) ?></td>
 						<td><input name="water_quant" id="water_quant" type="number" placeholder="amount of water"/></td>
+						<td><?php echo(fetch($_SESSION["tek_emailid"],"water"))?></td>
 					</tr>
 					<tr>
 						<td>Metal</td>
 						<td align="center"><?php echo(metalCost()) ?></td>
 						<td><input name="metal_quant" id="metal_quant" type="number" placeholder="amount of metal"/></td>
+						<td><?php echo(fetch($_SESSION["tek_emailid"],"metal"))?></td>
 					</tr>
 					<tr>
 						<td>Power</td>
 						<td align="center"><?php echo(powerCost()) ?></td>
 						<td><input name="power_quant" id="power_quant" type="number" placeholder="amount of power"/></td>
+						<td><?php echo(fetch($_SESSION["tek_emailid"],"power"))?></td>
 					</tr>
 				</table>
 				<br>

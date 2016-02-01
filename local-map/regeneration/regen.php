@@ -1,15 +1,24 @@
+<?php
+
+?>
+
 <html>
 <head>
 	<script src="regen.js"></script>
-	<link type="text/css" rel="stylesheet" href="./regen.css"
+	<link type="text/css" rel="stylesheet" href="./regen.css">
 </head>
 <body>
 	<h2>Distribute Statistics</h2>
 
-	Max points: <span id="max">3</span><br>
-	
-	Food: 
-	<div class="linear">		
+
+	<span id="max" style="display: none">Max points: 3</span><br>
+
+	<?php
+		echo '<script type="text/javascript">document.getElementById("max").value=15</script>';
+	?>
+
+	Food:
+	<div class="linear">
 		<table>
 			<tr>
 				<td><button type="submit" name="food" onclick='down("fooddiv")'>Minus</button></td>
@@ -18,7 +27,7 @@
 			</tr>
 		</table>
 	</div> <br>
-	Water: 
+	Water:
 	<div class="linear">
 		<table>
 			<tr>
@@ -28,7 +37,7 @@
 			</tr>
 		</table>
 	</div> <br>
-	Power: 
+	Power:
 	<div class="linear">
 		<table>
 			<tr>
@@ -38,7 +47,7 @@
 			</tr>
 		</table>
 	</div> <br>
-	Metal: 
+	Metal:
 	<div class="linear">
 		<table>
 			<tr>
@@ -48,7 +57,7 @@
 			</tr>
 		</table>
 	</div> <br>
-	Wood: 
+	Wood:
 	<div class="linear">
 		<table>
 			<tr>
@@ -58,5 +67,17 @@
 			</tr>
 		</table>
 	</div> <br>
+
+	<form method="post" action="regen.php">
+		<button type="submit" name="resourceregen">Confirm</button>
+	</food>
+
+	<?php
+
+		if(isset($_POST['resourceregen'])){
+			echo '<script type="text/javascript">sendback();</script>';
+		}
+
+	 ?>
 </body>
 </html>
