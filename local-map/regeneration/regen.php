@@ -1,5 +1,5 @@
 <?php
-include '../../db_access/db.php';
+include '../player.php';
 
 if(isset($_POST['resourceregen'])){
 	echo 'sendback()';
