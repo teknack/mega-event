@@ -12,12 +12,11 @@
 		<!--<table border="2" style="width : 50%">
 			<tr>-->
 				<div id="leftward">					
-					<span>Food : </span>
-					<span>Water :</span>
-					<span>Power :</span>
-					<span>Metal :</span>
-					<span>Wood : </span>
-					
+					<span id="food">Food : </span>
+					<span id="water">Water :</span>
+					<span id="power">Power :</span>
+					<span id="metal">Metal :</span>
+					<span id="wood">Wood :</span>
 				</div>
 				<span>
 					<form action="resources.php" method="POST"> 
