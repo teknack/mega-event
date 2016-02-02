@@ -7,6 +7,16 @@
 include "./db_access/db.php";
 gameUnset(); //in db.php, unsets non-essential variables
 //session_unset(); //Clears out the Session variable :: DANGEROUS! :: Is there an alternative??
+
+function loadPlayerSession()
+{
+	if (!isset($_SESSION["faction"]))
+	{
+		setTable("player");
+		$_SESSION["faction"] = fetch($_SESSION["tek_emailid"],"faction");
+	}
+}
+
 if (isset($_POST) && !empty($_POST))
 {
 	connect();
@@ -20,6 +30,7 @@ if (isset($_POST) && !empty($_POST))
 			//$_SESSION["in_game"] = True;
 			disconnect();
 			//redirect("./world-map/canvas1.html");
+			loadPlayerSession();
 			header("location:world-map/canvas1.html");
 		}
 		else
