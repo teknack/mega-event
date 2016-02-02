@@ -4,7 +4,7 @@
 
 <html>
 <head>
-	<script src="regen.js"></script>
+	<script src="./modify.js"></script>
 	<link type="text/css" rel="stylesheet" href="./regen.css">
 </head>
 <body>
@@ -68,16 +68,7 @@
 		</table>
 	</div> <br>
 
-	<form method="post" action="regen.php">
-		<button type="submit" name="resourceregen">Confirm</button>
-	</food>
-
-	<?php
-
-		if(isset($_POST['resourceregen'])){
-			echo '<script type="text/javascript">sendback();</script>';
-		}
-
-	 ?>
+	<button type="submit" name="resourceregen" onclick='sendback()'>Confirm</button>
+	
 </body>
 </html>
