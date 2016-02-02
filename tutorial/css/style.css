@@ -8,18 +8,7 @@ body {
 #quantity{
 	visibility: hidden;	
 }
-#player{
-	visibility: hidden;
-}
-#ally{
-	visibility: hidden;
-}
-#enemy{
-	visibility: hidden;
-}
-#sEnemy{
-	visibility: hidden;
-}	
+
 #leftbanner {
 	float: left;
 	background-color: blue;
@@ -27,6 +16,11 @@ body {
 	width: 2em;
 }
 
+#hint
+{
+	width:120%;
+	height:100%;
+}
 #rightbanner {
 	float: right;
 	background-color: blue;

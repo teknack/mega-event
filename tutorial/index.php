@@ -52,28 +52,57 @@
 								<div id="player">
 									<button id='cTroops'>create troops</button><br>
 	        						<button id='sTroops'>select troops</button><br>
-	        						<button id='sTroops'>fortify</button><br>
+	        						<button id='fortify'>fortify</button><br>
+	        					</div>
+	        					<div id="splayer">
+	        						<button id='move'>move</button><br>
 	        					</div>
 	        					<div id="ally">
         							<button id='scout'>scout</button><br>
         						</div>
+        						<div id="sally">
+        							<button id='scout1'>scout</button><br>
+        							<button id='move1'>move</button><br>
+        						</div>
+        						<div id="neutral">
+        							<button id='scout2'>scout</button><br>
+        						</div>
+        						<div id="sneutral">
+        							<button id='scout3'>scout</button><br>
+        							<button id='move2'>move</button><br>
+        						</div>
         						<div id="enemy">
-        							<button id='scout'>scout</button><br>
+        							<button id='scout4'>scout</button><br>
         						</div>
         						<div id="sEnemy">
-        							<button id='scout'>scout</button><br>
+        							<button id='scout5'>scout</button><br>
         							<button id='attack'>attack</button><br>
         						</div>
 							</div>
 					</div>
 				</td>
 				<td>
-					<div id="bottom_hint">
-						
-					</div><br>
-					<div id="prompt">
+					<table id="hint"	>
+						<tr>
+							<td>
+								<div id="bottom_hint">
+									
+								</div>
+							</td>
+							<td>
+								<div id="rc">
+									
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="prompt">
 
-					</div>
+								</div>
+							</td>
+						</tr>
+					</table>
 				</td>
 				<td>
 					<div style="float:right">

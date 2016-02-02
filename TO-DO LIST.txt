@@ -10,3 +10,7 @@ learn bootstrap
 you are styling
 
 color of player troops
+
+redeeming of resources 
+
+assigning of starting slots to players
