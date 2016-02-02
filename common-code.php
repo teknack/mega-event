@@ -78,14 +78,14 @@ function ($gamename,$score,$player)
 	disconnect();
 }
 
-function getScores()
+function getScores() //may not be needed
 {
 	connect();
 	setTable("CommonTable");
-	
+	disconnect();
 }
 
-function harvest($player)
+function harvest($player) //may not be needed
 {
 	$scores = getScores(); //returns assoc array with scores from each event
 }
