@@ -32,6 +32,7 @@ $createTroopCostPowerBase="4";
 */
 
 /*Nischal's code */
+if($_SERVER["REQUEST_METHOD"] == "GET"){
 	if (isset($_GET['foodres'])) {
 		creditResource('food_regen',$_GET['foodres']);
 	}
@@ -46,7 +47,11 @@ $createTroopCostPowerBase="4";
 	}
 	if (isset($_GET['woodres'])) {
 		creditResource('wood_regen',$_GET['woodres']);
+		echo("<script>window.location='./index.php'</script>");
 	}
+
+
+}
 
 function getStats(){
 	//global $dbconn;
@@ -149,11 +154,13 @@ function queryResource($resource,$value)
 function creditResource($resource,$value)   //use to reduce resource on some action give resource name and value resp.
 {
 	global $conn,$playerid;
-	$sql="UPDATE `player` SET $resource=$resource+'$value' WHERE tek_emailid='$playerid'";
-		if($conn->query($sql)===false)
-		{
-			echo "error: ".$conn->error;
-		}
+	if(!($value === NULL))
+		$sql="UPDATE `player` SET $resource=$resource+'$value' WHERE tek_emailid='$playerid'";
+
+	if($conn->query($sql)===false)
+	{
+		echo "error: ".$conn->error;
+	}
 	return true;
 }
 

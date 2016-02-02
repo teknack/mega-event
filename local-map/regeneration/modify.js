@@ -30,6 +30,16 @@ function sendback(){
 	var metalres = parseInt(document.getElementById("metaldiv").value);
 	var woodres = parseInt(document.getElementById("wooddiv").value);
 
-	alert("foodres :"+foodres);
+	if(!(foodres>0))
+		foodres = 0;
+	if(!(waterres>0))
+		waterres = 0;
+	if(!(powerres>0))
+		powerres = 0;
+	if(!(metalres>0))
+		metalres = 0;
+	if(!(woodres>0))
+		woodres = 0;
+	
 	window.location = "../player.php?foodres="+foodres+"&waterres="+waterres+"&powerres="+powerres+"&metalres="+metalres+"&woodres="+woodres;
 }
