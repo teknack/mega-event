@@ -53,7 +53,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 	if (isset($_GET['woodres'])) {
 		creditResource('wood_regen',$_GET['woodres']);
 		$stringresource = $stringresource.$_GET['woodres'].':';
-		updateGridColumn('type',$stringresource);
+		updateGridColumn('type',$stringresource, 0,4);
 		echo("<script>window.location='./index.php'</script>");
 	}
 
@@ -173,10 +173,10 @@ function creditResource($resource,$value)   //use to reduce resource on some act
 	return true;
 }
 
-function updateGridColumn($name,$value){
+function updateGridColumn($name,$value,$row,$col){
 	global $conn,$playerid;
 	if(!($value === NULL))
-		$sql="UPDATE `grid` SET $name='$value' WHERE occupied='$playerid'"; //Change to row/column
+		$sql="UPDATE `grid` SET $name='$value' WHERE row='$row' AND col='$col'"; //Change to row/column
 
 	if($conn->query($sql)===false)
 	{
@@ -304,8 +304,8 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	}
 
 
-	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move 
-	$res=$conn->query($sql);									   //discount				
+	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move
+	$res=$conn->query($sql);									   //discount
 	$r=$res->fetch_assoc();
 	$lvl=$r['civperk1'];
 	if($lvl==1)
@@ -1232,8 +1232,8 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	global $conn,$playerid,$moveCostFood,$moveCostWater,$moveCostPower;
 	/*resource validation for troops movement*/
 
-	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move 
-	$res=$conn->query($sql);									   //discount				
+	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move
+	$res=$conn->query($sql);									   //discount
 	$r=$res->fetch_assoc();
 	$lvl=$r['civperk1'];
 	if($lvl==1)
