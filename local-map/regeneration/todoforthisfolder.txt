@@ -3,6 +3,8 @@ Right now I took way too long to think about such a simple idea and didn't want 
 
 Changes to be made:
  -- Numbers to boxes that highlight
- -- Calculation of regen
+ -- (d)Calculation of regen
  -- Submission of the values
+
+ -- Update table grid as per row column values and not playerid value
  -- Passing finished calculation to main
