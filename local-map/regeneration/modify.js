@@ -1,4 +1,4 @@
-function up(type){	
+function up(type){
 	var max = parseInt(document.getElementById("max").value);
 	var num = parseInt(document.getElementById(type).innerHTML);
 	if((num<6) && (max>0)){
@@ -22,8 +22,7 @@ function down(type){
 }
 
 function sendback(){
-	
-	<!--Wrong line -->
+
 	var foodres = parseInt(document.getElementById("fooddiv").value);
 	var waterres = parseInt(document.getElementById("waterdiv").value);
 	var powerres = parseInt(document.getElementById("powerdiv").value);
@@ -40,6 +39,6 @@ function sendback(){
 		metalres = 0;
 	if(!(woodres>0))
 		woodres = 0;
-	
+
 	window.location = "../player.php?foodres="+foodres+"&waterres="+waterres+"&powerres="+powerres+"&metalres="+metalres+"&woodres="+woodres;
 }
