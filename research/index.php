@@ -368,9 +368,15 @@ function civPerkTwoNextLevelInfo($level)
 					<td></td>
 				</tr>
 				<tr>
-					<td><b>Civilisation Perk</b></td>
-					<td><?php echo(getLevel("civperk")) ?></td>
-					<td><?php echo(civPerkOneNextLevelInfo($level["civperk"])) ?></td>
+					<td><b>Civilisation Perk 1</b></td>
+					<td><?php echo(getLevel("civperk1")) ?></td>
+					<td><?php echo(civPerkOneNextLevelInfo($level["civperk1"])) ?></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><b>Civilisation Perk 2</b></td>
+					<td><?php echo(getLevel("civperk2")) ?></td>
+					<td><?php echo(civPerkTwoNextLevelInfo($level["civperk2"])) ?></td>
 					<td></td>
 				</tr>
 			</table>
