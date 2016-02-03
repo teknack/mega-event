@@ -161,6 +161,7 @@ function queryResource($resource,$value)
 function creditResource($resource,$value)   //use to reduce resource on some action give resource name and value resp.
 {
 	global $conn,$playerid;
+
 	if(!($value === NULL))
 		$sql="UPDATE `player` SET $resource=$resource+'$value' WHERE tek_emailid='$playerid'";
 
@@ -168,6 +169,7 @@ function creditResource($resource,$value)   //use to reduce resource on some act
 	{
 		echo "error: ".$conn->error;
 	}
+
 	return true;
 }
 
@@ -193,7 +195,7 @@ function deductResource($resource,$value)   //use to reduce resource on some act
 	}
 	else
 	{
-		$sql="UPDATE `player` SET $resource=$resource-'$value' WHERE tek_emailid='$playerid'";
+		$sql="UPDATE player SET $resource=$resource-'$value' WHERE tek_emailid='$playerid'";
 			if($conn->query($sql)===false)
 			{
 				echo "error: ".$conn->error;
@@ -301,8 +303,9 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 		$distance/=2;
 	}
 
-	$sql="SELECT civperk FROM research WHERE playerid=$playerid;"; //find if player has researched for move
-	$res=$conn->query($sql);									   //discount
+
+	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move 
+	$res=$conn->query($sql);									   //discount				
 	$r=$res->fetch_assoc();
 	$lvl=$r['civperk1'];
 	if($lvl==1)
@@ -1228,8 +1231,9 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	}
 	global $conn,$playerid,$moveCostFood,$moveCostWater,$moveCostPower;
 	/*resource validation for troops movement*/
-	$sql="SELECT civperk FROM research WHERE playerid=$playerid;"; //find if player has researched for move
-	$res=$conn->query($sql);									   //discount
+
+	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move 
+	$res=$conn->query($sql);									   //discount				
 	$r=$res->fetch_assoc();
 	$lvl=$r['civperk1'];
 	if($lvl==1)
