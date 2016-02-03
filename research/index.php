@@ -168,44 +168,143 @@ function warriorNextLevelInfo($level)
 	return($ret);
 }
 
-function factionOneNextLevelInfo($level)
+function factionPerkOneNextLevelInfo($level)
+{
+	$ret="";
+	
+	if (!isset($_SESSION["faction"]))
+	{
+		setTable("player");
+		connect();
+		$_SESSION["faction"] = fetch($_SESSION["tek_emailid"],"faction");
+		disconnect();
+	}
+	
+	if ($_SESSION["faction"] == "1")
+	{
+		switch($level+1)
+		{
+			case 1:
+				$ret="Scout cost is 50% of original cost";
+			break;
+			
+			case 2:
+				$ret="Scout cost is 25% of original cost";
+			break;
+			
+			case 3:
+				$ret="No Scout cost! :D";
+			break;
+		}
+	}
+	else if ($_SESSION["faction"] == "2")
+	{
+		switch($level+1)
+		{
+			case 1:
+				$ret="-10% on Settle Cost";
+			break;
+			
+			case 2:
+				$ret="-20% on Settle Cost";
+			break;
+			
+			case 3:
+				$ret="-30% on Settle Cost";
+			break;
+		}
+	}
+	return($ret);
+}
+
+function factionPerkTwoNextLevelInfo($level)
+{
+	$ret="";
+	
+	if (!isset($_SESSION["faction"]))
+	{
+		setTable("player");
+		connect();
+		$_SESSION["faction"] = fetch($_SESSION["tek_emailid"],"faction");
+		disconnect();
+	}
+	
+	if ($_SESSION["faction"] == "1")
+	{
+		switch($level+1)
+		{
+			case 1:
+				$ret="If ally troops in neighbouring slots, 10% of the ally troops assist in attack/defence";
+			break;
+			
+			case 2:
+				$ret="If ally troops in neighbouring slots, 30% of the ally troops assist in attack/defence";
+			break;
+			
+			case 3:
+				$ret="If ally troops in neighbouring slots, 50% of the ally troops assist in attack/defence";
+			break;
+		}
+	}
+	else if ($_SESSION["faction"] == "2")
+	{
+		switch($level+1)
+		{
+			case 1:
+				$ret="+10% plunder bonus on successful attack";
+			break;
+			
+			case 2:
+				$ret="+15% plunder bonus on successful attack";
+			break;
+			
+			case 3:
+				$ret="+30% plunder bonus on successful attack";
+			break;
+		}
+	}
+	
+	return($ret);
+}
+
+function civPerkOneNextLevelInfo($level)
 {
 	$ret="";
 	
 	switch($level+1)
 	{
 		case 1:
-			$ret="Scout cost is 50% of original cost";
+			$ret="-10% move cost";
 		break;
 		
 		case 2:
-			$ret="Scout cost is 25% of original cost";
+			$ret="-20% move cost";
 		break;
 		
 		case 3:
-			$ret="No Scout cost! :D";
+			$ret="-30% move cost";
 		break;
 	}
 	
 	return($ret);
 }
 
-function factionTwoNextLevelInfo($level)
+function civPerkTwoNextLevelInfo($level)
 {
 	$ret="";
 	
 	switch($level+1)
 	{
 		case 1:
-			$ret="Scout cost is 50% of original cost";
+			$ret="+1 base points to use on settling";
 		break;
 		
 		case 2:
-			$ret="Scout cost is 25% of original cost";
+			$ret="+2 base points to use on settling";
 		break;
 		
 		case 3:
-			$ret="No Scout cost! :D";
+			$ret="+3 base points to use on settling";
 		break;
 	}
 	
@@ -259,19 +358,19 @@ function factionTwoNextLevelInfo($level)
 				<tr>
 					<td><b>Faction Perk 1</b></td>
 					<td><?php echo(getLevel("faction1")) ?></td>
-					<td><?php echo(factionOneNextLevelInfo($level["faction1"])) ?></td>
+					<td><?php echo(factionPerkOneNextLevelInfo($level["faction1"])) ?></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><b>Faction Perk 2</b></td>
 					<td><?php echo(getLevel("faction2")) ?></td>
-					<td></td>
+					<td><?php echo(factionPerkTwoNextLevelInfo($level["faction2"])) ?></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><b>Civilisation Perk</b></td>
 					<td><?php echo(getLevel("civperk")) ?></td>
-					<td></td>
+					<td><?php echo(civPerkOneNextLevelInfo($level["civperk"])) ?></td>
 					<td></td>
 				</tr>
 			</table>
