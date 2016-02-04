@@ -202,6 +202,7 @@ function fetchAll($player)
 	$query = "SELECT * FROM ".$dbtable." WHERE tek_emailid='".$player."';";
 	
 	$res = mysqli_query($dbconn,$query);
+	//var_dump($query);
 	$res = mysqli_fetch_assoc($res);
 	return($res);
 }

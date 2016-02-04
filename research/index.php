@@ -29,7 +29,7 @@ function getLevel($col)
 	$query = "SELECT ".$col." FROM research WHERE playerid='".$_SESSION["tek_emailid"]."';";
 	$res = mysqli_query($conn,$query);
 	$res = mysqli_fetch_assoc($res);
-	disconnect();
+	//disconnect();
 	$level[$col] = $res[$col];
 	return($res[$col]);
 }
@@ -41,7 +41,7 @@ function getTroopLevel()
 	$query = "SELECT ttype FROM research WHERE playerid='".$_SESSION["tek_emailid"]."';";
 	$res = mysqli_query($conn,$query);
 	$res = mysqli_fetch_assoc($res);
-	disconnect();
+	//disconnect();
 	
 	$op = split(",",$res["ttype"]);
 	$troop["s"] = split(":",$op[0])[1];
@@ -178,7 +178,7 @@ function factionPerkOneNextLevelInfo($level)
 		setTable("player");
 		connect();
 		$_SESSION["faction"] = fetch($_SESSION["tek_emailid"],"faction");
-		disconnect();
+		//disconnect();
 	}
 	
 	if ($_SESSION["faction"] == "1")
@@ -227,7 +227,7 @@ function factionPerkTwoNextLevelInfo($level)
 		setTable("player");
 		connect();
 		$_SESSION["faction"] = fetch($_SESSION["tek_emailid"],"faction");
-		disconnect();
+		//disconnect();
 	}
 	
 	if ($_SESSION["faction"] == "1")
@@ -315,15 +315,17 @@ function civPerkTwoNextLevelInfo($level)
 function getPlayerResources()
 {
 	connect();
-	setTable("Player");
+	setTable("player");
 	$_SESSION["resources"] = fetchAll($_SESSION["tek_emailid"]);
-	disconnect();
+	
+	//disconnect();
 }
 
 function levelUpDefense()
 {
+	connect();
 	$level = getLevel("defensive");
-	
+	setTable("research");
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power | 400 wood
@@ -364,10 +366,10 @@ function levelUpDefense()
 	}
 }
 
-function levelOpOpen()
+function levelUpOpen()
 {
 	$level = getLevel("open");
-	
+	setTable("research");
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power
@@ -411,15 +413,15 @@ function levelOpOpen()
 function levelUpStealth()
 {
 	$level = getTroopLevel();
-	
-	switch($level)
+	setTable("research");
+	switch($level["s"])
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
 			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 480)
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else //not enough resources
 			{
@@ -432,7 +434,7 @@ function levelUpStealth()
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -445,7 +447,7 @@ function levelUpStealth()
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -458,7 +460,7 @@ function levelUpStealth()
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -471,7 +473,7 @@ function levelUpStealth()
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -484,7 +486,7 @@ function levelUpStealth()
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -497,7 +499,7 @@ function levelUpStealth()
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -510,15 +512,15 @@ function levelUpStealth()
 function levelUpWarrior()
 {
 	$level = getTroopLevel();
-	
-	switch($level)
+	setTable("research");
+	switch($level["w"])
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
 			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 480)
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else //not enough resources
 			{
@@ -531,7 +533,7 @@ function levelUpWarrior()
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -544,7 +546,7 @@ function levelUpWarrior()
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -557,7 +559,7 @@ function levelUpWarrior()
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -570,7 +572,7 @@ function levelUpWarrior()
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -583,7 +585,7 @@ function levelUpWarrior()
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -596,7 +598,7 @@ function levelUpWarrior()
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
-				update("ttype",$value,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -609,7 +611,7 @@ function levelUpWarrior()
 function levelUpFactionPerkOne()
 {
 	$level = getLevel("faction1");
-	
+	setTable("research");
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
@@ -653,7 +655,7 @@ function levelUpFactionPerkOne()
 function levelUpFactionPerkTwo()
 {
 	$level = getLevel("faction2");
-	
+	setTable("research");
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
@@ -697,7 +699,7 @@ function levelUpFactionPerkTwo()
 function levelUpCivPerkOne()
 {
 	$level = getLevel("civperk1");
-	
+	setTable("research");
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
@@ -741,7 +743,7 @@ function levelUpCivPerkOne()
 function levelUpCivPerkTwo()
 {
 	$level = getLevel("civperk2");
-	
+	setTable("research");
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
@@ -784,6 +786,8 @@ function levelUpCivPerkTwo()
 
 if (isset($_POST) && !empty($_POST))
 {
+	connect();
+	
 	getPlayerResources();
 	
 	if (isset($_POST["defense_research"]))
@@ -818,6 +822,8 @@ if (isset($_POST) && !empty($_POST))
 	{
 		levelUpCivPerkTwo();
 	}
+	
+	disconnect();
 }
 
 ?>
@@ -833,6 +839,7 @@ if (isset($_POST) && !empty($_POST))
 		</div>
 		<hr>
 		<div id="content">
+			<form action="" method="POST">
 			<table border=1>
 				<tr>
 					<th>Name</th>
@@ -889,6 +896,7 @@ if (isset($_POST) && !empty($_POST))
 					<td align="center"><button name="civperk2_research" type="submit">Research</button></td>
 				</tr>
 			</table>
+			</form>
 		</div>
 	</body>
 	
