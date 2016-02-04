@@ -21,6 +21,7 @@
 				<span>
 					<form action="resources.php" method="POST"> 
 						<button type="submit" id="resource">Collect Resources</button>
+						<button type="submit" id="start">START GAME</button>
 					</form>
 				</span>
 		<!--	</tr>
@@ -28,14 +29,32 @@
 		
 	</div>
 	<br><br>
-	<div id="playgroup">
-		<div id="leftbanner" class="playarea"> </div>
-		<div id="localplay" class="playarea" align="center">
-			<canvas id="canvas" width="500" height="500" style="border:1px solid #c3c3c3;">
-				Your browser does not support the canvas element.
-			</canvas>
-		</div>
-		<div id="rightbanner" class="playarea"> </div>
+	<div id="playgroup" >
+		<table id="play" height="50%" width="100%" border="1">
+			<tr>
+				<td>
+					<div id="localplay" class="playarea" align="center">
+						<canvas id="canvas" width="450" height="450" style="border:1px solid #c3c3c3;">
+							Your browser does not support the canvas element.
+						</canvas>
+					</div>
+				</td>
+				<td>
+					<div id="tutorials" class="playarea" align="center">
+						<button type="submit" id="basics">basics</button><br><br>
+						<button type="submit" id="scouting">scouting</button><br><br>
+						<button type="submit" id="selMove">selecting and moving troops</button><br><br>
+						<button type="submit" id="creAttack">settle,create troops and attack</button><br><br>
+						<button type="submit" id="research">research</button><br><br>
+						<button type="submit" id="redeem">redeeming score in mega-event</button><br><br>
+						<button type="submit" id="market">market</button><br><br>
+					</div>
+				</td>
+				<td width="50%">
+					<div id="prompt" class="playarea"> </div>
+				</td>
+			</tr>
+		</table>
 	</div>
 	<hr>
 	<div id="bottomgroup" border=1>
@@ -44,13 +63,14 @@
 				<td>
 					<div id="bottom_action" style="float:left">
 							<div>
+								<input type="hidden" name="action" id="action">
 								<input type="hidden" name="row" id="row">
 								<input type="hidden" name="col" id="col">
 								<input type="number" name="quantity" id="quantity">
 							</div>
-							<div id="action">
+							<div id="actions">
 								<div id="player">
-									<button id='cTroops'>create troops</button><br>
+									<button id='cTroops' onmousemove="find()">create troops</button><br>
 	        						<button id='sTroops'>select troops</button><br>
 	        						<button id='fortify'>fortify</button><br>
 	        					</div>
@@ -58,6 +78,7 @@
 	        						<button id='move'>move</button><br>
 	        					</div>
 	        					<div id="ally">
+	        						<button id='sTroops1'>select troops</button>
         							<button id='scout'>scout</button><br>
         						</div>
         						<div id="sally">
@@ -65,7 +86,9 @@
         							<button id='move1'>move</button><br>
         						</div>
         						<div id="neutral">
+        							<button id='sTroops2'>select troops</button>
         							<button id='scout2'>scout</button><br>
+        							<button id='settle'>settle</button><br>
         						</div>
         						<div id="sneutral">
         							<button id='scout3'>scout</button><br>
@@ -82,7 +105,7 @@
 					</div>
 				</td>
 				<td>
-					<table id="hint"	>
+					<table id="hint">
 						<tr>
 							<td>
 								<div id="bottom_hint">
@@ -95,13 +118,7 @@
 								</div>
 							</td>
 						</tr>
-						<tr>
-							<td colspan="2">
-								<div id="prompt">
-
-								</div>
-							</td>
-						</tr>
+	
 					</table>
 				</td>
 				<td>

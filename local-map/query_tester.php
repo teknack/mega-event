@@ -12,9 +12,10 @@
 	// 	echo rand(0,100)."<br>";
 	// }
 	$enemy=2;
-	$message=" ohh yeah";
-	$sql="UPDATE player SET message='message'+'$message' WHERE tek_emailid=$enemy;";
-		if($conn->query($sql)===false)
-			echo "error (1270): ".$conn->error;
-
+	$message="0:1:5:2:4:";
+	$message=explode(":", $message);
+	for($i=0;$i<count($message);$i++)
+	{
+		echo $message[$i]."<bR>";
+	}
 ?>

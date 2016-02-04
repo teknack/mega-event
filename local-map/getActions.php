@@ -10,12 +10,13 @@ function scout($row,$col)
 	$sql="SELECT occupied,fortification,troops,faction FROM grid WHERE row=$row and col=$col;";
 	$res=$conn->query($sql);
 	$troops=0;
+	$ptroops=0;
 	if($res->num_rows>0)
 	{
 		$r=$res->fetch_assoc();
 		if($r['troops']>0)
 		{
-			$troops=$r['troops']; //troops by occupant
+			$ptroops=$r['troops']; //troops by occupant
 		}
 	}
 	$sql="SELECT SUM(quantity) FROM troops WHERE row=$row and col=$col;";
@@ -23,9 +24,40 @@ function scout($row,$col)
 	if($res->num_rows>0)
 	{                               
 		$r1=$res->fetch_assoc();
-		$troops+=$r1['SUM(quantity)']; //troops of allies	
+		$troops=$ptroops+$r1['SUM(quantity)']; //troops of allies	
 	}
-	$output=$output.'{"response":"Occupant:'.$r["occupied"].'<br>Fortification:'.$r["fortification"].'<br>troops:'.$troops.'<br>Faction:'.$r["faction"].'"}]';
+	$output=$output.'{"response":"Occupant:'.$r["occupied"].'<br>Fortification:'.$r["fortification"].'<br>troops:'
+					.$troops.'<br>your troops:'.$ptroops.'<br>Faction:'.$r["faction"].'"}]';
+}
+function troopPresent($row,$col)
+{
+	global $conn,$playerid;
+	$sql="SELECT troops FROM grid WHERE row=$row and col=$col and occupied=$playerid;";
+	$res=$conn->query($sql);
+	if($res->num_rows>0)
+	{
+		$r=$res->fetch_assoc();
+		if($r['troops']>0)
+			return true;
+		else
+			return false;
+	}
+	else
+	{
+		$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid=$playerid;";
+		$res=$conn->query($sql);
+		if($res->num_rows>0)
+		{
+			$r=$res->fetch_assoc();
+			if($r['quantity']>0)
+				return true;
+			else 
+				return false;
+		}
+		else
+			return false;
+	}
+
 }
 function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost with actions**
 {

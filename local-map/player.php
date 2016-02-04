@@ -1,24 +1,12 @@
 <?php
 require "../db_access/db.php";
 require "connect.php";
+require "actionCostValues.php";
 $faction;/*=$_SESSION['faction'];*/
 $faction=1;	//temporary!! don't forget to remove!!
 $playerid;
 $playerid=$_SESSION['tek_emailid']; //temporary!! don't forget to remove!!
-$moveCostFood=6;
-$moveCostWater=8;
-$moveCostPower=3;
-$scoutCostFood=4;
-$scoutCostWater=6;
-$settleWoodCost=20;
-$settleMetalCost=30;
-$settlePowerCost=15;
-$fortifyWoodCost=array();
-$fortifyMetalCost=array();
-$fortifyPowerCost=array();
-$createTroopCostFoodBase="10";
-$createTroopCostWaterBase="13";
-$createTroopCostPowerBase="4";
+
 
 /*number of troops garrisonable by fortification level
 1-10
@@ -53,7 +41,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 	if (isset($_GET['woodres'])) {
 		creditResource('wood_regen',$_GET['woodres']);
 		$stringresource = $stringresource.$_GET['woodres'].':';
-		updateGridColumn('type',$stringresource, 0,4);
+		updateGridColumn('type',$stringresource, 0,4);/*fucking error*/
 		echo("<script>window.location='./index.php'</script>");
 	}
 
@@ -270,8 +258,6 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	$etroops=0; //enemy total troop strength at the destination slot
 	$obperk=0; //open battle perk level of each enemy
 	$ambushSurvive=false;
-	global $conn,$moveCostFood,$moveCostWater,$moveCostPower,$playerid;
-	$sql="SELECT root FROM grid WHERE row=$srcRow and col=$srcCol;"; //the query for root column decide if movement is within
 	global $conn,$moveCostFood,$moveCostPower,$playerid;
 	$sql="SELECT root FROM grid WHERE row=$srcRow and col=$srcCol;"; //the query for root column decide if movement is within
 										 //the faction occupied region
@@ -987,6 +973,64 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$_SESSION['response']="the slot is now accupied by an ally :(.";
 		return;
 	}
+
+	//confirm if player can afford to move
+	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move
+	$res=$conn->query($sql);									   //discount
+	$r=$res->fetch_assoc();
+	$lvl=$r['civperk1'];
+	if($lvl==1)
+	{
+		$moveCostFood-=$moveCostFood*0.1;
+		$moveCostWater-=$moveCostWater*0.1;
+		$moveCostPower-=$moveCostPower*0.1;
+	}
+	else if($lvl==2)
+	{
+		$moveCostFood-=$moveCostFood*0.2;
+		$moveCostWater-=$moveCostWater*0.2;
+		$moveCostPower-=$moveCostPower*0.2;
+	}
+	else if($lvl==3)
+	{
+		$moveCostFood-=$moveCostFood*0.3;
+		$moveCostWater-=$moveCostWater*0.3;
+		$moveCostPower-=$moveCostPower*0.3;
+	}
+
+
+	$distance=max(abs($srcRow-$destRow),abs($srcCol-$destCol));
+	$foodCost=$distance*$moveCostFood;
+	$waterCost=$distance*$moveCostWater;
+	$powerCost=$distance*$moveCostPower;
+	if(!queryResource("food",$foodCost))
+	{
+		$_SESSION['response']="You don't have the required resources(food).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!queryResource("water",$waterCost))
+	{
+		$_SESSION['response']="You don't have the required resources(water).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!queryResource("power",$powerCost))
+	{
+		$_SESSION['response']="You don't have the required resources(power).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	deductResource("food",$foodCost);
+	deductResource("water",$waterCost);
+	deductResource("power",$powerCost);
+
 	$result=simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity);
 	$playerLevel=$result['troopLevel'];
 	$fortification=$result['fortification'];
@@ -1036,7 +1080,8 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	$_SESSION['playerLevel']=$playerLevel;
 	$_SESSION['baseLevel']=$fortification;
 	/*redirect to mini-game*/
-
+ 
+    /*pending mitesh's mini game*/
 
 	/*get result from minigame and calculate losses*/
 	$battleResult=$_SESSION['result'];
@@ -1075,6 +1120,24 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			}
 		}
 		//removing resource gathering from the defeated slot pending
+		$sql="SELECT type FROM grid WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		$distribution=$res['type'];
+		$distribution=explode(":",$distribution);
+		$foodRegen=$distribution[0];
+		$waterRegen=$distribution[1];
+		$powerRegen=$distribution[2];
+		$metalRegen=$distribution[3];
+		$woodRegen=$distribution[4];
+
+		$sql="UPDATE player SET food_regen=food_regen-$foodRegen,water_regen=water_regen-$waterRegen,
+		      power_regen=power_regen-$powerRegen,metal_regen=metal_regen-$metalRegen,
+		      wood_regen=wood_regen-$wood_regen WHERE tek_emailid=$enemy;";
+		if($conn->query($sql)===false)
+			echo "<br>error in reducing enemy regen: ".$conn->error;
+
+
 		$sql="UPDATE grid SET occupied=$playerid,type=NULL,faction=$faction,troops=$quantity WHERE
 		      row=$destRow and col=$destCol;";
 		if($conn->query($sql)===false)
@@ -1105,8 +1168,6 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		      ,metal=metal+$plunderMetal,wood=wood+$plunderWood WHERE tek_emailid=$playerid";
 		if($conn->query($sql)===false)
 			echo "<br>error: ".$conn->error;
-
-		/*pending resoruce assignment*/
 
 		/*root reassignment*/
 		$sql="SELECT root FROM grid WHERE row=$destRow and col=$destCol;";
@@ -1219,6 +1280,18 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	unset($_SESSION['selectedRow']);
 	unset($_SESSION['selectedCol']);
 	unset($_SESSION['selectedTroops']);
+	if($battleResult)
+	{
+		$sql="SELECT civperk2 FROM grid WHERE playerid=$playerid;";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		$points=3;
+		$level=$r['civperk2'];
+		$points=$level++;
+		$_SESSION['regen_points']=$points;
+		/*pending caroline queeny mini game*/
+		header("location:regeneration/regen.php");
+	}
 }
 
 
@@ -1312,7 +1385,6 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	if($battleResult) //battle won
 	{
 			//loss calculation
-		echo "won";
 		$quantity=$originalQuantity;
 		if($fortification>$troopLevel) //low level troops attacking higher level settlements
 		{
@@ -1339,6 +1411,23 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			}
 		}
 		//removing resource gathering from the defeated slot pending
+		$sql="SELECT type FROM grid WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		$distribution=$res['type'];
+		$distribution=explode(":",$distribution);
+		$foodRegen=$distribution[0];
+		$waterRegen=$distribution[1];
+		$powerRegen=$distribution[2];
+		$metalRegen=$distribution[3];
+		$woodRegen=$distribution[4];
+
+		$sql="UPDATE player SET food_regen=food_regen-$foodRegen,water_regen=water_regen-$waterRegen,
+		      power_regen=power_regen-$powerRegen,metal_regen=metal_regen-$metalRegen,
+		      wood_regen=wood_regen-$wood_regen WHERE tek_emailid=$enemy;";
+		if($conn->query($sql)===false)
+			echo "<br>error in reducing enemy regen: ".$conn->error;
+
 		//removing resource gathering from the defeated slot
 		$sql="UPDATE grid SET occupied=$playerid,type=NULL,faction=$faction,troops=$quantity WHERE
 		      row=$destRow and col=$destCol;";
@@ -1484,6 +1573,18 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	unset($_SESSION['selectedRow']);
 	unset($_SESSION['selectedCol']);
 	unset($_SESSION['selectedTroops']);
+	if($battleResult)
+	{
+		$sql="SELECT civperk2 FROM grid WHERE playerid=$playerid;";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		$points=3;
+		$level=$r['civperk2'];
+		$points=$level++;
+		$_SESSION['regen_points']=$points;
+		/*pending caroline queeny mini game*/
+		header("location:regeneration/regen.php");
+	}
 }
 function condenseArray($arr) //removes duplicates and would reduce load on server as little as it already is..
 {
@@ -1507,6 +1608,7 @@ function condenseArray($arr) //removes duplicates and would reduce load on serve
 	}
 	return $ar;
 }
+
 function settle($row,$col) //occupies selected slot pending increment of resource regen
 {
 	if(!validateAction("settle",$row,$col))
@@ -1629,15 +1731,25 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 		echo "<br>";
 		echo "error: ".$conn->error."<br>";
 	}
-	$sql="UPDATE player SET total=total+1 WHERE playerid=$playerid;";
+	$sql="UPDATE player SET total=total+1 WHERE tek_emailid=$playerid;";
 	if(!$conn->query($sql) === TRUE)
 	{
 		var_dump($sql);
 		echo "<br>";
 		echo "error: ".$conn->error."<br>";
 	}
+	$sql="SELECT civperk2 FROM research WHERE playerid=$playerid;";
+	$res=$conn->query($sql);
+	$r=$res->fetch_assoc();
+	$points=3;
+	$level=$r['civperk2'];
+	$points=$level++;
+	$_SESSION['regen_points']=$points;
+	/*pending caroline queeny mini game integration*/
 	$_SESSION['response']="successfully settled.";
+	header("location:./regeneration/regen.php");
 }
+
 function scout($row,$col)
 {
 	global $conn,$playerid,$faction,$scoutCostFood,$scoutCostWater;
@@ -1804,7 +1916,7 @@ function createTroops($row,$col,$quantity)
 }
 function fortify($row,$col)/*pending*/
 {
-	if(!validateAction("fortify",$destRow,$destCol))
+	if(!validateAction("fortify",$row,$col))
 	{
 		$_SESSION['response']="the slot is now accupied by an ally :(.";
 		return;
@@ -1812,7 +1924,8 @@ function fortify($row,$col)/*pending*/
 	global $conn,$playerid,$fortifyWoodCost,$fortifyMetalCost,$fortifyPowerCost;
 	$sql="SELECT fortification FROM grid WHERE row=$row and col=$col;";
 	$res=$conn->query($sql);
-	$level=$res['fortification'];
+	$r=$res->fetch_assoc();
+	$level=$r['fortification'];
 	if(!queryResource("wood",$fortifyWoodCost[$level-1]))
 	{
 		$_SESSION['response']="You don't have the required resources(food).";
@@ -1848,14 +1961,23 @@ function fortify($row,$col)/*pending*/
 		$_SESSION['response']="error in query";
 	}
 	else
-		$_SESSION['response']="fortified to level : ".$level+1;
+		$_SESSION['response']="fortified to level : ".($level+1);
+}
+if(isset($_POST['fortify']))
+{
+	$row=$_POST['row'];
+	$col=$_POST['col'];
+	fortify($row,$col);
+	header("location:index.php");
 }
 if(isset($_POST['settle']))
 {
-	$row=testVar($_POST['row']);
-	$col=testVar($_POST['col']);
+	$row=$_POST['row'];
+	$col=$_POST['col'];
+	//$row=1;
+	//$col=13;
 	settle($row,$col);
-	header("location:index.php");
+	//header("location:index.php");
 }
 if(isset($_POST['select_troops']))
 {
@@ -1875,11 +1997,6 @@ if(isset($_POST['select_troops']))
 }
 if(isset($_POST["scout"]))
 {
-	if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedRow']))
-	{
-		unset($_SESSION['selectedRow']);
-		unset($_SESSION['selectedCol']);
-	}
 	scout($_POST['row'],$_POST['col']);
 	header("location:index.php");
 }

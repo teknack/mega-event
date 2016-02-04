@@ -238,6 +238,8 @@ function fake_main()
 							</div>
 							<div id="action">
 							</div>
+							<div id="cost">
+							</div>
 						</form>
 					</div>
 				</td>
