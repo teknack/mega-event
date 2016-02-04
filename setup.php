@@ -31,28 +31,32 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 	if(isset($_POST["faction1"]))
 	{
 		alert("you have picked faction 1");
-		insert("tek_emailid,faction,collect","'".$_SESSION["tek_emailid"]."',1,".time());
+		insert("tek_emailid,faction,collect","'".$_SESSION["tek_emailid"]."',1,".time()); //set current time as "collect" value in db
 		$_SESSION["collect_time"] = time();
 		$_SESSION["faction"] = "1";
-		if (!checkPlayerExists($_SESSION["tek_emailid"],"research"))
+		
+		if (!checkPlayerExists($_SESSION["tek_emailid"],"research")) //includes player in reseach table
 		{
 			setTable("research");
 			insert("playerid",$_SESSION["tek_emailid"]);
 		}
+		
 		disconnect();
 		redirect("world-map/canvas1.html");
 	}
-	else if (isset($_POST["faction2"]))
+	else if (isset($_POST["faction2"])) //same as above
 	{
 		alert("you have picked faction 2");
 		insert("tek_emailid,faction,collect","'".$_SESSION["tek_emailid"]."',2,".time());
 		$_SESSION["collect_time"] = time();
 		$_SESSION["faction"] = "2";
+		
 		if (!checkPlayerExists($_SESSION["tek_emailid"],"research"))
 		{
 			setTable("research");
 			insert("playerid",$_SESSION["tek_emailid"]);
 		}
+		
 		disconnect();
 		redirect("world-map/canvas1.html");
 	}
