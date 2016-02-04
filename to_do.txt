@@ -2,6 +2,8 @@ REMINDER:
 --player.php => Set player id to session. Currently constant.
 --Set path in common-code.php
 
+-- (new)Balancing of teams by manipulating resources.
+
 Things to be done by 27/01/2016
 --setup.php - the newcomer's page (to be kept in root folder of event)
 --/-->Choosing random cell for user to be addressed
