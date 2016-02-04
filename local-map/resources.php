@@ -49,7 +49,7 @@ $playerid = $_SESSION["tek_emailid"];
 connect();
 setTable("player");
 $query = "SELECT faction,food,food_regen,water,water_regen,power,power_regen,metal,metal_regen,wood,wood_regen,total FROM player 
-WHERE tek_emailid=".$playerid.";";
+WHERE tek_emailid='".$playerid."';";
 $res = mysqli_query($dbconn,$query);
 $res = mysqli_fetch_assoc($res);
 

@@ -9,8 +9,8 @@
  */ 
 
 include "./db_access/db.php";
-alert($_SESSION["tek_emailid"]);
-var_dump($_SESSION);
+//alert($_SESSION["tek_emailid"]);
+//var_dump($_SESSION);
 connect();
 setTable("player");
 if (checkPlayerExists($_SESSION["tek_emailid"],"player")) //does a check to see if player has aready picked a faction
