@@ -2,11 +2,12 @@
 require "../db_access/db.php";
 require "connect.php";
 require "actionCostValues.php";
-$faction;/*=$_SESSION['faction'];*/
-$faction=1;	//temporary!! don't forget to remove!!
+$faction=$_SESSION['faction'];
+
 $playerid;
 $playerid=$_SESSION['tek_emailid']; //temporary!! don't forget to remove!!
-
+/*1-preserver
+  2-exploiter*/
 
 /*number of troops garrisonable by fortification level
 1-10
@@ -97,7 +98,7 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 		else
 			return true;
 	}
-	else if($action=="createTroops" or $action=="selectTroops" or $action=="fortify")
+	else if($action=="selectTroops")
 	{
 		$sql="SELECT faction FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
@@ -106,6 +107,16 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 			return true;
 		else
 			return false;
+	}
+	else if($action=="createTroops" or $action=="fortify")
+	{
+		$sql="SELECT occupied FROM grid WHERE row=$row and col=$col;";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		if($r['occupied']==$playerid or $r['occupied']==0) //allied or unoccupied slot
+			return true;
+		else
+			return false;	
 	}
 	else if($action=="settle")
 	{
@@ -217,33 +228,40 @@ function troopExist($row,$col,$quantity)
 			$troopExist=true;
 		}
 	}
-	$sql="SELECT playerid,quantity FROM troops WHERE row=$row and col=$col;"; //check if required troops present
+	$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid;"; //check if required troops present
 	$res=$conn->query($sql);                                                        //in troops table
 	if($res->num_rows>0)
 	{
 		$row=$res->fetch_assoc();
-		if($row['quantity']<$quantity or $row['playerid']!=$playerid)
+		if($row['quantity']<$quantity)
 		{
 			if(!$troopExist) //troops not enough but present in troops table
 			{
-				$_SESSION['response']=$_SESSION['response']."You don't have those many troops.
-				Create more soldier(s)!";
+				$_SESSION['response']="You don't have those many troops.Create more soldiers!";
 				unset($_SESSION['selectedRow']);
 				unset($_SESSION['selectedCol']);
 				unset($_SESSION['selectedTroops']);
 				return false;
 			}
 		}
+		else
+		{
+			$troopExist=true;
+		}
 	}
 	if(!$troopExist)
 	{
-		$_SESSION['response'].="You don't have those many troops.Create more soldiers!"; //troops not present in either of the tables
+		$_SESSION['response']="You don't have those many troops.Create more soldiers!"; //troops not present in either of the tables
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 		unset($_SESSION['selectedTroops']);
 		return false;
 	}
-	return true;
+	else
+	{
+		$_SESSION['response']="Selected $quantity soldiers";
+		return true;
+	}
 }
 
 
@@ -261,8 +279,9 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	$enemy; //enemy playerid
 	$etroops=0; //enemy total troop strength at the destination slot
 	$obperk=0; //open battle perk level of each enemy
+	$ambush=false;
 	$ambushSurvive=false;
-	global $conn,$moveCostFood,$moveCostPower,$playerid;
+	global $conn,$moveCostFood,$moveCostWater,$moveCostPower,$playerid;
 	$sql="SELECT root FROM grid WHERE row=$srcRow and col=$srcCol;"; //the query for root column decide if movement is within
 										 //the faction occupied region
 	if($res=$conn->query($sql))
@@ -363,94 +382,121 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 
 	/*open battle sim*/
 	$troopDistribution=[[]];
-	$sql="SELECT playerid,quantity FROM troops WHERE row=$destRow and col=$destCol;";
+	$hiddenTroops=0;
+	$sql="SELECT faction FROM player WHERE tek_emailid=$playerid;";
 	$res=$conn->query($sql);
-	if($res->num_rows>0)
+	$r=$res->fetch_assoc();
+	$pfaction=$r['faction'];
+	$sql="SELECT playerid FROM troops WHERE row=$destRow and col=$destCol;";
+	$res1=$conn->query($sql);
+	if($res1->num_rows==0)
 	{
-		$i=0;
-		while($row=$res->fetch_assoc())
-		{
-			$enemy=$row['playerid'];
-			$otroops=$row['quantity']; //number of troops of one enemy occupant
-			$sql1="SELECT open,ttype FROM research WHERE playerid=$enemy;";
-			$res1=$conn->query($sql1);
-			$r=$res1->fetch_assoc();
-			$obperk=$r['open'];
-			if($obperk==1)
-			{
-				$hiddenTroops=max(0.25*$otroops,1); //25% percent troops hidden and are twice as effective
-				$otroops+=$hiddenTroops;
-			}
-			else if($obperk==2)
-			{
-				$hiddenTroops=max(0.5*$otroops,1); //50% percent troops hidden and are twice as effective
-				$otroops+=$hiddenTroops;
-			}
-			else if($obperk==3)
-			{
-				$hiddenTroops=$otroops; //100% percent troops hidden and are twice as effective
-				$otroops+=$hiddenTroops;
-			}
-			$lvl=$row['ttype'];
-			$lvl=explode(":", $lvl);
-			$level=$lvl[1];
-			$troopDistribution[$i]['troops']=$otroops-$hiddenTroops;
-			$troopDistribution[$i]['playerid']=$enemy;
-			$otroops=$otroops*$level;
-			$etroops+=$otroops;
-			$i++;
-		}
-		$sql="SELECT ttype FROM research WHERE playerid=$playerid;";
-		$res1=$conn->query($sql);
-		$row=$res1->fetch_assoc();
-		$flvl=$row['ttype'];
-		$flvl=explode(":", $flvl);
-		$flevel=$flvl[1];
-		$quantity*=$flevel;
-		if($quantity>$etroops) //player troops survive the ambush
-		{
-			$ambushSurvive=true;
-			$quantity=$quantity-$etroops;
-			$quantity/=$flevel;
-			$quantity=floor($quantity);
-			$sql2="DELETE FROM troops WHERE row=$destCol and col=$destCol;";
-			if($conn->query($sql2)===false)
-			{
-				var_dump($sql2);
-				echo "<br> error: ".$conn->error;
-			}
-			/*message to all*/
-		}
-		else //enemy ambush wins
-		{
-			$ambushSurvive=false;
-			$quantity/=$flevel;
-			for($i=0;$i<count($troopDistribution);$i++)
-			{
-				$loss=floor($troopDistribution[$i]['troops']/$quantity);
-				$id=$troopDistribution['playerid']; //deducting troops as battle losses
-				$sql2="UPDATE troops SET quantity=quantity-$loss WHERE playerid=$id and row=$destRow and col=$destCol;";
-				if($conn->query($sql2)===false)
-				{
-					var_dump($sql2);
-					echo "<br> error: ".$conn->error;
-				}
-			}
-			$sql2="DELETE FROM troops WHERE quantity<=0;";
-			if($conn->query($sql2)===false)
-			{
-				var_dump($sql2);
-				echo "<br> error: ".$conn->error;
-			}
-			/*message to all*/
-			$_SESSION['response']="Your troops were ambushed!.There were no survivors :-(";
-		}
+		$ambush=false;
 	}
 	else
 	{
-		$enemy=0;
-		$etroops=0;
-		$ebperk=0;
+		$r=$res1->fetch_assoc();
+		$p=$r['playerid'];
+		$sql="SELECT faction FROM player WHERE tek_emailid=$p;";
+		$res1=$conn->query($sql);
+		$r=$res1->fetch_assoc();
+		$faction=$r['faction'];
+		if($faction!=$pfaction and $faction!=0)
+		{
+			echo "bhencho";
+			$ambush=true;
+			$sql="SELECT playerid,quantity FROM troops WHERE row=$destRow and col=$destCol;";
+			$res=$conn->query($sql);
+			if($res->num_rows>0)
+			{
+				$i=0;
+				while($row=$res->fetch_assoc())
+				{
+					$enemy=$row['playerid'];
+					$otroops=$row['quantity']; //number of troops of one enemy occupant
+					$sql1="SELECT open,ttype FROM research WHERE playerid=$enemy;";
+					$res1=$conn->query($sql1);
+					$r=$res1->fetch_assoc();
+					$obperk=$r['open'];
+					if($obperk==1)
+					{
+						$hiddenTroops=max(0.25*$otroops,1); //25% percent troops hidden and are twice as effective
+						$otroops+=$hiddenTroops;
+					}
+					else if($obperk==2)
+					{
+						$hiddenTroops=max(0.5*$otroops,1); //50% percent troops hidden and are twice as effective
+						$otroops+=$hiddenTroops;
+					}
+					else if($obperk==3)
+					{
+						$hiddenTroops=$otroops; //100% percent troops hidden and are twice as effective
+						$otroops+=$hiddenTroops;
+					}
+					$lvl=$r['ttype'];
+					$lvl=explode(":", $lvl);
+					$level=$lvl[1];
+					$troopDistribution[$i]['troops']=$otroops-$hiddenTroops;
+					$troopDistribution[$i]['playerid']=$enemy;
+					$otroops=$otroops*$level;
+					$etroops+=$otroops;
+					$i++;
+				}
+				$sql="SELECT ttype FROM research WHERE playerid=$playerid;";
+				$res1=$conn->query($sql);
+				$row=$res1->fetch_assoc();
+				$flvl=$row['ttype'];
+				$flvl=explode(":", $flvl);
+				$flevel=$flvl[1];
+				if($flevel==0)
+					$flevel=1;
+				$quantity*=$flevel;
+				if($quantity>$etroops) //player troops survive the ambush
+				{
+					$ambushSurvive=true;
+					$quantity=$quantity-$etroops;
+					$quantity/=$flevel;
+					$quantity=floor($quantity);
+					$sql2="DELETE FROM troops WHERE row=$destCol and col=$destCol;";
+					if($conn->query($sql2)===false)
+					{
+						var_dump($sql2);
+						echo "<br> error: ".$conn->error;
+					}
+					/*message to all*/
+				}
+				else //enemy ambush wins
+				{
+					$ambushSurvive=false;
+					$quantity/=$flevel;
+					for($i=0;$i<count($troopDistribution);$i++)
+					{
+						$loss=floor($troopDistribution[$i]['troops']/$quantity);
+						$id=$troopDistribution['playerid']; //deducting troops as battle losses
+						$sql2="UPDATE troops SET quantity=quantity-$loss WHERE playerid=$id and row=$destRow and col=$destCol;";
+						if($conn->query($sql2)===false)
+						{
+							var_dump($sql2);
+							echo "<br> error: ".$conn->error;
+						}
+					}
+					$sql2="DELETE FROM troops WHERE quantity<=0;";
+					if($conn->query($sql2)===false)
+					{
+						var_dump($sql2);
+						echo "<br> error: ".$conn->error;
+					}
+					/*message to all*/
+					$_SESSION['response']="Your troops were ambushed!.There were no survivors :-(";
+				}
+			}
+			else
+			{
+				$enemy=0;
+				$etroops=0;
+				$ebperk=0;
+			}
+		}
 	}
 	/*it ends here*/
 	$sql="SELECT occupied FROM grid WHERE row=$srcRow and col=$srcCol;";
@@ -483,7 +529,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;";
 				if($conn->query($sql)===false)
 					echo "error (124 wala): ".$conn->error."<br>";
-				if($ambushSurvive==true)
+				if($ambushSurvive==true and $ambush==true)
 				{
 					$_SESSION['response']="There was an ambush on your troops and you lost a few soldiers<br>
 					                       moved ".$quantity." soldiers! by ".$distance;
@@ -501,7 +547,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$destRow and col=$destCol";
 				if($conn->query($sql)==false)
 						echo "error(135) : ".$conn->error."<br>";
-				if($ambushSurvive==true)
+				if($ambushSurvive==true and $ambush==true)
 				{
 					$_SESSION['response']="There was an ambush on your troops and you lost a few soldiers<br>
 					                       moved ".$quantity." soldiers! by ".$distance;
@@ -519,10 +565,10 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 			$r=$res2->fetch_assoc();
 			if($r['occupied']!=$playerid) //player moves from unoccupied/allied slots to unoccupied/allied slots
 			{
-				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol;";
+				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol and playerid=$playerid;";
 				if($conn->query($sql)==false)
 					echo "error (143): ".$conn->error."<br>";
-				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol;"; //check if troops are already present
+				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol and playerid=$playerid;"; //check if troops are already present
 				$res1=$conn->query($sql);
 				if($res1->num_rows==0)
 				{
@@ -532,21 +578,21 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				}
 				else
 				{
-					$sql="UPDATE troops SET quantity=quantity+$quantity WHERE row=$destRow and col=$destCol;";
+					$sql="UPDATE troops SET quantity=quantity+$quantity WHERE row=$destRow and col=$destCol and playerid=$playerid;";
 					if($conn->query($sql)==false)
 						echo "error (156): ".$conn->error."<br>";
 				}
 				$sql="DELETE FROM troops WHERE quantity<=0";
 				if($conn->query($sql)==false)
 					echo "error(160) : ".$conn->error;
-				if($ambushSurvive==true)
+				if($ambushSurvive==true and $ambush==true)
 				{
 					$_SESSION['response']="There was an ambush on your troops and you lost a few soldiers<br>
-					                       moved ".$quantity." soldiers! by ".$distance;
+					                       moved $quantity soldiers! by $distance to ($destRow,$destCol)";
 				}
 				else
 				{
-					$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
+					$_SESSION['response']="moved $quantity soldiers! by $distance to ($destRow,$destCol)";
 				}
 			}
 			else //move troops from unoccupied/allied slots to occupied slot
@@ -560,14 +606,14 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="DELETE FROM troops WHERE quantity<=0";
 				if($conn->query($sql)==false)
 					echo "error(160) : ".$conn->error;
-				if($ambushSurvive==true)
+				if($ambushSurvive==true and $ambush==true)
 				{
 					$_SESSION['response']="There was an ambush on your troops and you lost a few soldiers<br>
-					                       moved ".$quantity." soldiers! by ".$distance;
+					                       moved $quantity soldiers! by $distance to ($destRow,$destCol)";
 				}
 				else
 				{
-					$_SESSION['response']="moved ".$quantity." soldiers! by ".$distance;
+					$_SESSION['response']="moved $quantity soldiers! by $distance to ($destRow,$destCol)";
 				}
 			}
 		}
@@ -1393,13 +1439,15 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		if($fortification>$troopLevel) //low level troops attacking higher level settlements
 		{
 			$minLoss=20+(($fortification-$troopLevel)*10);
-			$loss=floor($quantity*rand($minLoss,100)/100);
+			$num=rand($minLoss,100);
+			$loss=floor($quantity*$num/100);
 			if($maxLoss>0)
 				$loss=floor($loss*$maxLoss/100);
 			$quantity-=$loss;
 			if($quantity<=0)
 			{
 				$quantity=1;
+				echo "remaining=$quantity<bR>num=$num";
 			}
 		}
 		else //high level or equal level troops attacking low level settlement
@@ -1412,13 +1460,14 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			if($quantity<=0)
 			{
 				$quantity=1;
+				echo "remaining=$quantity";
 			}
 		}
 		//removing resource gathering from the defeated slot pending
 		$sql="SELECT type FROM grid WHERE row=$destRow and col=$destCol;";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
-		$distribution=$res['type'];
+		$distribution=$r['type'];
 		$distribution=explode(":",$distribution);
 		$foodRegen=$distribution[0];
 		$waterRegen=$distribution[1];
@@ -1428,7 +1477,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 
 		$sql="UPDATE player SET food_regen=food_regen-$foodRegen,water_regen=water_regen-$waterRegen,
 		      power_regen=power_regen-$powerRegen,metal_regen=metal_regen-$metalRegen,
-		      wood_regen=wood_regen-$wood_regen WHERE tek_emailid=$enemy;";
+		      wood_regen=wood_regen-$woodRegen WHERE tek_emailid=$enemy;";
 		if($conn->query($sql)===false)
 			echo "<br>error in reducing enemy regen: ".$conn->error;
 
@@ -1569,6 +1618,12 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 				echo "<br>error: ".$conn->error;
 		}
 		$x=$winChance/100; // defensive troops loss calculation if winChance is 40%, 40% of troops will die
+		$sql="SELECT troops FROM grid WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		$troops=$r['troops'];
+		$troops-=$troops*$x;
+		echo $x;
 		$sql="UPDATE grid SET troops=troops-troops*$x WHERE row=$destRow and col=$destCol;";
 		if($conn->query($sql)===false)
 			echo "error: ".$conn->error;
@@ -1749,6 +1804,8 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 	$level=$r['civperk2'];
 	$points=$level++;
 	$_SESSION['regen_points']=$points;
+	$_SESSION['row']=$row;
+	$_SESSION['col']=$col;
 	/*pending caroline queeny mini game integration*/
 	$_SESSION['response']="successfully settled.";
 	header("location:./regeneration/regen.php");
@@ -1866,7 +1923,7 @@ function scout($row,$col)
 	{
 		$winChance=$chance['winChance'];
 		$output="(".$row.",".$col.") Occupant : ".$occupied."<br>Fortification : ".$fortification."<br>Troops : ".$troops.
-	    "<br>Faction : ".$faction."<br>Win probability : ".$winchance;
+	    "<br>Faction : ".$faction."<br>Win probability : ".$winChance;
 	}
 	echo $output;
 	$_SESSION['response']=$output;

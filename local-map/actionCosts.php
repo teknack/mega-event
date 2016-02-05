@@ -91,7 +91,7 @@ function settle()
 {
 	global $settleWoodCost,$settleMetalCost,$settlePowerCost;
 
-	echo "Settle<br>Wood:$settleWoodCost<br>Metal:$settleMetalCost<br>Power:settlePowerCost<br>;";
+	echo "Settle<br>Wood:$settleWoodCost<br>Metal:$settleMetalCost<br>Power:$settlePowerCost<br>";
 }
 
 function scout()

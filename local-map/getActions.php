@@ -1,7 +1,7 @@
 <?php
 session_start();
 require "connect.php";
-$playerid=1;/*$_SESSION['tek_emailid']*/
+$playerid=$_SESSION['tek_emailid'];
 $faction=1;/*$_SESSION['faction']*/
 $output="[";
 function scout($row,$col)
@@ -10,21 +10,40 @@ function scout($row,$col)
 	$sql="SELECT occupied,fortification,troops,faction FROM grid WHERE row=$row and col=$col;";
 	$res=$conn->query($sql);
 	$troops=0;
-	$ptroops=0;
+	$ptroops=0; //player Troops
 	if($res->num_rows>0)
 	{
 		$r=$res->fetch_assoc();
-		if($r['troops']>0)
+		if($r['troops']>0 and $r['occupied']==$playerid) //slot occupied by the player 
 		{
-			$ptroops=$r['troops']; //troops by occupant
+			$ptroops=$r['troops']; //troops by player
+		}
+		else if($r['troops']>0 and $r['occupied']!=$playerid) //slot occupied by an ally so player troops are in troops table
+		{
+			$troops=$r['troops']; //ally troops
 		}
 	}
-	$sql="SELECT SUM(quantity) FROM troops WHERE row=$row and col=$col;";
-	$res=$conn->query($sql);
-	if($res->num_rows>0)
-	{                               
+	if($r['occupied']==$playerid) //slot was occupied by player so calculating remaining troops from troops table
+	{
+		$sql="SELECT SUM(quantity) FROM troops WHERE row=$row and col=$col;";
+		$res=$conn->query($sql);
+		if($res->num_rows>0)
+		{
+			$r1=$res->fetch_assoc();
+			$troops=$ptroops+$r1['SUM(quantity)']; //troops of allies and player added		
+		}
+	}
+	else //slot is occupied by an ally ,ally occupant's troops calculated at line 23
+	{
+		$sql="SELECT SUM(quantity) FROM troops WHERE row=$row and col=$col and playerid<>$playerid;";
+		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
-		$troops=$ptroops+$r1['SUM(quantity)']; //troops of allies	
+		$troops+=$r1['SUM(quantity)']; //total troops without player troops 
+		$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid=$playerid;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$ptroops=$r1['quantity'];
+		$troops+=$ptroops; //player troops added to total troops
 	}
 	$output=$output.'{"response":"Occupant:'.$r["occupied"].'<br>Fortification:'.$r["fortification"].'<br>troops:'
 					.$troops.'<br>your troops:'.$ptroops.'<br>Faction:'.$r["faction"].'"}]';
@@ -85,18 +104,21 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 			if($rw['faction']!=$faction and $rw['faction']!=0)  //enemy faction
 			{
 				//echo $row['faction'];
-				if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedRow']))
+				if(isset($_SESSION['selectedRow']))
 				{
 					$output=$output.'{"action":"scout"},{"action":"attack"},{"visible":"false"}]';
 				}
 				else
+				{
 					$output=$output.'{"action":"scout"},{"visible":"false"}]';
+				}
+					
 			}
 			else if($rw['faction']==$faction) //allied faction
 			{
 				if($rw['occupied']==$playerid) //player occupied 
 				{
-					if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))  
+					if(isset($_SESSION['selectedRow']))  
 					{
 						if($_SESSION['selectedRow']==$row and $_SESSION['selectedCol']==$col)//player selects already
 						{                                                                    //selected occupied slot
@@ -120,7 +142,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 				{
 					if($res1->num_rows>0) //player troops stationed
 					{
-						if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectCol'])) 
+						if(isset($_SESSION['selectedRow'])) 
 						{																	   
 							if($_SESSION['selectedRow']==$row and $_SESSION['selectedCol']==$col)//player selects already
 							{																	 //selected troops 
@@ -141,7 +163,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 					}
 					else //player troops not present
 					{
-						if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))
+						if(isset($_SESSION['selectedRow']))
 						{
 							$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';	
 						}
@@ -154,7 +176,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 			}
 			else //player selects unoccupied slot
 			{
-				if(isset($_SESSION['selectedRow']) and !empty($_SESSION['selectedCol']))
+				if(isset($_SESSION['selectedRow']))
 				{
 					$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';	
 				}
@@ -163,8 +185,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 					$r3=$res1->fetch_assoc();
 					if($r3['quantity']>0)
 					{
-						$output=$output.'{"action":"select_troops"},{"action":"settle"}
-						                 ,{"visible":"false"},';
+						$output=$output.'{"action":"select_troops"},{"action":"settle"},{"visible":"true"},';
 						scout($r,$c);	
 					}
 					else
