@@ -1443,7 +1443,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			if($quantity<=0)
 			{
 				$quantity=1;
-				echo "remaining=$quantity<bR>num=$num";
+				echo "remaining=$quantity<br>"."num=$num";
 			}
 		}
 		else //high level or equal level troops attacking low level settlement
