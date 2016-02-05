@@ -14,9 +14,9 @@
 	<span id="max" style="display: none">Max points: 3</span><br>
 
 	<?php
-		$var = $_SESSION['region_points'];
+		$var = $_SESSION['regen_points'];
 		echo '<script type="text/javascript">document.getElementById("max").value='.$var.'</script>';
-		unset($_SESSION['region_points']);
+		unset($_SESSION['regen_points']);
 	?>
 
 	Food:
