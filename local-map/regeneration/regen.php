@@ -15,7 +15,7 @@
 
 	<?php
 		$var = $_SESSION['regen_points'];
-		echo '<script type="text/javascript">document.getElementById("max").value='.$var.'</script>';
+		echo '<script type="text/javascript">document.getElementById("max").value='.$var.' </script>';
 		unset($_SESSION['regen_points']);
 	?>
 
