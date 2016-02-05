@@ -9,6 +9,7 @@
  */ 
 
 include "./db_access/db.php";
+include "./newbies/allot.php";
 //alert($_SESSION["tek_emailid"]);
 //var_dump($_SESSION);
 connect();
@@ -28,6 +29,7 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 {
 	connect();
 	setTable("player");
+	
 	if(isset($_POST["faction1"]))
 	{
 		alert("you have picked faction 1");
@@ -35,13 +37,26 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		$_SESSION["collect_time"] = time();
 		$_SESSION["faction"] = "1";
 		
+		while (true)
+		{
+			$origin=allot();
+			if ($origin != false)
+			{
+				break;
+			}
+		}
+		setTable("grid");
+		update("occupied","'".$_SESSION["tek_emailid"]."'","row=".$origin["row"]." AND col=".$origin["col"]."");
+		update("faction","1","row=".$origin["row"]." AND col=".$origin["col"]."");
+		update("fortification","-9","row=".$origin["row"]." AND col=".$origin["col"]."");
 		if (!checkPlayerExists($_SESSION["tek_emailid"],"research")) //includes player in reseach table
 		{
 			setTable("research");
-			insert("playerid",$_SESSION["tek_emailid"]);
+			insert("playerid","'".$_SESSION["tek_emailid"]."'");
 		}
-		
+		//alert("hold2");
 		disconnect();
+		$_SESSION["origin"]=null;
 		redirect("world-map/canvas1.html");
 	}
 	else if (isset($_POST["faction2"])) //same as above
@@ -50,6 +65,19 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		insert("tek_emailid,faction,collect","'".$_SESSION["tek_emailid"]."',2,".time());
 		$_SESSION["collect_time"] = time();
 		$_SESSION["faction"] = "2";
+		
+		while (true)
+		{
+			$origin=allot();
+			if ($origin != false)
+			{
+				break;
+			}
+		}
+		setTable("grid");
+		update("occupied","'".$_SESSION["tek_emailid"]."'","row=".$origin["row"]." AND col=".$origin["col"]."");
+		update("faction","2","row=".$origin["row"]." AND col=".$origin["col"]."");
+		update("fortification","-9","row=".$origin["row"]." AND col=".$origin["col"]."");
 		
 		if (!checkPlayerExists($_SESSION["tek_emailid"],"research"))
 		{

@@ -68,7 +68,7 @@ function checkPlayerExists($player,$table)
 	//var_dump($query);
 	$res = mysqli_query($dbconn,$query);
 	//var_dump($res);
-	if (mysqli_num_rows($res) === 1)
+	if (@mysqli_num_rows($res) === 1)
 	{
 		return(True);
 	}
@@ -110,10 +110,10 @@ function update($column,$value,$condition)
 	
 	if (!$op || $op === false)
 	{
-		echo(mysqli_error($dbconn)."<br>");
-		//var_dump($query);
+		echo("db.php -> update: ".mysqli_error($dbconn)."<br>");
+		var_dump($query);
 		echo("<br>");
-		var_dump($op);
+		//var_dump($op);
 		//echo("<br>");
 		return(false);
 	}
