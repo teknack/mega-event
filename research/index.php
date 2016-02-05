@@ -43,9 +43,17 @@ function getTroopLevel()
 	$res = mysqli_fetch_assoc($res);
 	//disconnect();
 	
-	$op = split(",",$res["ttype"]);
-	$troop["s"] = split(":",$op[0])[1];
-	$troop["w"] = split(":",$op[1])[1];
+	if ($res["ttype"] == "n:0")
+	{
+		$troop["s"] = 0;
+		$troop["w"] = 0;
+	}
+	else
+	{
+		$op = split(",",$res["ttype"]);
+		$troop["s"] = split(":",$op[0])[1];
+		$troop["w"] = split(":",$op[1])[1];
+	}
 	return($troop);
 }
 
