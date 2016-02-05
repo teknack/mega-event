@@ -41,7 +41,11 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 	if (isset($_GET['woodres'])) {
 		creditResource('wood_regen',$_GET['woodres']);
 		$stringresource = $stringresource.$_GET['woodres'].':';
-		updateGridColumn('type',$stringresource, 0,4);/*Need to change to actual row and column when implementing*/
+		$rows = $_SESSION['row'];
+		$column = $_SESSION['col'];
+		updateGridColumn('type',$stringresource, $rows, $column);/*Need to change to actual row and column when implementing*/
+		unset($_SESSION['row']);
+		unset($_SESSION['col']);
 		echo("<script>window.location='./index.php'</script>");
 	}
 
