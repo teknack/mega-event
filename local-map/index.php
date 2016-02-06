@@ -1,26 +1,5 @@
 <?php
-/**
- * Setup
- * 
- * Data fetched from db is stored in locArray in below format
- * 
- * assoc_array locArray
- * - "p" = player owned -> ["p"] => "x,y-...."
- * - "s" = special -> ["s"] => "x,y-...."
- * - "n" = normal -> ["n"] => "x,y-...."
- * - "b" = base -> ["b"] => "x,y-...."
- * - "r" = resources -> ["r"] => "x,y-...."
- * - "f1" = faction1 -> ["f1"] => "x,y-...."
- * - "f2" = faction1 -> ["f2"] => "x,y-...."
- * 
- * Data is then parsed by "populateMapArray()" which inserts the character corresponding to the type of cell
- * at ("i","j") in the 2D array "mapArray"
- * 
- * array mapArray
- * A 2D array which represents the map, contains characters corresponding to type of cell present in each cell
- * 
-**/
-
+//This file serves as a temporary re-directing transition page...
 //include "../db_access/db.php";
 include "./player.php";
 ?>
@@ -127,3 +106,7 @@ include "./player.php";
 	?>
 </body>
 </html>
+=======
+redirect("./index-grid.php");
+?>
+>>>>>>> e50f5d0ca4cf4639e6e5c2b50c4592f692d22cd8
