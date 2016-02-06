@@ -56,6 +56,22 @@ function map($row,$col)
 		$output.='{"row":"'.$row1.'","col":"'.$col1.'","occupied":"'.$occupied.'",
 		"fortification":"'.$fortification.'","faction":"'.$faction1.'","troops":"'.$troops.'"},';
 	}
-	$output.='{"player":"'.$playerid.'","faction":"'.$faction.'"}]';	
+
+	$sql="SELECT * FROM player WHERE tek_emailid=$playerid";
+	$res=$conn->query($sql);
+	$r=$res->fetch_assoc();
+	$food=$r['food'];
+	$foodRegen=$r['food_regen'];
+	$water=$r['water'];
+	$waterRegen=$r['water_regen'];
+	$power=$r['power'];
+	$powerRegen=$r['power_regen'];
+	$metal=$r['metal'];
+	$metalRegen=$r['metal_regen'];
+	$wood=$r['wood'];
+	$woodRegen=$r['wood_regen'];
+	$output.='{"player":"'.$playerid.'","faction":"'.$faction.'","food":"'.$food.'","foodr":"'.$foodRegen.'","water":"'.$water.'",
+               "waterr":"'.$waterRegen.'","power":"'.$power.'","powerr":"'.$powerRegen.'","metal":"'.$metal.'","metalr":"'.$metalRegen.'",
+               "wood":"'.$wood.'","woodr":"'.$woodRegen.'"}]';
 	echo $output;
 }

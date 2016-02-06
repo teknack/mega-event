@@ -1,16 +1,10 @@
+var slotSize=50;
 var playArea=9;
-var canvas;
-var ctx;
-var playerId=1;
-var faction=1;
-var slotSize=50; //cell size in px
-var grass;
 var grid=[];
-var coord;
-for(var i=0;i<playArea;i++)
-{
-    grid[i]=[];
-}
+var playerId;
+var faction;
+var canvas, ctx;
+var grass=new Image();
 
 function scoutCost()
 {
@@ -162,8 +156,8 @@ function fortifyCost()
 
 function action(canvas,event) //call it to get the available actions
 {
-	/*row=0;//make method to pass the row and column selected
-	col=8;*/
+  /*row=0;//make method to pass the row and column selected
+  col=8;*/
     var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
@@ -172,23 +166,23 @@ function action(canvas,event) //call it to get the available actions
     var row=baseRow+Math.floor(y/slotSize);
     var col=baseCol+Math.floor(x/slotSize);
     console.log(row+","+col);
-	var xhttp;
+  var xhttp;
     var comm;
     var visibility; //decides if form is visible
-  	if (window.XMLHttpRequest) {
+    if (window.XMLHttpRequest) {
     // code for modern browsers
     xhttp = new XMLHttpRequest();
     } else {
     // code for IE6, IE5
     xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  	}
-  	xhttp.onreadystatechange = function() 
+    }
+    xhttp.onreadystatechange = function() 
     {
         if (xhttp.readyState == 4 && xhttp.status == 200) 
         {
             var test=xhttp.responseText;
             //console.log(test);
-      	    comm=JSON.parse(test);
+            comm=JSON.parse(test);
             var content="";
             var hint="";
             for(var i=0;i<comm.length;i++)
@@ -222,10 +216,10 @@ function action(canvas,event) //call it to get the available actions
         }
     }
     xhttp.open("GET", "getActions.php?row="+row+"&col="+col, true);
-  	xhttp.send();
+    xhttp.send();
 }
 
-function getGrid(row,col)
+function getGrid()
 {
     var xhttp;
     var coordf=document.getElementById("topLeft").value;
@@ -233,8 +227,6 @@ function getGrid(row,col)
     var row=coord[0];
     var col=coord[1];
     var temp;
-    console.log(row+","+col);
-    console.log(coord);
     if (window.XMLHttpRequest) 
     {
     // code for modern browsers
@@ -250,8 +242,18 @@ function getGrid(row,col)
         if (xhttp.readyState == 4 && xhttp.status == 200) 
         {
             temp=JSON.parse(xhttp.responseText);
-            //playerId=jsonVar[playArea*playArea]["player"];
-            //faction=jsonVar[playArea*playArea]["faction"];
+            playerId=temp[playArea*playArea]["player"];
+            faction=temp[playArea*playArea]["faction"];
+            food=temp[playArea*playArea]["food"]+"/"+temp[playArea*playArea]["foodr"];
+            water=temp[playArea*playArea]["water"]+"/"+temp[playArea*playArea]["waterr"];
+            power=temp[playArea*playArea]["power"]+"/"+temp[playArea*playArea]["powerr"];
+            metal=temp[playArea*playArea]["metal"]+"/"+temp[playArea*playArea]["metalr"];
+            wood=temp[playArea*playArea]["wood"]+"/"+temp[playArea*playArea]["woodr"];
+            document.getElementById("food").innerHTML+=food;
+            document.getElementById("water").innerHTML+=water;
+            document.getElementById("power").innerHTML+=power;
+            document.getElementById("metal").innerHTML+=metal;
+            document.getElementById("wood").innerHTML+=wood;
             assignGrid(temp);
             renderGrid(grid);
         }
@@ -292,41 +294,107 @@ function assignGrid(jsonVar)
     }
 }
 
-function renderGrid(grid)
+function renderGrid()
 {
     for(var i=0,y=0;i<playArea;i++,y+=slotSize)
     {
         for(var j=0,x=0;j<playArea;j++,x+=slotSize)
         {
-            ctx.fillStyle=grid[i][j];
-            /*if(grid[i][j]=="white")
+            var value = grid[i][j];
+            ctx.fillStyle = value;
+            if(grid[i][j]=="white")
             {
-                grass=new Image();
-                grass.onload=function()
-                {
-                    var a=x;
-                    var b=y;
-                    //console.log(x+","+y);
-                    ctx.drawImage(grass,x,y,slotSize-2,slotSize-2);
-                    //ctx.drawImage(grass,450+1,0+1,slotSize-2,slotSize-2);
-                }
-                grass.src="../assets/grass.jpg";
+              //console.log(x,y);
+              ctx.drawImage(grass,x,y,slotSize-2,slotSize-2);
+              //ctx.fillRect(x,y,slotSize,slotSize);
             }
             else
             {
-                
-            }*/
-            ctx.fillRect(x,y,slotSize,slotSize);
+                ctx.fillRect(x,y,slotSize,slotSize);
+            }
             ctx.strokeRect(x,y,slotSize,slotSize);
         }
-        
+
     }
+}
+
+function shiftUp()
+{
+    var row=parseInt(coord[0]);
+    var col=parseInt(coord[1]);
+    if(row>0)
+    {
+        row--;
+        document.getElementById("topLeft").value=row+","+col;
+        getGrid();
+    }
+    else
+        alert("you are already at the top of the map!!");
+}
+
+function shiftDown()
+{
+    var row=parseInt(coord[0]);
+    var col=parseInt(coord[1]);
+    if(row<100-playArea)
+    {
+        row++;
+        document.getElementById("topLeft").value=row+","+col;
+        getGrid();
+    }
+    else
+        alert("you are already at the bottom of the map!!");   
+}
+
+function shiftLeft()
+{
+    var row=parseInt(coord[0]);
+    var col=parseInt(coord[1]);
+    if(col>0)
+    {
+        col--;
+        document.getElementById("topLeft").value=row+","+col;
+        getGrid();
+    }
+    else
+        alert("That's as far towards left as you can go!!");
+}
+
+function shiftRight()
+{
+    var row=parseInt(coord[0]);
+    var col=parseInt(coord[1]);
+    if(col<100-playArea)
+    {
+        col++;
+        document.getElementById("topLeft").value=row+","+col;
+        getGrid();
+    }
+    else
+        alert("Thats as far towards right as you can go!!");
+}
+
+function world()
+{
+    window.location="../world-map/canvas1.html";
 }
 
 window.onload=function loadLocal()
 {
     canvas=document.getElementById("canvas");
     ctx = canvas.getContext("2d");
-    getGrid();
+
+    for(var i=0;i<playArea;i++)
+    {
+      grid[i]=[];
+    }
+
+    grass.onload = getGrid;
+    grass.src = "../assets/grass.jpg";
     canvas.setAttribute("onClick","action(canvas,event)");
+    document.getElementById("up").setAttribute("onClick","shiftUp()");
+    document.getElementById("down").setAttribute("onClick","shiftDown()");
+    document.getElementById("left").setAttribute("onClick","shiftLeft()");
+    document.getElementById("right").setAttribute("onClick","shiftRight()");
+    document.getElementById("world").setAttribute("onClick","world()");
 }

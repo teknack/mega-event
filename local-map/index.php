@@ -14,11 +14,11 @@ include "./player.php";
 <body>
 	<div id="playerinfo" >
 				<div id="leftward">					
-					<span>Food : </span>
-					<span>Water :</span>
-					<span>Power :</span>
-					<span>Metal :</span>
-					<span>Wood : </span>
+					<span id="food">Food : </span>
+					<span id="water">Water :</span>
+					<span id="power">Power :</span>
+					<span id="metal">Metal :</span>
+					<span id="wood">Wood : </span>
 					
 				</div>
 				<span>
@@ -73,17 +73,17 @@ include "./player.php";
 							<table id="nav_buttons" border=0 align="center">
 								<tr>
 									<td></td>
-									<td align="center"><button type="submit" name="up">UP</button></td>
+									<td align="center"><button type="submit" name="up" id="up">UP</button></td>
 									<td></td>
 								</tr>
 								<tr>
-									<td align="center"><button name="left">LEFT</button></td>
-									<td align="center"><button name="world-map">WORLD MAP</button></td>
-									<td align="center"><button name="right">RIGHT</button></td>
+									<td align="center"><button name="left" id="left">LEFT</button></td>
+									<td align="center"><button name="world-map" id="world">WORLD MAP</button></td>
+									<td align="center"><button name="right" id="right">RIGHT</button></td>
 								</tr>
 								<tr>
 									<td></td>
-									<td align="center"><button name="down">DOWN</button></td>
+									<td align="center"><button name="down" id="down">DOWN</button></td>
 									<td></td>
 								</tr>
 							</table>
@@ -106,7 +106,3 @@ include "./player.php";
 	?>
 </body>
 </html>
-=======
-redirect("./index-grid.php");
-?>
->>>>>>> e50f5d0ca4cf4639e6e5c2b50c4592f692d22cd8
