@@ -16,12 +16,12 @@
 	$faction=$row['faction'];
 	$sql="SELECT occupied,faction FROM grid";
 	$res= $conn->query($sql);
-	$output="[";                                                                             //stores JSON string format [{occupied:"value",faction:"value"},
-	if($res->num_rows > 0)                                                                   //                           {occupied:"value",faction:"value"}]
+	$output="[";                                        //stores JSON string format [{occupied:"value",faction:"value"},
+	if($res->num_rows > 0)                              //                           {occupied:"value",faction:"value"}]
 	{
 		while($row = $res->fetch_assoc())
 		{
-			$output=$output.'{"occupied":'.$row["occupied"].',"faction":'.$row["faction"].'},';
+			$output=$output.'{"occupied":"'.$row["occupied"].'","faction":"'.$row["faction"].'"},';
 		}
 		$output=$output.'{"player":"'.$player.'","faction":"'.$faction.'"}]';
 	}

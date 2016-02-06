@@ -2,7 +2,7 @@
 require "../db_access/db.php";
 require "connect.php";
 require "actionCostValues.php";
-$faction=$_SESSION['faction'];
+$faction=1;/*$_SESSION['faction']*/;
 
 $playerid;
 $playerid=$_SESSION['tek_emailid']; //temporary!! don't forget to remove!!
@@ -1414,7 +1414,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	$enemy="";
 	$maxLoss=100;
 	$plunderBonus=0;
-	$plunderPortion=5; //percent
+	$plunderPortion=10; //percent
 	$supportTroops=0;
 	$defenceTroops=0;
 	$fortification;
@@ -1432,6 +1432,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	$enemy=$battleRes['enemy'];
 	$troopLevel=$battleRes['troopLevel'];
 	$faction=$battleRes['faction'];
+	$winChance=$battleRes['winChance'];
 	if($battleResult) //battle won
 	{
 			//loss calculation
@@ -1453,14 +1454,17 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		else //high level or equal level troops attacking low level settlement
 		{
 			$maxLoss1=100-(($troopLevel-$fortification)*10)+(100-$winChance);
-			$loss=floor($quantity*rand(0,$maxLoss1)/100);
+			$num=rand(0,$maxLoss1);
+			echo "loss=".$maxLoss1;
+			echo "<br>100-(($troopLevel-$fortification)*10)+(100-$winChance)";
+			$loss=floor($quantity*$num/100);
 			if($maxLoss>0)
 				$loss=floor($loss*$maxLoss/100);
 			$quantity-=$loss;
 			if($quantity<=0)
 			{
 				$quantity=1;
-				echo "remaining=$quantity";
+				echo "remaining=$quantity<br>"."num=$num";
 			}
 		}
 		//removing resource gathering from the defeated slot pending
@@ -1542,7 +1546,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 
 		$roots= array();
 		$root=$destRow.",".$destCol;
-		$sql="UPDATE grid SET root='$root' WHERE row=$destRow and col=$destCol;"; //root was made null now it's
+		$sql="UPDATE grid SET root='$root' WHERE row=$destRow and col=$destCol;"; //root was made null now
 			if($conn->query($sql)===false)									    //it's given the original value
 				echo "error: ".$conn->error;
 		$troopCount;
@@ -1642,7 +1646,8 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$points=$level++;
 		$_SESSION['regen_points']=$points;
 		/*pending caroline queeny mini game*/
-		header("location:regeneration/regen.php");
+		echo $_SESSION['regen_points'];
+		//header("location:regeneration/regen.php");
 	}
 }
 function condenseArray($arr) //removes duplicates and would reduce load on server as little as it already is..
@@ -1802,10 +1807,11 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 	$r=$res->fetch_assoc();
 	$points=3;
 	$level=$r['civperk2'];
-	$points=$level++;
+	$points+=$level;
 	$_SESSION['regen_points']=$points;
 	$_SESSION['row']=$row;
 	$_SESSION['col']=$col;
+	var_dump($_SESSION);
 	/*pending caroline queeny mini game integration*/
 	$_SESSION['response']="successfully settled.";
 	header("location:./regeneration/regen.php");
