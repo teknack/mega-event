@@ -6,14 +6,19 @@ body {
 	height:30%;
 }
 #quantity{
+	position: absolute;
 	visibility: hidden;
 }
 #quantity1{
+	position: absolute;
 	visibility: hidden;
+	width:50%;
+	left:25%;
 }
 
 #ctxMenu{
 	background-color: blue;
+	width:7em;
 }
 #leftbanner {
 	float: left;

@@ -65,6 +65,9 @@ include "./player.php";
 							}
 						?>
 					</div>
+					<div id="rc">
+						
+					</div>
 				</td>
 				<td>
 					<div style="float:right">
@@ -97,8 +100,8 @@ include "./player.php";
 			<div id="action1">
 			</div>
 			<div>
-				<input type="text" name="row" id="row1">
-				<input type="text" name="col" id="col1">
+				<input type="hidden" name="row" id="row1">
+				<input type="hidden" name="col" id="col1">
 				<input type="number" name="quantity" id="quantity1">
 			</div>
 		</form>

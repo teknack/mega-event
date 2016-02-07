@@ -6,6 +6,11 @@ var faction;
 var canvas, ctx;
 var grass=new Image();
 
+function response(id,message)
+{
+    document.getElementById(id).innerHTML=message;
+}
+
 function scoutCost()
 {
 
@@ -157,6 +162,19 @@ function fortifyCost()
 function select_troopsCost()
 {
     return false;
+}
+
+function getCursorPosition(canvas , event) 
+{
+    var rect = canvas.getBoundingClientRect();
+    var x = event.clientX - rect.left;
+    var y = event.clientY - rect.top;
+    var res=x+","+y;
+    var row=Math.floor(y/slotSize);
+    var col=Math.floor(x/slotSize);
+    var rc=row+","+col;
+    response("rc",rc);
+    return({x:x,y:y});
 }
 
 function action(canvas,event) //call it to get the available actions
@@ -498,6 +516,7 @@ window.onload=function loadLocal()
     grass.src = "../assets/grass.jpg";
     canvas.setAttribute("onClick","action(canvas,event)");
     canvas.setAttribute("onContextMenu","ShowMenu(event)");
+    canvas.setAttribute("onmousemove","getCursorPosition(canvas,event)");
     document.getElementById("up").setAttribute("onClick","shiftUp()");
     document.getElementById("down").setAttribute("onClick","shiftDown()");
     document.getElementById("left").setAttribute("onClick","shiftLeft()");
