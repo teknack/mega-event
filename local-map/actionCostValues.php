@@ -13,4 +13,5 @@ $fortifyPowerCost=array(35,70,90,110,140,160,180,200);
 $createTroopCostFoodBase=10;
 $createTroopCostWaterBase=13;
 $createTroopCostPowerBase=4;
+$plunderPortion=10;
 ?>

@@ -170,8 +170,10 @@ function getCursorPosition(canvas , event)
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
     var res=x+","+y;
-    var row=Math.floor(y/slotSize);
-    var col=Math.floor(x/slotSize);
+    var baseRow=parseInt(coord[0]);
+    var baseCol=parseInt(coord[1]);
+    var row=baseRow+Math.floor(y/slotSize);
+    var col=baseCol+Math.floor(x/slotSize);
     var rc=row+","+col;
     response("rc",rc);
     return({x:x,y:y});

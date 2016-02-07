@@ -66,7 +66,7 @@ include "./player.php";
 						?>
 					</div>
 					<div id="rc">
-						
+
 					</div>
 				</td>
 				<td>

@@ -545,7 +545,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol";
 				if($conn->query($sql)==false)
 						echo "error(131) : ".$conn->error."<br>";
-				$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$destRow and col=$destCol";
+				$sql="UPDATE grid SET troops=troops+$quantity WHERE row=$destRow and col=$destCol";
 				if($conn->query($sql)==false)
 						echo "error(135) : ".$conn->error."<br>";
 				if($ambushSurvive==true and $ambush==true)
@@ -625,6 +625,421 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 }
 
 
+function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
+{
+	global $conn,$playerid,$plunderPortion;
+
+	$_SESSION['destRow']=$destRow;
+	$_SESSION['destCol']=$destCol;
+	$battleRes=simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity);
+	$battleResult=$battleRes['result'];
+	echo "<br>RESULT:-$battleResult<br>";
+    $plunderBonus=$battleRes['plunderBonus'];
+    $fortification=$battleRes['fortification'];
+    $maxLoss=$battleRes['maxLoss'];
+	$enemy=$battleRes['enemy'];
+	$troopLevel=$battleRes['troopLevel'];
+	$faction=$battleRes['faction'];
+	$winChance=$battleRes['winChance'];
+	if(isset($_SESSION['result'])) //in case called after mini-game
+	{
+		$result=$_SESSION['result'];
+		$percent=$_SESSION['percentage'];
+		if($result)
+		{
+			$quantity=$percent*$quantity/100; //same percentage as the health of the character in mini-game
+			//removing resource gathering from the defeated slot pending
+			$sql="SELECT type FROM grid WHERE row=$destRow and col=$destCol;";
+			$res=$conn->query($sql);
+			$r=$res->fetch_assoc();
+			$distribution=$r['type'];
+			$distribution=explode(":",$distribution);
+			$foodRegen=$distribution[0];
+			$waterRegen=$distribution[1];
+			$powerRegen=$distribution[2];
+			$metalRegen=$distribution[3];
+			$woodRegen=$distribution[4];
+
+			$sql="UPDATE player SET food_regen=food_regen-$foodRegen,water_regen=water_regen-$waterRegen,
+			      power_regen=power_regen-$powerRegen,metal_regen=metal_regen-$metalRegen,
+			      wood_regen=wood_regen-$woodRegen WHERE tek_emailid=$enemy;";
+			if($conn->query($sql)===false)
+				echo "<br>error in reducing enemy regen: ".$conn->error;
+
+			//removing resource gathering from the defeated slot
+			$sql="UPDATE grid SET occupied=$playerid,type=NULL,faction=$faction,troops=$quantity WHERE
+			      row=$destRow and col=$destCol;";
+			if($conn->query($sql)===false)
+				echo "<br>error: ".$conn->error;
+
+			//plunder
+
+			$sql="SELECT food,water,power,metal,wood FROM player WHERE tek_emailid=$enemy";
+			$res=$conn->query($sql);
+			if(!$res)
+				echo $conn->error;
+			$r=$res->fetch_assoc();
+			$plunderFood=$plunderPortion*$r['food']/100;
+			$plunderWater=$plunderPortion*$r['water']/100;
+			$plunderPower=$plunderPortion*$r['power']/100;
+			$plunderMetal=$plunderPortion*$r['metal']/100;
+			$plunderWood=$plunderPortion*$r['wood']/100;
+			$sql="UPDATE player SET food=food-$plunderWood,water=water-$plunderWater,power=power-$plunderPower
+			      ,metal=metal-$plunderMetal,wood=wood-$plunderWood WHERE tek_emailid=$enemy"; //remove resources
+			if($conn->query($sql)===false)                                     //from the defeated
+				echo "<br>error: ".$conn->error;
+			$plunderFood+=$plunderFood*$plunderBonus/100;
+			$plunderWater+=$plunderWater*$plunderBonus/100;
+			$plunderPower+=$plunderPower*$plunderBonus/100;
+			$plunderMetal+=$plunderMetal*$plunderBonus/100;
+			$plunderWood+=$plunderWood*$plunderBonus/100;
+			$sql="UPDATE player SET food=food+$plunderWood,water=water+$plunderWater,power=power+$plunderPower
+			      ,metal=metal+$plunderMetal,wood=wood+$plunderWood WHERE tek_emailid=$playerid";
+			if($conn->query($sql)===false)
+				echo "<br>error: ".$conn->error;
+
+			/*pending resoruce assignment*/
+
+			/*root reassignment*/
+			$sql="SELECT root FROM grid WHERE row=$destRow and col=$destCol;";
+			$res=$conn->query($sql);
+			$rw=$res->fetch_assoc();
+			$droot=$rw['root'];
+			$newRoot=$droot;
+			$sql="SELECT row,col,root FROM grid WHERE root='$droot'"; //reset root for loser enemy
+			$res=$conn->query($sql);
+			if(!$res)
+				echo $conn->error;
+			if($res->num_rows>1)
+			{
+				$sql="UPDATE grid SET root=NULL WHERE row=$destRow and col=$destCol;";
+				if($conn->query($sql)===false)
+					echo "error: ".$conn->error;
+				while($droot==$newRoot)
+				{
+					$r=$res->fetch_assoc();
+					$newRoot=$r['row'].",".$r['col'];
+				}
+				$sql="UPDATE grid SET root='$newRoot' WHERE root='$droot';";
+				if($conn->query($sql)===false)
+					echo "error: ".$conn->error;
+			}
+
+			$roots= array();
+			$root=$destRow.",".$destCol;
+			$sql="UPDATE grid SET root='$root' WHERE row=$destRow and col=$destCol;"; //root was made null now
+				if($conn->query($sql)===false)									    //it's given the original value
+					echo "error: ".$conn->error;
+			$troopCount;
+			$sql="SELECT row,col,fortification,faction,root FROM grid WHERE (row=$destRow-1 or row=$destRow
+			or row=$destRow+1) and (col=$destCol-1 or col=$destCol or col=$destCol+1);";
+			$res=$conn->query($sql); //query to get all the neighbouring slots to the given slot.
+			if($res->num_rows>0)
+			{
+				while($ro=$res->fetch_assoc())
+				{
+					if($ro['fortification']>0 and $ro['faction']==$faction and !($ro['row']==$destRow and $ro['col']==$destCol))
+					{
+						$roots[count($roots)]=$ro['root'];
+					}
+				}
+			}
+			$roots=condenseArray($roots); //refer line 54
+			$j=0;
+			while($j<count($roots) and !empty($roots[$j])) //sets the root of all neighbouring slots if occupied as the root of the given slot
+			{
+				$r=$roots[$j];
+				$sql="UPDATE grid SET root='$root' WHERE root='$r'"; //connectivity
+				if(!$conn->query($sql) === TRUE)
+				{
+					var_dump($sql);
+					echo "<br>";
+					echo "error: ".$conn->error."<br>";
+				}
+				$j++;
+			}
+			$sql="UPDATE player SET total=total+1;";
+			if($conn->query($sql)===false)
+				echo "error (1270): ".$conn->error;
+			//moving the troops
+			$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;";//troops sent from occupied slot
+			$res=$conn->query($sql);
+			if($res->num_rows>0)
+			{
+				$deployed=$_SESSION['selectedTroops'];
+				$sql="UPDATE grid SET troops=troops-$deployed WHERE row=$srcRow and col=$srcCol;";
+				if($conn->query($sql)===false)
+					echo "<br>error: ".$conn->error;
+			}
+			else //troops sent from unoccupied slot
+			{
+				$deployed=$_SESSION['selectedTroops'];
+				$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
+				playerid=$playerid;";
+				if($conn->query($sql)===false)
+					echo "<br>error: ".$conn->error;
+			}
+			$message="you lost your settlement at ($destRow,$destCol) to an attack.";
+			message($enemy,$message);
+			$_SESSION['response']='You won the attack! '.$quantity.' soldiers survived.';
+		}
+		else
+		{
+			$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;";//troops sent from occupied slot
+			$res=$conn->query($sql);
+			if($res->num_rows>0)
+			{
+				$deployed=$_SESSION['selectedTroops'];
+				$sql="UPDATE grid SET troops=troops-$deployed WHERE row=$srcRow and col=$srcCol;";
+				if($conn->query($sql)===false)
+					echo "<br>error: ".$conn->error;
+			}
+			else //troops sent from unoccupied slot
+			{
+				$deployed=$_SESSION['selectedTroops'];
+				$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
+				playerid=$playerid;";
+				if($conn->query($sql)===false)
+					echo "<br>error: ".$conn->error;
+			}
+			$sql="SELECT troops FROM grid WHERE row=$destRow and col=$destCol;";
+			$res=$conn->query($sql);
+			$r=$res->fetch_assoc();
+			$troops=$r['troops'];
+			$troops=$troops*$percent/100;
+			$sql="UPDATE grid SET troops=troops-troops*$x WHERE row=$destRow and col=$destCol;";
+			if($conn->query($sql)===false)
+				echo "error: ".$conn->error;
+			$_SESSION['response']="You lost the attack";
+		}
+	}
+	else
+	{
+		if($battleResult) //battle won
+		{
+				//loss calculation
+			if($fortification>=$troopLevel) //low level troops attacking higher level settlements
+			{
+				$minLoss=20+(($fortification-$troopLevel)*10);
+				$num=rand($minLoss,100);
+				$loss=floor($quantity*$num/100);
+				if($maxLoss>0)
+					$loss=floor($loss*$maxLoss/100);
+				$quantity-=$loss;
+				if($quantity<=0)
+				{
+					$quantity=1;
+					echo "remaining=$quantity<br>"."num=$num";
+				}
+			}
+			else //high level or equal level troops attacking low level settlement
+			{
+				$maxLoss1=100-(($troopLevel-$fortification)*10)+(100-$winChance);
+				$num=rand(0,$maxLoss1);
+				echo "loss=".$maxLoss1;
+				echo "<br>100-(($troopLevel-$fortification)*10)+(100-$winChance)";
+				$loss=floor($quantity*$num/100);
+				echo "losstroops=".$loss;
+				if($maxLoss>0)
+					$loss=floor($loss*$maxLoss/100);
+				$quantity-=$loss;
+				if($quantity<=0)
+				{
+					$quantity=1;
+					echo "remaining=$quantity<br>"."num=$num";
+				}
+			}
+			//removing resource gathering from the defeated slot pending
+			$sql="SELECT type FROM grid WHERE row=$destRow and col=$destCol;";
+			$res=$conn->query($sql);
+			$r=$res->fetch_assoc();
+			$distribution=$r['type'];
+			$distribution=explode(":",$distribution);
+			$foodRegen=$distribution[0];
+			$waterRegen=$distribution[1];
+			$powerRegen=$distribution[2];
+			$metalRegen=$distribution[3];
+			$woodRegen=$distribution[4];
+
+			$sql="UPDATE player SET food_regen=food_regen-$foodRegen,water_regen=water_regen-$waterRegen,
+			      power_regen=power_regen-$powerRegen,metal_regen=metal_regen-$metalRegen,
+			      wood_regen=wood_regen-$woodRegen WHERE tek_emailid=$enemy;";
+			if($conn->query($sql)===false)
+				echo "<br>error in reducing enemy regen: ".$conn->error;
+
+			//removing resource gathering from the defeated slot
+			$sql="UPDATE grid SET occupied=$playerid,type=NULL,faction=$faction,troops=$quantity WHERE
+			      row=$destRow and col=$destCol;";
+			if($conn->query($sql)===false)
+				echo "<br>error: ".$conn->error;
+
+			//plunder
+
+			$sql="SELECT food,water,power,metal,wood FROM player WHERE tek_emailid=$enemy";
+			$res=$conn->query($sql);
+			if(!$res)
+				echo $conn->error;
+			$r=$res->fetch_assoc();
+			$plunderFood=$plunderPortion*$r['food']/100;
+			$plunderWater=$plunderPortion*$r['water']/100;
+			$plunderPower=$plunderPortion*$r['power']/100;
+			$plunderMetal=$plunderPortion*$r['metal']/100;
+			$plunderWood=$plunderPortion*$r['wood']/100;
+			$sql="UPDATE player SET food=food-$plunderWood,water=water-$plunderWater,power=power-$plunderPower
+			      ,metal=metal-$plunderMetal,wood=wood-$plunderWood WHERE tek_emailid=$enemy"; //remove resources
+			if($conn->query($sql)===false)                                     //from the defeated
+				echo "<br>error: ".$conn->error;
+			$plunderFood+=$plunderFood*$plunderBonus/100;
+			$plunderWater+=$plunderWater*$plunderBonus/100;
+			$plunderPower+=$plunderPower*$plunderBonus/100;
+			$plunderMetal+=$plunderMetal*$plunderBonus/100;
+			$plunderWood+=$plunderWood*$plunderBonus/100;
+			$sql="UPDATE player SET food=food+$plunderWood,water=water+$plunderWater,power=power+$plunderPower
+			      ,metal=metal+$plunderMetal,wood=wood+$plunderWood WHERE tek_emailid=$playerid";
+			if($conn->query($sql)===false)
+				echo "<br>error: ".$conn->error;
+
+			/*pending resoruce assignment*/
+
+			/*root reassignment*/
+			$sql="SELECT root FROM grid WHERE row=$destRow and col=$destCol;";
+			$res=$conn->query($sql);
+			$rw=$res->fetch_assoc();
+			$droot=$rw['root'];
+			$newRoot=$droot;
+			$sql="SELECT row,col,root FROM grid WHERE root='$droot'"; //reset root for loser enemy
+			$res=$conn->query($sql);
+			if(!$res)
+				echo $conn->error;
+			if($res->num_rows>1)
+			{
+				$sql="UPDATE grid SET root=NULL WHERE row=$destRow and col=$destCol;";
+				if($conn->query($sql)===false)
+					echo "error: ".$conn->error;
+				while($droot==$newRoot)
+				{
+					$r=$res->fetch_assoc();
+					$newRoot=$r['row'].",".$r['col'];
+				}
+				$sql="UPDATE grid SET root='$newRoot' WHERE root='$droot';";
+				if($conn->query($sql)===false)
+					echo "error: ".$conn->error;
+			}
+
+			$roots= array();
+			$root=$destRow.",".$destCol;
+			$sql="UPDATE grid SET root='$root' WHERE row=$destRow and col=$destCol;"; //root was made null now
+				if($conn->query($sql)===false)									    //it's given the original value
+					echo "error: ".$conn->error;
+			$troopCount;
+			$sql="SELECT row,col,fortification,faction,root FROM grid WHERE (row=$destRow-1 or row=$destRow
+			or row=$destRow+1) and (col=$destCol-1 or col=$destCol or col=$destCol+1);";
+			$res=$conn->query($sql); //query to get all the neighbouring slots to the given slot.
+			if($res->num_rows>0)
+			{
+				while($ro=$res->fetch_assoc())
+				{
+					if($ro['fortification']>0 and $ro['faction']==$faction and !($ro['row']==$destRow and $ro['col']==$destCol))
+					{
+						$roots[count($roots)]=$ro['root'];
+					}
+				}
+			}
+			$roots=condenseArray($roots); //refer line 54
+			$j=0;
+			while($j<count($roots) and !empty($roots[$j])) //sets the root of all neighbouring slots if occupied as the root of the given slot
+			{
+				$r=$roots[$j];
+				$sql="UPDATE grid SET root='$root' WHERE root='$r'"; //connectivity
+				if(!$conn->query($sql) === TRUE)
+				{
+					var_dump($sql);
+					echo "<br>";
+					echo "error: ".$conn->error."<br>";
+				}
+				$j++;
+			}
+			$sql="UPDATE player SET total=total+1;";
+			if($conn->query($sql)===false)
+				echo "error (1270): ".$conn->error;
+			//moving the troops
+			$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;";//troops sent from occupied slot
+			$res=$conn->query($sql);
+			if($res->num_rows>0)
+			{
+				$deployed=$_SESSION['selectedTroops'];
+				$sql="UPDATE grid SET troops=troops-$deployed WHERE row=$srcRow and col=$srcCol;";
+				if($conn->query($sql)===false)
+					echo "<br>error: ".$conn->error;
+			}
+			else //troops sent from unoccupied slot
+			{
+				$deployed=$_SESSION['selectedTroops'];
+				$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
+				playerid=$playerid;";
+				if($conn->query($sql)===false)
+					echo "<br>error: ".$conn->error;
+			}
+			$message="you lost your settlement at ($destRow,$destCol) to an attack.";
+			message($enemy,$message);
+			$_SESSION['response']='You won the attack! '.$quantity.' soldiers survived.';
+		}
+		else //battle lost
+		{
+			$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;";//troops sent from occupied slot
+			$res=$conn->query($sql);
+			if($res->num_rows>0)
+			{
+				$deployed=$_SESSION['selectedTroops'];
+				$sql="UPDATE grid SET troops=troops-$deployed WHERE row=$srcRow and col=$srcCol;";
+				if($conn->query($sql)===false)
+					echo "<br>error: ".$conn->error;
+			}
+			else //troops sent from unoccupied slot
+			{
+				$deployed=$_SESSION['selectedTroops'];
+				$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
+				playerid=$playerid;";
+				if($conn->query($sql)===false)
+					echo "<br>error: ".$conn->error;
+			}
+			$x=$winChance/100; // defensive troops loss calculation if winChance is 40%, 40% of troops will die
+			$sql="SELECT troops FROM grid WHERE row=$destRow and col=$destCol;";
+			$res=$conn->query($sql);
+			$r=$res->fetch_assoc();
+			$troops=$r['troops'];
+			$troops-=$troops*$x;
+			echo $x;
+			$sql="UPDATE grid SET troops=troops-troops*$x WHERE row=$destRow and col=$destCol;";
+			if($conn->query($sql)===false)
+				echo "error: ".$conn->error;
+			$_SESSION['response']="You lost the attack";
+		}
+	}	
+	unset($_SESSION['selectedRow']);
+	unset($_SESSION['selectedCol']);
+	unset($_SESSION['selectedTroops']);
+	unset($_SESSION['destRow']);
+	unset($_SESSION['destCol']);
+	if($battleResult or $result)
+	{
+		$sql="SELECT civperk2 FROM research WHERE playerid=$playerid;";
+		$res=$conn->query($sql);
+		var_dump($sql);
+		$r=$res->fetch_assoc();
+		$points=3;
+		$level=$r['civperk2'];
+		$points=$points+$level;
+		//babe babe
+		$_SESSION['regen_points']=$points;
+		$_SESSION['row']=$destRow;
+		$_SESSION['col']=$destCol;
+		/*pending caroline queeny mini game*/
+		echo $_SESSION['regen_points'];
+		header("location:./regeneration/regen.php");
+	}
+}
+
 function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 {
 	global $conn,$playerid,$moveCostFood,$moveCostWater,$moveCostPower;
@@ -667,7 +1082,6 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	$enemy="";
 	$maxLoss=100;
 	$plunderBonus=0;
-	$plunderPortion=5; //percent
 	$supportTroops=0;
 	$defenceTroops=0;
 	$fortification;
@@ -1131,218 +1545,10 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	$_SESSION['playerLevel']=$playerLevel;
 	$_SESSION['baseLevel']=$fortification;
 	/*redirect to mini-game*/
- 
+ 	//header('location:../mini-game/index.php');
     /*pending mitesh's mini game*/
 
 	/*get result from minigame and calculate losses*/
-	$battleResult=$_SESSION['result'];
-	$percentage=$_SESSION['percentage'];
-	echo "<br>RESULT:-$battleResult<br>";
-    $plunderBonus=$result['plunderBonus'];
-    $maxLoss=$result['maxLoss'];
-	$enemy=$result['enemy'];
-	$faction=$result['faction'];
-	if($battleResult) //battle won
-	{
-			//loss calculation
-		$maxLoss+=$percentage;
-		if($fortification>$troopLevel) //low level troops attacking higher level settlements
-		{
-			$minLoss=20+(($fortification-$troopLevel)*10);
-			$loss=floor($quantity*rand($minLoss,100)/100);
-			if($maxLoss>0)
-				$loss=floor($loss*$maxLoss/100);
-			$quantity-=$loss;
-			if($quantity<=0)
-			{
-				$quantity=1;
-			}
-		}
-		else //high level or equal level troops attacking low level settlement
-		{
-			$maxLoss1=100-(($troopLevel-$fortification)*10)+(100-$winChance);
-			$loss=floor($quantity*rand(0,$maxLoss1)/100);
-			if($maxLoss>0)
-				$loss=floor($loss*$maxLoss/100);
-			$quantity-=$loss;
-			if($quantity<=0)
-			{
-				$quantity=1;
-			}
-		}
-		//removing resource gathering from the defeated slot pending
-		$sql="SELECT type FROM grid WHERE row=$destRow and col=$destCol;";
-		$res=$conn->query($sql);
-		$r=$res->fetch_assoc();
-		$distribution=$res['type'];
-		$distribution=explode(":",$distribution);
-		$foodRegen=$distribution[0];
-		$waterRegen=$distribution[1];
-		$powerRegen=$distribution[2];
-		$metalRegen=$distribution[3];
-		$woodRegen=$distribution[4];
-
-		$sql="UPDATE player SET food_regen=food_regen-$foodRegen,water_regen=water_regen-$waterRegen,
-		      power_regen=power_regen-$powerRegen,metal_regen=metal_regen-$metalRegen,
-		      wood_regen=wood_regen-$wood_regen WHERE tek_emailid=$enemy;";
-		if($conn->query($sql)===false)
-			echo "<br>error in reducing enemy regen: ".$conn->error;
-
-
-		$sql="UPDATE grid SET occupied=$playerid,type=NULL,faction=$faction,troops=$quantity WHERE
-		      row=$destRow and col=$destCol;";
-		if($conn->query($sql)===false)
-			echo "<br>error: ".$conn->error;
-
-		//plunder
-
-		$sql="SELECT food,water,power,metal,wood FROM player WHERE tek_emailid=$enemy";
-		$res=$conn->query($sql);
-		if(!$res)
-			echo $conn->error;
-		$r=$res->fetch_assoc();
-		$plunderFood=$plunderPortion*$r['food']/100;
-		$plunderWater=$plunderPortion*$r['water']/100;
-		$plunderPower=$plunderPortion*$r['power']/100;
-		$plunderMetal=$plunderPortion*$r['metal']/100;
-		$plunderWood=$plunderPortion*$r['wood']/100;
-		$sql="UPDATE player SET food=food-$plunderWood,water=water-$plunderWater,power=power-$plunderPower
-		      ,metal=metal-$plunderMetal,wood=wood-$plunderWood WHERE tek_emailid=$enemy"; //remove resources
-		if($conn->query($sql)===false)                                     //from the defeated
-			echo "<br>error: ".$conn->error;
-		$plunderFood+=$plunderFood*$plunderBonus/100;
-		$plunderWater+=$plunderWater*$plunderBonus/100;
-		$plunderPower+=$plunderPower*$plunderBonus/100;
-		$plunderMetal+=$plunderMetal*$plunderBonus/100;
-		$plunderWood+=$plunderWood*$plunderBonus/100;
-		$sql="UPDATE player SET food=food+$plunderWood,water=water+$plunderWater,power=power+$plunderPower
-		      ,metal=metal+$plunderMetal,wood=wood+$plunderWood WHERE tek_emailid=$playerid";
-		if($conn->query($sql)===false)
-			echo "<br>error: ".$conn->error;
-
-		/*root reassignment*/
-		$sql="SELECT root FROM grid WHERE row=$destRow and col=$destCol;";
-		$res=$conn->query($sql);
-		$rw=$res->fetch_assoc();
-		$droot=$rw['root'];
-		$newRoot=$droot;
-		$sql="SELECT row,col,root FROM grid WHERE root='$droot'"; //reset root for loser enemy
-		$res=$conn->query($sql);
-		if(!$res)
-			echo $conn->error;
-		if($res->num_rows>1)
-		{
-			$sql="UPDATE grid SET root=NULL WHERE row=$destRow and col=$destCol;";
-			if($conn->query($sql)===false)
-				echo "error: ".$conn->error;
-			while($droot==$newRoot)
-			{
-				$r=$res->fetch_assoc();
-				$newRoot=$r['row'].",".$r['col'];
-			}
-			$sql="UPDATE grid SET root='$newRoot' WHERE root='$droot';";
-			if($conn->query($sql)===false)
-				echo "error: ".$conn->error;
-		}
-
-		$roots= array();
-		$root=$destRow.",".$destCol;
-		$sql="UPDATE grid SET root='$root' WHERE row=$destRow and col=$destCol;"; //root was made null now it's
-			if($conn->query($sql)===false)									    //it's given the original value
-				echo "error: ".$conn->error;
-		$troopCount;
-		$sql="SELECT row,col,fortification,faction,root FROM grid WHERE (row=$destRow-1 or row=$destRow
-		or row=$destRow+1) and (col=$destCol-1 or col=$destCol or col=$destCol+1);";
-		$res=$conn->query($sql); //query to get all the neighbouring slots to the given slot.
-		if($res->num_rows>0)
-		{
-			while($ro=$res->fetch_assoc())
-			{
-				if($ro['fortification']>0 and $ro['faction']==$faction and !($ro['row']==$destRow and $ro['col']==$destCol))
-				{
-					$roots[count($roots)]=$ro['root'];
-				}
-			}
-		}
-		$roots=condenseArray($roots); //refer line 54
-		$j=0;
-		while($j<count($roots) and !empty($roots[$j])) //sets the root of all neighbouring slots if occupied as the root of the given slot
-		{
-			$r=$roots[$j];
-			$sql="UPDATE grid SET root='$root' WHERE root='$r'"; //connectivity
-			if(!$conn->query($sql) === TRUE)
-			{
-				var_dump($sql);
-				echo "<br>";
-				echo "error: ".$conn->error."<br>";
-			}
-			$j++;
-		}
-		$sql="UPDATE player SET total=total+1;";
-		if($conn->query($sql)===false)
-			echo "error (1270): ".$conn->error;
-		//moving the troops
-		$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;";//troops sent from occupied slot
-		$res=$conn->query($sql);
-		if($res->num_rows>0)
-		{
-			$deployed=$_SESSION['selectedTroops'];
-			$sql="UPDATE grid SET troops=troops-$deployed WHERE row=$srcRow and col=$srcCol;";
-			if($conn->query($sql)===false)
-				echo "<br>error: ".$conn->error;
-		}
-		else //troops sent from unoccupied slot
-		{
-			$deployed=$_SESSION['selectedTroops'];
-			$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
-			playerid=$playerid;";
-			if($conn->query($sql)===false)
-				echo "<br>error: ".$conn->error;
-		}
-		$message="you lost your settlement at ($destRow,$destCol) to an attack.";
-		message($enemy,$message);
-		$_SESSION['response']='You won the attack! '.$quantity.' soldiers survived.';
-	}
-	else //battle lost
-	{
-		$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;";//troops sent from occupied slot
-		$res=$conn->query($sql);
-		if($res->num_rows>0)
-		{
-			$deployed=$_SESSION['selectedTroops'];
-			$sql="UPDATE grid SET troops=troops-$deployed WHERE row=$srcRow and col=$srcCol;";
-			if($conn->query($sql)===false)
-				echo "<br>error: ".$conn->error;
-		}
-		else //troops sent from unoccupied slot
-		{
-			$deployed=$_SESSION['selectedTroops'];
-			$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
-			playerid=$playerid;";
-			if($conn->query($sql)===false)
-				echo "<br>error: ".$conn->error;
-		}
-		$x=$percentage; // defensive troops loss calculation if winChance is 40%, 40% of troops will die
-		$sql="UPDATE grid SET troops=troops-troops*$x WHERE row=$destRow and col=$destCol;";
-		if($conn->query($sql)===false)
-			echo "error: ".$conn->error;
-		$_SESSION['response']="You lost the attack";
-	}
-	unset($_SESSION['selectedRow']);
-	unset($_SESSION['selectedCol']);
-	unset($_SESSION['selectedTroops']);
-	if($battleResult)
-	{
-		$sql="SELECT civperk2 FROM grid WHERE playerid=$playerid;";
-		$res=$conn->query($sql);
-		$r=$res->fetch_assoc();
-		$points=3;
-		$level=$r['civperk2'];
-		$points=$level++;
-		$_SESSION['regen_points']=$points;
-		/*pending caroline queeny mini game*/
-		header("location:regeneration/regen.php");
-	}
 }
 
 
@@ -1353,7 +1559,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$_SESSION['response']="the slot is now accupied by an ally :(.";
 		return;
 	}
-	global $conn,$playerid,$moveCostFood,$moveCostWater,$moveCostPower;
+	global $conn,$playerid,$moveCostFood,$moveCostWater,$moveCostPower,$plunderPortion;
 	/*resource validation for troops movement*/
 
 	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move
@@ -1415,7 +1621,6 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	$enemy="";
 	$maxLoss=100;
 	$plunderBonus=0;
-	$plunderPortion=10; //percent
 	$supportTroops=0;
 	$defenceTroops=0;
 	$fortification;
@@ -1423,233 +1628,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	$winChance=0; //in percentage
 	$originalQuantity=$quantity;
 
-	$battleRes=simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity);
-
-	$battleResult=$battleRes['result'];
-	echo "<br>RESULT:-$battleResult<br>";
-    $plunderBonus=$battleRes['plunderBonus'];
-    $fortification=$battleRes['fortification'];
-    $maxLoss=$battleRes['maxLoss'];
-	$enemy=$battleRes['enemy'];
-	$troopLevel=$battleRes['troopLevel'];
-	$faction=$battleRes['faction'];
-	$winChance=$battleRes['winChance'];
-	if($battleResult) //battle won
-	{
-			//loss calculation
-		$quantity=$originalQuantity;
-		if($fortification>$troopLevel) //low level troops attacking higher level settlements
-		{
-			$minLoss=20+(($fortification-$troopLevel)*10);
-			$num=rand($minLoss,100);
-			$loss=floor($quantity*$num/100);
-			if($maxLoss>0)
-				$loss=floor($loss*$maxLoss/100);
-			$quantity-=$loss;
-			if($quantity<=0)
-			{
-				$quantity=1;
-				echo "remaining=$quantity<br>"."num=$num";
-			}
-		}
-		else //high level or equal level troops attacking low level settlement
-		{
-			$maxLoss1=100-(($troopLevel-$fortification)*10)+(100-$winChance);
-			$num=rand(0,$maxLoss1);
-			echo "loss=".$maxLoss1;
-			echo "<br>100-(($troopLevel-$fortification)*10)+(100-$winChance)";
-			$loss=floor($quantity*$num/100);
-			if($maxLoss>0)
-				$loss=floor($loss*$maxLoss/100);
-			$quantity-=$loss;
-			if($quantity<=0)
-			{
-				$quantity=1;
-				echo "remaining=$quantity<br>"."num=$num";
-			}
-		}
-		//removing resource gathering from the defeated slot pending
-		$sql="SELECT type FROM grid WHERE row=$destRow and col=$destCol;";
-		$res=$conn->query($sql);
-		$r=$res->fetch_assoc();
-		$distribution=$r['type'];
-		$distribution=explode(":",$distribution);
-		$foodRegen=$distribution[0];
-		$waterRegen=$distribution[1];
-		$powerRegen=$distribution[2];
-		$metalRegen=$distribution[3];
-		$woodRegen=$distribution[4];
-
-		$sql="UPDATE player SET food_regen=food_regen-$foodRegen,water_regen=water_regen-$waterRegen,
-		      power_regen=power_regen-$powerRegen,metal_regen=metal_regen-$metalRegen,
-		      wood_regen=wood_regen-$woodRegen WHERE tek_emailid=$enemy;";
-		if($conn->query($sql)===false)
-			echo "<br>error in reducing enemy regen: ".$conn->error;
-
-		//removing resource gathering from the defeated slot
-		$sql="UPDATE grid SET occupied=$playerid,type=NULL,faction=$faction,troops=$quantity WHERE
-		      row=$destRow and col=$destCol;";
-		if($conn->query($sql)===false)
-			echo "<br>error: ".$conn->error;
-
-		//plunder
-
-		$sql="SELECT food,water,power,metal,wood FROM player WHERE tek_emailid=$enemy";
-		$res=$conn->query($sql);
-		if(!$res)
-			echo $conn->error;
-		$r=$res->fetch_assoc();
-		$plunderFood=$plunderPortion*$r['food']/100;
-		$plunderWater=$plunderPortion*$r['water']/100;
-		$plunderPower=$plunderPortion*$r['power']/100;
-		$plunderMetal=$plunderPortion*$r['metal']/100;
-		$plunderWood=$plunderPortion*$r['wood']/100;
-		$sql="UPDATE player SET food=food-$plunderWood,water=water-$plunderWater,power=power-$plunderPower
-		      ,metal=metal-$plunderMetal,wood=wood-$plunderWood WHERE tek_emailid=$enemy"; //remove resources
-		if($conn->query($sql)===false)                                     //from the defeated
-			echo "<br>error: ".$conn->error;
-		$plunderFood+=$plunderFood*$plunderBonus/100;
-		$plunderWater+=$plunderWater*$plunderBonus/100;
-		$plunderPower+=$plunderPower*$plunderBonus/100;
-		$plunderMetal+=$plunderMetal*$plunderBonus/100;
-		$plunderWood+=$plunderWood*$plunderBonus/100;
-		$sql="UPDATE player SET food=food+$plunderWood,water=water+$plunderWater,power=power+$plunderPower
-		      ,metal=metal+$plunderMetal,wood=wood+$plunderWood WHERE tek_emailid=$playerid";
-		if($conn->query($sql)===false)
-			echo "<br>error: ".$conn->error;
-
-		/*pending resoruce assignment*/
-
-		/*root reassignment*/
-		$sql="SELECT root FROM grid WHERE row=$destRow and col=$destCol;";
-		$res=$conn->query($sql);
-		$rw=$res->fetch_assoc();
-		$droot=$rw['root'];
-		$newRoot=$droot;
-		$sql="SELECT row,col,root FROM grid WHERE root='$droot'"; //reset root for loser enemy
-		$res=$conn->query($sql);
-		if(!$res)
-			echo $conn->error;
-		if($res->num_rows>1)
-		{
-			$sql="UPDATE grid SET root=NULL WHERE row=$destRow and col=$destCol;";
-			if($conn->query($sql)===false)
-				echo "error: ".$conn->error;
-			while($droot==$newRoot)
-			{
-				$r=$res->fetch_assoc();
-				$newRoot=$r['row'].",".$r['col'];
-			}
-			$sql="UPDATE grid SET root='$newRoot' WHERE root='$droot';";
-			if($conn->query($sql)===false)
-				echo "error: ".$conn->error;
-		}
-
-		$roots= array();
-		$root=$destRow.",".$destCol;
-		$sql="UPDATE grid SET root='$root' WHERE row=$destRow and col=$destCol;"; //root was made null now
-			if($conn->query($sql)===false)									    //it's given the original value
-				echo "error: ".$conn->error;
-		$troopCount;
-		$sql="SELECT row,col,fortification,faction,root FROM grid WHERE (row=$destRow-1 or row=$destRow
-		or row=$destRow+1) and (col=$destCol-1 or col=$destCol or col=$destCol+1);";
-		$res=$conn->query($sql); //query to get all the neighbouring slots to the given slot.
-		if($res->num_rows>0)
-		{
-			while($ro=$res->fetch_assoc())
-			{
-				if($ro['fortification']>0 and $ro['faction']==$faction and !($ro['row']==$destRow and $ro['col']==$destCol))
-				{
-					$roots[count($roots)]=$ro['root'];
-				}
-			}
-		}
-		$roots=condenseArray($roots); //refer line 54
-		$j=0;
-		while($j<count($roots) and !empty($roots[$j])) //sets the root of all neighbouring slots if occupied as the root of the given slot
-		{
-			$r=$roots[$j];
-			$sql="UPDATE grid SET root='$root' WHERE root='$r'"; //connectivity
-			if(!$conn->query($sql) === TRUE)
-			{
-				var_dump($sql);
-				echo "<br>";
-				echo "error: ".$conn->error."<br>";
-			}
-			$j++;
-		}
-		$sql="UPDATE player SET total=total+1;";
-		if($conn->query($sql)===false)
-			echo "error (1270): ".$conn->error;
-		//moving the troops
-		$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;";//troops sent from occupied slot
-		$res=$conn->query($sql);
-		if($res->num_rows>0)
-		{
-			$deployed=$_SESSION['selectedTroops'];
-			$sql="UPDATE grid SET troops=troops-$deployed WHERE row=$srcRow and col=$srcCol;";
-			if($conn->query($sql)===false)
-				echo "<br>error: ".$conn->error;
-		}
-		else //troops sent from unoccupied slot
-		{
-			$deployed=$_SESSION['selectedTroops'];
-			$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
-			playerid=$playerid;";
-			if($conn->query($sql)===false)
-				echo "<br>error: ".$conn->error;
-		}
-		$message="you lost your settlement at ($destRow,$destCol) to an attack.";
-		message($enemy,$message);
-		$_SESSION['response']='You won the attack! '.$quantity.' soldiers survived.';
-	}
-	else //battle lost
-	{
-		$sql="SELECT troops FROM grid WHERE row=$srcRow and col=$srcCol;";//troops sent from occupied slot
-		$res=$conn->query($sql);
-		if($res->num_rows>0)
-		{
-			$deployed=$_SESSION['selectedTroops'];
-			$sql="UPDATE grid SET troops=troops-$deployed WHERE row=$srcRow and col=$srcCol;";
-			if($conn->query($sql)===false)
-				echo "<br>error: ".$conn->error;
-		}
-		else //troops sent from unoccupied slot
-		{
-			$deployed=$_SESSION['selectedTroops'];
-			$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
-			playerid=$playerid;";
-			if($conn->query($sql)===false)
-				echo "<br>error: ".$conn->error;
-		}
-		$x=$winChance/100; // defensive troops loss calculation if winChance is 40%, 40% of troops will die
-		$sql="SELECT troops FROM grid WHERE row=$destRow and col=$destCol;";
-		$res=$conn->query($sql);
-		$r=$res->fetch_assoc();
-		$troops=$r['troops'];
-		$troops-=$troops*$x;
-		echo $x;
-		$sql="UPDATE grid SET troops=troops-troops*$x WHERE row=$destRow and col=$destCol;";
-		if($conn->query($sql)===false)
-			echo "error: ".$conn->error;
-		$_SESSION['response']="You lost the attack";
-	}
-	unset($_SESSION['selectedRow']);
-	unset($_SESSION['selectedCol']);
-	unset($_SESSION['selectedTroops']);
-	if($battleResult)
-	{
-		$sql="SELECT civperk2 FROM grid WHERE playerid=$playerid;";
-		$res=$conn->query($sql);
-		$r=$res->fetch_assoc();
-		$points=3;
-		$level=$r['civperk2'];
-		$points=$level++;
-		$_SESSION['regen_points']=$points;
-		/*pending caroline queeny mini game*/
-		echo $_SESSION['regen_points'];
-		//header("location:regeneration/regen.php");
-	}
+	simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity);
 }
 function condenseArray($arr) //removes duplicates and would reduce load on server as little as it already is..
 {
@@ -1750,7 +1729,7 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 		$i=0;
 		while($ro=$res->fetch_assoc())
 		{
-			if($ro['fortification']>0 and $ro['faction']=$faction and !($ro['row']===$row and $ro['col']===$col))
+			if($ro['fortification']>0 and $ro['faction']==$faction and !($ro['row']===$row and $ro['col']===$col))
 			{
 				$roots[$i]=$ro['root'];
 			}
@@ -2031,6 +2010,10 @@ function fortify($row,$col)/*pending*/
 	else
 		$_SESSION['response']="fortified to level : ".($level+1);
 }
+
+
+
+
 if(isset($_POST['fortify']))
 {
 	$row=$_POST['row'];
@@ -2038,6 +2021,8 @@ if(isset($_POST['fortify']))
 	fortify($row,$col);
 	header("location:index.php");
 }
+
+
 if(isset($_POST['settle']))
 {
 	$row=$_POST['row'];
@@ -2047,6 +2032,8 @@ if(isset($_POST['settle']))
 	settle($row,$col);
 	//header("location:index.php");
 }
+
+
 if(isset($_POST['select_troops']))
 {
 	$row=$_POST['row'];
@@ -2063,11 +2050,15 @@ if(isset($_POST['select_troops']))
 	}
 	header("location:index.php");
 }
+
+
 if(isset($_POST["scout"]))
 {
 	scout($_POST['row'],$_POST['col']);
 	header("location:index.php");
 }
+
+
 if(isset($_POST['move']))
 {
 	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
@@ -2087,6 +2078,8 @@ if(isset($_POST['move']))
 	move($srcrow,$srccol,$row,$col,$quantity);
 	header("location:index.php");
 }
+
+
 if(isset($_POST['attack']))
 {
 	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
@@ -2105,6 +2098,8 @@ if(isset($_POST['attack']))
 	attack($srcrow,$srccol,$row,$col,$quantity);
 	//header("location:index.php");
 }
+
+
 if(isset($_POST['create_troops']))
 {
 	$row=$_POST['row'];
@@ -2119,5 +2114,19 @@ if(isset($_POST['create_troops']))
 	header("location:index.php");
 }
 
+if(isset($_SESSION['result']))
+{
+	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
+	{
+		$quantity=$_SESSION['selectedTroops'];
+	}
+	$srcrow=$_SESSION['selectedRow'];
+	$srccol=$_SESSION['selectedCol'];
+	$row=$_SESSION['destRow'];
+	$col=$_SESSION['destCol'];
+	//echo $quantity;
+	simAftermath($srcrow,$srccol,$row,$col,$quantity);
+	//header("location:index.php");
+}
 
 ?>
