@@ -8,6 +8,13 @@ body {
 #quantity{
 	visibility: hidden;
 }
+#quantity1{
+	visibility: hidden;
+}
+
+#ctxMenu{
+	background-color: blue;
+}
 #leftbanner {
 	float: left;
 	background-color: blue;
@@ -77,10 +84,4 @@ td{
 	background-color:#000000;
 	padding: 6px;
 	
-}
-
-
-#contextMenu
-{
-	display: none;
 }

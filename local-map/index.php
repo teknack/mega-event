@@ -26,7 +26,6 @@ include "./player.php";
 						<button type="submit" id="resource">Collect Resources</button>
 					</form>
 				</span>
-		
 	</div>
 	<br><br>
 	<div id="playgroup">
@@ -93,8 +92,15 @@ include "./player.php";
 			</tr>		
 		</table>
 	</div>
-	<div id="contextMenu">
+	<div id="ctxMenu" style="display:none;">
 		<form id="ctxForm" action="player.php" method="post">
+			<div id="action1">
+			</div>
+			<div>
+				<input type="text" name="row" id="row1">
+				<input type="text" name="col" id="col1">
+				<input type="number" name="quantity" id="quantity1">
+			</div>
 		</form>
 	</div>
 	<?php 

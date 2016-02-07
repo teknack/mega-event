@@ -112,6 +112,7 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 	{
 		$sql="SELECT occupied FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
+		var_dump($sql);
 		$r=$res->fetch_assoc();
 		if($r['occupied']==$playerid or $r['occupied']==0) //allied or unoccupied slot
 			return true;
