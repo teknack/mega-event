@@ -5,7 +5,7 @@
  */
 include "./db_access/db.php"; //REMINDER : change this path during final deployment
  
-function ($gamename,$score,$player)
+function sendScore($gamename,$score,$player)
 {
 	connect();
 	
