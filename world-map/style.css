@@ -1,0 +1,14 @@
+#canvas
+{
+	position:absolute;
+	left:150px;
+	top:150px;
+	opacity: 0.3;
+}
+
+#mapCanvas
+{
+	position:absolute;
+	left:150px;
+	top:150px;
+}
