@@ -13,12 +13,12 @@ body {
 	position: absolute;
 	visibility: hidden;
 	width:50%;
-	left:25%;
+	left:22%;
 }
 
 #ctxMenu{
 	background-color: blue;
-	width:7em;
+	width:5em;
 }
 #leftbanner {
 	float: left;
@@ -42,7 +42,21 @@ body {
 }
 #playgroup div { 
 }
-	
+
+#canvas
+{
+	position:absolute;
+	left:200px;
+	top:200px;
+	opacity: 0.3;
+}
+
+#mapCanvas
+{
+	position:absolute;
+	left:200px;
+	top:200px;
+}	
 
 td{
 	width:2em;

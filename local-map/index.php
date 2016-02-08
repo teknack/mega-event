@@ -30,8 +30,11 @@ include "./player.php";
 	<br><br>
 	<div id="playgroup">
 		<div id="localplay" class="playarea" align="center">
+			<canvas id="mapCanvas" width="1000" height="1000">
+				Your browser does not support the canvas element.
+			</canvas>
 			<canvas id="canvas" width="450" height="450" style="border:1px solid #c3c3c3;">
-							Your browser does not support the canvas element.
+				Your browser does not support the canvas element.
 			</canvas>
 		</div>
 	</div>
@@ -43,7 +46,7 @@ include "./player.php";
 					<div id="bottom_action" style="float:left">
 						<form action="player.php" method="POST">
 							<div>
-								<input type="hidden" name="topLeft" id="topLeft">
+								<input type="text" name="topLeft" id="topLeft">
 								<input type="hidden" name="row" id="row">
 								<input type="hidden" name="col" id="col">
 								<input type="number" name="quantity" id="quantity">

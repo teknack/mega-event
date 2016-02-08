@@ -8,7 +8,7 @@ $size=9;
 if(isset($_GET['row']))
 {
 	map($_GET['row'],$_GET['col']);
-	//map(0,7);
+	//map(0,12);
 }
 
 function map($row,$col)

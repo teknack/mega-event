@@ -90,10 +90,13 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 	}
 	else if($action=="attack")
 	{
+		$sql="SELECT status FROM grid WHERE row=$row and col=$col;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
 		$sql="SELECT faction FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
-		if($r['faction']==$faction or $r['faction']==0)
+		if($r['faction']==$faction or $r['faction']==0 or $r['status']=="attack")
 			return false;
 		else
 			return true;
@@ -114,17 +117,20 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 		$res=$conn->query($sql);
 		var_dump($sql);
 		$r=$res->fetch_assoc();
-		if($r['occupied']==$playerid or $r['occupied']==0) //allied or unoccupied slot
+		if($r['occupied']=='$playerid' or $r['occupied']==0) //allied or unoccupied slot
 			return true;
 		else
 			return false;	
 	}
 	else if($action=="settle")
 	{
+		$sql="SELECT status FROM grid WHERE row=$row and col=$col;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
 		$sql="SELECT faction FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
-		if($r['faction']==0) //only unoccupied slot
+		if($r['faction']==0 and $r1['status']!="settle" and $r1['status']!="attack") //only unoccupied slot
 			return true;
 		else
 			return false;
@@ -135,11 +141,11 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 function message($playerid,$message)
 {
 	global $conn;
-	$sql="SELECT message FROM player WHERE tek_emailid=$playerid;";
+	$sql="SELECT message FROM player WHERE tek_emailid='$playerid';";
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
 	$message=$row['message']."\n".$message;
-	$sql="UPDATE player SET message=$message WHERE tek_emailid=$playerid;";
+	$sql="UPDATE player SET message=$message WHERE tek_emailid='$playerid';";
 	if($conn->query($sql))
 		echo "error : ".$conn->error;
 }
@@ -314,7 +320,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	}
 
 
-	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move
+	$sql="SELECT civperk1 FROM research WHERE playerid='$playerid';"; //find if player has researched for move
 	$res=$conn->query($sql);									   //discount
 	$r=$res->fetch_assoc();
 	$lvl=$r['civperk1'];
@@ -384,7 +390,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	/*open battle sim*/
 	$troopDistribution=[[]];
 	$hiddenTroops=0;
-	$sql="SELECT faction FROM player WHERE tek_emailid=$playerid;";
+	$sql="SELECT faction FROM player WHERE tek_emailid='$playerid';";
 	$res=$conn->query($sql);
 	$r=$res->fetch_assoc();
 	$pfaction=$r['faction'];
@@ -398,7 +404,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	{
 		$r=$res1->fetch_assoc();
 		$p=$r['playerid'];
-		$sql="SELECT faction FROM player WHERE tek_emailid=$p;";
+		$sql="SELECT faction FROM player WHERE tek_emailid='$p';";
 		$res1=$conn->query($sql);
 		$r=$res1->fetch_assoc();
 		$faction=$r['faction'];
@@ -415,7 +421,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				{
 					$enemy=$row['playerid'];
 					$otroops=$row['quantity']; //number of troops of one enemy occupant
-					$sql1="SELECT open,ttype FROM research WHERE playerid=$enemy;";
+					$sql1="SELECT open,ttype FROM research WHERE playerid='$enemy';";
 					$res1=$conn->query($sql1);
 					$r=$res1->fetch_assoc();
 					$obperk=$r['open'];
@@ -443,7 +449,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 					$etroops+=$otroops;
 					$i++;
 				}
-				$sql="SELECT ttype FROM research WHERE playerid=$playerid;";
+				$sql="SELECT ttype FROM research WHERE playerid='$playerid';";
 				$res1=$conn->query($sql);
 				$row=$res1->fetch_assoc();
 				$flvl=$row['ttype'];
@@ -474,7 +480,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 					{
 						$loss=floor($troopDistribution[$i]['troops']/$quantity);
 						$id=$troopDistribution['playerid']; //deducting troops as battle losses
-						$sql2="UPDATE troops SET quantity=quantity-$loss WHERE playerid=$id and row=$destRow and col=$destCol;";
+						$sql2="UPDATE troops SET quantity=quantity-$loss WHERE playerid='$id' and row=$destRow and col=$destCol;";
 						if($conn->query($sql2)===false)
 						{
 							var_dump($sql2);
@@ -506,12 +512,12 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	{
 
 		$row=$res->fetch_assoc();
-		if($row['occupied']==$playerid)
+		if($row['occupied']=='$playerid')
 		{
 			$sql="SELECT occupied FROM grid WHERE row=$destRow and col=$destCol";
 			$res2=$conn->query($sql);
 			$r=$res2->fetch_assoc();
-			if($r['occupied']!=$playerid) //player moving form settled to unoccupied/allied slot
+			if($r['occupied']!='$playerid') //player moving form settled to unoccupied/allied slot
 			{
 				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol;"; //check if troops are already present
 				$res1=$conn->query($sql);
@@ -564,12 +570,12 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 			$sql="SELECT occupied FROM grid WHERE row=$destRow and col=$destCol";
 			$res2=$conn->query($sql);
 			$r=$res2->fetch_assoc();
-			if($r['occupied']!=$playerid) //player moves from unoccupied/allied slots to unoccupied/allied slots
+			if($r['occupied']!='$playerid') //player moves from unoccupied/allied slots to unoccupied/allied slots
 			{
-				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol and playerid=$playerid;";
+				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol and playerid='$playerid;";
 				if($conn->query($sql)==false)
 					echo "error (143): ".$conn->error."<br>";
-				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol and playerid=$playerid;"; //check if troops are already present
+				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol and playerid='$playerid';"; //check if troops are already present
 				$res1=$conn->query($sql);
 				if($res1->num_rows==0)
 				{
@@ -579,7 +585,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 				}
 				else
 				{
-					$sql="UPDATE troops SET quantity=quantity+$quantity WHERE row=$destRow and col=$destCol and playerid=$playerid;";
+					$sql="UPDATE troops SET quantity=quantity+$quantity WHERE row=$destRow and col=$destCol and playerid='$playerid';";
 					if($conn->query($sql)==false)
 						echo "error (156): ".$conn->error."<br>";
 				}
@@ -662,19 +668,19 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 
 			$sql="UPDATE player SET food_regen=food_regen-$foodRegen,water_regen=water_regen-$waterRegen,
 			      power_regen=power_regen-$powerRegen,metal_regen=metal_regen-$metalRegen,
-			      wood_regen=wood_regen-$woodRegen WHERE tek_emailid=$enemy;";
+			      wood_regen=wood_regen-$woodRegen WHERE tek_emailid='$enemy';";
 			if($conn->query($sql)===false)
 				echo "<br>error in reducing enemy regen: ".$conn->error;
 
 			//removing resource gathering from the defeated slot
-			$sql="UPDATE grid SET occupied=$playerid,type=NULL,faction=$faction,troops=$quantity WHERE
+			$sql="UPDATE grid SET occupied='$playerid',type=NULL,faction=$faction,troops=$quantity WHERE
 			      row=$destRow and col=$destCol;";
 			if($conn->query($sql)===false)
 				echo "<br>error: ".$conn->error;
 
 			//plunder
 
-			$sql="SELECT food,water,power,metal,wood FROM player WHERE tek_emailid=$enemy";
+			$sql="SELECT food,water,power,metal,wood FROM player WHERE tek_emailid='$enemy'";
 			$res=$conn->query($sql);
 			if(!$res)
 				echo $conn->error;
@@ -685,7 +691,7 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			$plunderMetal=$plunderPortion*$r['metal']/100;
 			$plunderWood=$plunderPortion*$r['wood']/100;
 			$sql="UPDATE player SET food=food-$plunderWood,water=water-$plunderWater,power=power-$plunderPower
-			      ,metal=metal-$plunderMetal,wood=wood-$plunderWood WHERE tek_emailid=$enemy"; //remove resources
+			      ,metal=metal-$plunderMetal,wood=wood-$plunderWood WHERE tek_emailid='$enemy'"; //remove resources
 			if($conn->query($sql)===false)                                     //from the defeated
 				echo "<br>error: ".$conn->error;
 			$plunderFood+=$plunderFood*$plunderBonus/100;
@@ -694,7 +700,7 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			$plunderMetal+=$plunderMetal*$plunderBonus/100;
 			$plunderWood+=$plunderWood*$plunderBonus/100;
 			$sql="UPDATE player SET food=food+$plunderWood,water=water+$plunderWater,power=power+$plunderPower
-			      ,metal=metal+$plunderMetal,wood=wood+$plunderWood WHERE tek_emailid=$playerid";
+			      ,metal=metal+$plunderMetal,wood=wood+$plunderWood WHERE tek_emailid='$playerid'";
 			if($conn->query($sql)===false)
 				echo "<br>error: ".$conn->error;
 
@@ -775,13 +781,15 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			{
 				$deployed=$_SESSION['selectedTroops'];
 				$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
-				playerid=$playerid;";
+				playerid='$playerid';";
 				if($conn->query($sql)===false)
 					echo "<br>error: ".$conn->error;
 			}
 			$message="you lost your settlement at ($destRow,$destCol) to an attack.";
 			message($enemy,$message);
-			$_SESSION['response']='You won the attack! '.$quantity.' soldiers survived.';
+			$sql="UPDATE grid SET status='' WHERE row=$row and col=$col;";
+			if($conn->query($sql)===false)
+				echo "error : ".$conn->error;
 		}
 		else
 		{
@@ -798,10 +806,13 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			{
 				$deployed=$_SESSION['selectedTroops'];
 				$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
-				playerid=$playerid;";
+				playerid='$playerid';";
 				if($conn->query($sql)===false)
 					echo "<br>error: ".$conn->error;
 			}
+			$sql="UPDATE grid SET status='' WHERE row=$row and col=$col;";
+			if($conn->query($sql)===false)
+				echo "error in status: ".$conn->error;
 			$sql="SELECT troops FROM grid WHERE row=$destRow and col=$destCol;";
 			$res=$conn->query($sql);
 			$r=$res->fetch_assoc();
@@ -863,19 +874,19 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 
 			$sql="UPDATE player SET food_regen=food_regen-$foodRegen,water_regen=water_regen-$waterRegen,
 			      power_regen=power_regen-$powerRegen,metal_regen=metal_regen-$metalRegen,
-			      wood_regen=wood_regen-$woodRegen WHERE tek_emailid=$enemy;";
+			      wood_regen=wood_regen-$woodRegen WHERE tek_emailid='$enemy';";
 			if($conn->query($sql)===false)
 				echo "<br>error in reducing enemy regen: ".$conn->error;
 
 			//removing resource gathering from the defeated slot
-			$sql="UPDATE grid SET occupied=$playerid,type=NULL,faction=$faction,troops=$quantity WHERE
+			$sql="UPDATE grid SET occupied='$playerid',type=NULL,faction=$faction,troops=$quantity WHERE
 			      row=$destRow and col=$destCol;";
 			if($conn->query($sql)===false)
 				echo "<br>error: ".$conn->error;
 
 			//plunder
 
-			$sql="SELECT food,water,power,metal,wood FROM player WHERE tek_emailid=$enemy";
+			$sql="SELECT food,water,power,metal,wood FROM player WHERE tek_emailid='$enemy'";
 			$res=$conn->query($sql);
 			if(!$res)
 				echo $conn->error;
@@ -886,7 +897,7 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			$plunderMetal=$plunderPortion*$r['metal']/100;
 			$plunderWood=$plunderPortion*$r['wood']/100;
 			$sql="UPDATE player SET food=food-$plunderWood,water=water-$plunderWater,power=power-$plunderPower
-			      ,metal=metal-$plunderMetal,wood=wood-$plunderWood WHERE tek_emailid=$enemy"; //remove resources
+			      ,metal=metal-$plunderMetal,wood=wood-$plunderWood WHERE tek_emailid='$enemy'"; //remove resources
 			if($conn->query($sql)===false)                                     //from the defeated
 				echo "<br>error: ".$conn->error;
 			$plunderFood+=$plunderFood*$plunderBonus/100;
@@ -895,7 +906,7 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			$plunderMetal+=$plunderMetal*$plunderBonus/100;
 			$plunderWood+=$plunderWood*$plunderBonus/100;
 			$sql="UPDATE player SET food=food+$plunderWood,water=water+$plunderWater,power=power+$plunderPower
-			      ,metal=metal+$plunderMetal,wood=wood+$plunderWood WHERE tek_emailid=$playerid";
+			      ,metal=metal+$plunderMetal,wood=wood+$plunderWood WHERE tek_emailid='$playerid'";
 			if($conn->query($sql)===false)
 				echo "<br>error: ".$conn->error;
 
@@ -976,12 +987,15 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			{
 				$deployed=$_SESSION['selectedTroops'];
 				$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
-				playerid=$playerid;";
+				playerid='$playerid';";
 				if($conn->query($sql)===false)
 					echo "<br>error: ".$conn->error;
 			}
 			$message="you lost your settlement at ($destRow,$destCol) to an attack.";
 			message($enemy,$message);
+			$sql="UPDATE grid SET status='' WHERE row=$row and col=$col;";
+			if($conn->query($sql)===false)
+				echo "error in status: ".$conn->error;
 			$_SESSION['response']='You won the attack! '.$quantity.' soldiers survived.';
 		}
 		else //battle lost
@@ -999,7 +1013,7 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			{
 				$deployed=$_SESSION['selectedTroops'];
 				$sql="UPDATE troops SET quantity=quantity-$deployed WHERE row=$srcRow and col=$srcCol and
-				playerid=$playerid;";
+				playerid='$playerid';";
 				if($conn->query($sql)===false)
 					echo "<br>error: ".$conn->error;
 			}
@@ -1010,7 +1024,10 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			$troops=$r['troops'];
 			$troops-=$troops*$x;
 			echo $x;
-			$sql="UPDATE grid SET troops=troops-troops*$x WHERE row=$destRow and col=$destCol;";
+			$sql="UPDATE grid SET status='' WHERE row=$destRow and col=$destCol;";
+			if($conn->query($sql)===false)
+				echo "error in status: ".$conn->error;
+			$sql="UPDATE grid SET troops=$troops WHERE row=$destRow and col=$destCol;";
 			if($conn->query($sql)===false)
 				echo "error: ".$conn->error;
 			$_SESSION['response']="You lost the attack";
@@ -1023,7 +1040,7 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	unset($_SESSION['destCol']);
 	if($battleResult or $result)
 	{
-		$sql="SELECT civperk2 FROM research WHERE playerid=$playerid;";
+		$sql="SELECT civperk2 FROM research WHERE playerid='$playerid';";
 		$res=$conn->query($sql);
 		var_dump($sql);
 		$r=$res->fetch_assoc();
@@ -1076,7 +1093,7 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	deductResource("water",$waterCost);
 	deductResource("power",$powerCost);
 
-	$sql="SELECT ttype FROM research WHERE playerid=$playerid;";
+	$sql="SELECT ttype FROM research WHERE playerid='$playerid';";
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
 	$enemy="";
@@ -1179,13 +1196,13 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		}
 	}
 	echo "<br>quantity:$quantity<br>lvl:$troopLevel<br><br>";
-	$sql="SELECT faction FROM player WHERE tek_emailid=$playerid;";
+	$sql="SELECT faction FROM player WHERE tek_emailid='$playerid';";
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
 	$faction=$row['faction'];
 	if($faction==1) //preserve
 	{
-		$sql="SELECT faction1,faction2 FROM research WHERE playerid=$playerid;";
+		$sql="SELECT faction1,faction2 FROM research WHERE playerid='$playerid';";
 		$res=$conn->query($sql);
 		$row=$res->fetch_assoc();
 		if($row['faction2']==1)
@@ -1262,7 +1279,7 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$defenceTroops+=$r1['SUM(quantity)'];
-		$sql="SELECT defence FROM research WHERE playerid=$playerid;";
+		$sql="SELECT defence FROM research WHERE playerid='$playerid';";
 		$res=$conn->query($sql);
 		//var_dump($res);
 		$r1=$res->fetch_assoc();
@@ -1291,7 +1308,7 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$enemy=$r1['occupied'];
-		$sql="SELECT ttype FROM research WHERE playerid=$enemy;";
+		$sql="SELECT ttype FROM research WHERE playerid='$enemy';";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$ettype=$r1['ttype'];
@@ -1308,7 +1325,7 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$enemy=$r1['occupied'];
-		$sql="SELECT faction1 FROM research WHERE playerid=$enemy;";
+		$sql="SELECT faction1 FROM research WHERE playerid='$enemy';";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$teamBonus=$r1['faction1'];
@@ -1361,7 +1378,7 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
 		$defenceTroops+=$r['quantity'];
-		$sql="SELECT defence FROM research WHERE playerid=$playerid;";
+		$sql="SELECT defence FROM research WHERE playerid='$playerid';";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$defPerk=$r1['defence'];
@@ -1386,7 +1403,7 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			$defenceTroops+=$r1['garrison'];
 		}
 		$defenceTroops+=$supportTroops;
-		$sql="SELECT ttype FROM research WHERE playerid=$enemy;";
+		$sql="SELECT ttype FROM research WHERE playerid='$enemy';";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$ettype=$r1['ttype'];
@@ -1440,7 +1457,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	}
 
 	//confirm if player can afford to move
-	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move
+	$sql="SELECT civperk1 FROM research WHERE playerid='$playerid';"; //find if player has researched for move
 	$res=$conn->query($sql);									   //discount
 	$r=$res->fetch_assoc();
 	$lvl=$r['civperk1'];
@@ -1545,7 +1562,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	$_SESSION['playerLevel']=$playerLevel;
 	$_SESSION['baseLevel']=$fortification;
 	/*redirect to mini-game*/
- 	//header('location:../mini-game/index.php');
+ 	//header('location:../mini-game/attack/index.php');
     /*pending mitesh's mini game*/
 
 	/*get result from minigame and calculate losses*/
@@ -1561,8 +1578,10 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	}
 	global $conn,$playerid,$moveCostFood,$moveCostWater,$moveCostPower,$plunderPortion;
 	/*resource validation for troops movement*/
-
-	$sql="SELECT civperk1 FROM research WHERE playerid=$playerid;"; //find if player has researched for move
+	$sql="UPDATE grid SET status='attack' WHERE row=$row and col=$col;";
+	if($conn->query($sql)===false)
+		echo "error in status: ".$conn->error;
+	$sql="SELECT civperk1 FROM research WHERE playerid='$playerid';"; //find if player has researched for move
 	$res=$conn->query($sql);									   //discount
 	$r=$res->fetch_assoc();
 	$lvl=$r['civperk1'];
@@ -1661,9 +1680,12 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 		return;
 	}
 	global $conn,$playerid,$faction,$settleWoodCost,$settleMetalCost,$settlePowerCost;
+	$sql="UPDATE grid SET status='settle' WHERE row=$row and col=$col;";
+	if($conn->query($sql)===false)
+		echo "error in status: ".$conn->error;
 	if($faction==2)
 	{
-		$sql="SELECT faction2 FROM research WHERE playerid=$playerid;";
+		$sql="SELECT faction2 FROM research WHERE playerid='$playerid';";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
 		$lvl=$r['faction2'];
@@ -1715,7 +1737,7 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 	deductResource("wood",$settleWoodCost);
 	deductResource("metal",$settleMetalCost);
 	deductResource("power",$settlePowerCost);
-	$sql="SELECT faction FROM player WHERE tek_emailid=$playerid;";// find player faction
+	$sql="SELECT faction FROM player WHERE tek_emailid='$playerid';";// find player faction
 	$res=$conn->query($sql);
 	$r=$res->fetch_assoc();
 	$faction=$r['faction'];
@@ -1735,7 +1757,7 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 			}
 		}
 	}
-	$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid=$playerid;"; //find number of troops already stationed
+	$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid='$playerid';"; //find number of troops already stationed
 	$res=$conn->query($sql); //query to get all the neighbouring slots to the given slot.
 	if($res->num_rows>0)
 	{
@@ -1760,7 +1782,7 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 		}
 		$j++;
 	}
-	$sql="UPDATE grid SET occupied=$playerid,faction=$faction,fortification=1, root='$root',troops=$troopCount
+	$sql="UPDATE grid SET occupied='$playerid',faction=$faction,fortification=1, root='$root',troops=$troopCount
 	      WHERE row=$row and col=$col;"; //transferring troops from troop to grid
 	if(!$conn->query($sql) === TRUE)
 	{
@@ -1775,14 +1797,14 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 		echo "<br>";
 		echo "error: ".$conn->error."<br>";
 	}
-	$sql="UPDATE player SET total=total+1 WHERE tek_emailid=$playerid;";
+	$sql="UPDATE player SET total=total+1 WHERE tek_emailid='$playerid';";
 	if(!$conn->query($sql) === TRUE)
 	{
 		var_dump($sql);
 		echo "<br>";
 		echo "error: ".$conn->error."<br>";
 	}
-	$sql="SELECT civperk2 FROM research WHERE playerid=$playerid;";
+	$sql="SELECT civperk2 FROM research WHERE playerid='$playerid';";
 	$res=$conn->query($sql);
 	$r=$res->fetch_assoc();
 	$points=3;
@@ -1803,7 +1825,7 @@ function scout($row,$col)
 	$output="";
 	if($faction==2)
 	{
-		$sql="SELECT faction1 FROM research WHERE playerid=$playerid;";
+		$sql="SELECT faction1 FROM research WHERE playerid='$playerid';";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
 		$lvl=$r['faction1'];
