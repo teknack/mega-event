@@ -1,10 +1,12 @@
 var slotSize=50;
+var wMapSlotSize=10;
 var playArea=9;
 var grid=[];
 var playerId;
 var faction;
 var canvas, ctx;
-var grass=new Image();
+var map;
+var coord;
 
 function response(id,message)
 {
@@ -409,18 +411,9 @@ function renderGrid()
     {
         for(var j=0,x=0;j<playArea;j++,x+=slotSize)
         {
-            var value = grid[i][j];
-            ctx.fillStyle = value;
-            if(grid[i][j]=="white")
-            {
-              //console.log(x,y);
-              ctx.drawImage(grass,x,y,slotSize-2,slotSize-2);
-              //ctx.fillRect(x,y,slotSize,slotSize);
-            }
-            else
-            {
-                ctx.fillRect(x,y,slotSize,slotSize);
-            }
+            var value=grid[i][j];
+            ctx.fillStyle =value;
+            ctx.fillRect(x,y,slotSize,slotSize);
             ctx.strokeRect(x,y,slotSize,slotSize);
         }
 
@@ -504,18 +497,33 @@ function HideMenu(control)
     document.getElementById(control).style.display = 'none'; 
 }
 
+function drawMap()
+{
+    var row=coord[0];
+    var col=coord[1];
+    var sx=col*wMapSlotSize;
+    var sy=row*wMapSlotSize;
+    console.log(sx+","+sy);
+    ctx1.drawImage(map,sx,sy,playArea*wMapSlotSize,playArea*wMapSlotSize,0,0,450,450);
+}
+
 window.onload=function loadLocal()
 {
+    var co=document.getElementById("topLeft").value;
+    coord=co.split(",");
     canvas=document.getElementById("canvas");
     ctx = canvas.getContext("2d");
+    mapCanvas=document.getElementById("mapCanvas");
+    ctx1 = mapCanvas.getContext("2d");
     window.oncontextmenu=function(){return false}; //disable default context menu 
     for(var i=0;i<playArea;i++)
     {
       grid[i]=[];
     }
-
-    grass.onload = getGrid;
-    grass.src = "../assets/grass.jpg";
+    map=new Image();
+    map.src = "../assets/test1.jpg";
+    map.onload=drawMap;
+    getGrid();
     canvas.setAttribute("onClick","action(canvas,event)");
     canvas.setAttribute("onContextMenu","ShowMenu(event)");
     canvas.setAttribute("onmousemove","getCursorPosition(canvas,event)");
@@ -525,3 +533,4 @@ window.onload=function loadLocal()
     document.getElementById("right").setAttribute("onClick","shiftRight()");
     document.getElementById("world").setAttribute("onClick","world()");
 }
+//wMapSlotSize*playArea

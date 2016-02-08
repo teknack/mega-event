@@ -10,7 +10,7 @@
 	{
 		die("connection error".$conn->connect_error);
 	}
-	$sql="SELECT faction FROM player WHERE tek_emailid=$player;";
+	$sql="SELECT faction FROM player WHERE tek_emailid='$player';";
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
 	$faction=$row['faction'];

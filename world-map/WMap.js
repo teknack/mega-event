@@ -1,12 +1,18 @@
 var canvas;
+var mapCanvas;
 var	ctx;
 var x=0,i=0;
 var y=0,j=0;
+var map;
 var playerId;
 var faction;
 var slotSize=10; //cell size in px
 var hSize=9;     //hover window size , no. of slots/cells
 var grid=[];
+var playerColor="blue";//"rgba(0,71,179,0.5)";
+var allyColor="yellow";//"rgba(203,204,0,0.5)";
+var enemyColor="red";//"rgba(204,0,0,0.5)";
+var neutralColor="white"//"rgba(255,255,255,0.5)";
 for(var i=0;i<100;i++)
 {
 	grid[i]=[];
@@ -37,25 +43,33 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 		{
 			if(temp[k]["occupied"]==playerId )
 			{
-				grid[i][j]="blue";
+				grid[i][j]=playerColor;
 			}
 			else if(temp[k]["occupied"]==0)
 			{
-				grid[i][j]="white";
+				grid[i][j]=neutralColor;
 			}
 			else
 			{
 				if(temp[k]["faction"]==faction)	
-					grid[i][j]="yellow";
+					grid[i][j]=allyColor;
 				else
-					grid[i][j]="red";
+					grid[i][j]=enemyColor;
 			}
 		}
 	  }
 }
+
+function drawMap()
+{
+	ctx1.drawImage(map,0,0,1000,1000);
+}
+
 window.onload=function loadDoc(){
 	canvas=document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
+	canvas1=document.getElementById("mapCanvas");
+	ctx1 = canvas1.getContext("2d");
   //ajax starts here do not edit!!
   var xhttp;
   if (window.XMLHttpRequest) {
@@ -69,6 +83,9 @@ window.onload=function loadDoc(){
     if (xhttp.readyState == 4 && xhttp.status == 200) {
 	  //window.alert(xhttp.responseText);
       temp=JSON.parse(xhttp.responseText);             //editable
+      map=new Image();
+      map.src="../assets/test1.jpg";
+	  map.onload=drawMap;
       playerId=temp[10000]["player"];
       faction=temp[10000]["faction"];                                  
       convertToGrid(temp);	            			   //editable
@@ -78,9 +95,11 @@ window.onload=function loadDoc(){
   xhttp.open("GET", "getWMap.php", true);
   xhttp.send();
   //ajax ends--->
-   document.getElementById("canvas").setAttribute("onClick","passCursorPosition(canvas,event)")	;
+
+	document.getElementById("canvas").setAttribute("onClick","passCursorPosition(canvas,event)")	;
 	document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
 	document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
+
   //playerId=temp[10]["player"];
 }
 function passCursorPosition(canvas, event) {
@@ -170,7 +189,7 @@ function clearc()
 		var cod=highlighted.pop();
 		var c=cod.split(",");
 		var row=parseInt(c[0],10);
-		var col=parseInt(c[1],10);
+		var col=parseInt(c[1],10);	
 		var tempCol=col;
 		for(var i=0;i<hSize && row<100;row++,i++)
 		{
