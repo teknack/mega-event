@@ -21,6 +21,29 @@ function allot()
 	$conn = connect();
 	$query="SELECT row_tail,col_tail FROM map_res WHERE faction=".$_SESSION["faction"].";";
 	$op = mysqli_query($conn,$query);
+	if (mysqli_num_rows($op) != 1)
+	{
+		$x = "";
+		$y = "";
+		
+		if ($_SESSION["faction"] == "1")
+		{
+			$x = 25;
+			$y = 50;
+		}
+		else
+		{
+			$x = 75;
+			$y = 50;
+		}
+		
+		$query="INSERT INTO map_res (row_tail,col_tail) VALUES (".$x.",".$y.") WHERE faction=".$_SESSION['faction'].";";
+		$op=mysqli_query($conn,$query);
+		$res["row"] = $x;
+		$res["col"] = $y;
+		//alert(var_dump($res));
+		return($res);
+	}
 	$op = mysqli_fetch_assoc($op);
 	
 	switch($dir)
@@ -71,6 +94,7 @@ function allot()
 	
 	if ($res_row > 99 || $res_row < 0 || $res_col > 99 || $res_col < 0 || getSlot($res_row,$res_col)["occupied"] !== "0")
 	{
+		alert("$res_row , $res_col");
 		return(false);
 	}
 	else

@@ -82,9 +82,9 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		if (!checkPlayerExists($_SESSION["tek_emailid"],"research"))
 		{
 			setTable("research");
-			insert("playerid",$_SESSION["tek_emailid"]);
+			insert("playerid","'".$_SESSION["tek_emailid"]."'");
 		}
-		
+		//alert("hold");
 		disconnect();
 		redirect("world-map/canvas1.html");
 	}
