@@ -185,6 +185,7 @@ function action(canvas,event) //call it to get the available actions
 {
   /*row=0;//make method to pass the row and column selected
   col=8;*/
+    console.log("action!");
     var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
@@ -193,7 +194,7 @@ function action(canvas,event) //call it to get the available actions
     var row=baseRow+Math.floor(y/slotSize);
     var col=baseCol+Math.floor(x/slotSize);
     console.log(row+","+col);
-    canvas.onclick=function(){HideMenu('ctxMenu')};//hides custom context menu
+    HideMenu('ctxMenu');//hides custom context menu
     var xhttp;
     var comm;
     var visibility; //decides if form is visible
@@ -209,7 +210,7 @@ function action(canvas,event) //call it to get the available actions
         if (xhttp.readyState == 4 && xhttp.status == 200) 
         {
             var test=xhttp.responseText;
-            //console.log(test);
+            console.log(test);
             comm=JSON.parse(test);
             var content="";
             var contextContent="";
@@ -223,7 +224,6 @@ function action(canvas,event) //call it to get the available actions
                 else if(comm[i]['action']!=null)
                 {   
                     content+="<input type='submit' value="+comm[i]['action']+" name="+comm[i]['action']+" onmousemove="+comm[i]['action']+"Cost()><br>";
-                    contextContent+="<input type='submit' value="+comm[i]['action']+" name="+comm[i]['action']+" onmousemove="+comm[i]['action']+"Cost()><br>";
                 }
                 else
                     visibility=comm[i]['visible'];
@@ -240,8 +240,6 @@ function action(canvas,event) //call it to get the available actions
             {
                 var quant=document.getElementById("quantity");
                 quant.style.visibility='visible';
-                var quant1=document.getElementById("quantity1");
-                quant1.style.visibility='visible';
             }
             document.getElementById("action").innerHTML=content;
             document.getElementById("action1").innerHTML=contextContent;
@@ -268,7 +266,7 @@ function contextAction(canvas,event) //call it to get the available actions from
     var row=baseRow+Math.floor(y/slotSize);
     var col=baseCol+Math.floor(x/slotSize);
     console.log(row+","+col);
-  var xhttp;
+    var xhttp;
     var comm;
     var visibility; //decides if form is visible
     if (window.XMLHttpRequest) {
@@ -283,7 +281,7 @@ function contextAction(canvas,event) //call it to get the available actions from
         if (xhttp.readyState == 4 && xhttp.status == 200) 
         {
             var test=xhttp.responseText;
-            //console.log(test);
+            console.log(test);
             comm=JSON.parse(test);
             var content="";
             var contextContent="";
@@ -296,7 +294,6 @@ function contextAction(canvas,event) //call it to get the available actions from
                 }
                 else if(comm[i]['action']!=null)
                 {   
-                    content+="<input type='submit' value="+comm[i]['action']+" name="+comm[i]['action']+" onmousemove="+comm[i]['action']+"Cost()><br>";
                     contextContent+="<input type='submit' value="+comm[i]['action']+" name="+comm[i]['action']+" onmousemove="+comm[i]['action']+"Cost()><br>";
                 }
                 else
@@ -312,8 +309,6 @@ function contextAction(canvas,event) //call it to get the available actions from
             }
             else
             {
-                var quant=document.getElementById("quantity");
-                quant.style.visibility='visible';
                 var quant1=document.getElementById("quantity1");
                 quant1.style.visibility='visible';
             }
@@ -413,7 +408,8 @@ function renderGrid()
         {
             var value=grid[i][j];
             ctx.fillStyle =value;
-            ctx.fillRect(x,y,slotSize,slotSize);
+            if(value!="white")
+                ctx.fillRect(x,y,slotSize,slotSize);
             ctx.strokeRect(x,y,slotSize,slotSize);
         }
 
@@ -533,4 +529,3 @@ window.onload=function loadLocal()
     document.getElementById("right").setAttribute("onClick","shiftRight()");
     document.getElementById("world").setAttribute("onClick","world()");
 }
-//wMapSlotSize*playArea

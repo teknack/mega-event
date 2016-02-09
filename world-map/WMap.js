@@ -133,6 +133,8 @@ function getCursorPosition(canvas , event) {
  	//console.log("fill  "+row+","+col);
  	cx=(slotSize)*col;
 	cy=(slotSize)*row;
+	//console.log("fill with"+ctx.fillStyle);
+	//if(ctx.fillStyle!="#ffffff" || ctx.fillstyle!=null)
  	ctx.fillRect(cx,cy,slotSize,slotSize); 
  	//console.log(ctx.strokeStyle);
 	ctx.strokeRect(cx,cy,slotSize,slotSize);

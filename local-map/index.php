@@ -3,8 +3,8 @@
 //include "../db_access/db.php";
 include "./player.php";
 ?>
+<!DOCTYPE HTML>
 <html>
-
 <head>
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
 	<title>Test page</title>
@@ -30,7 +30,7 @@ include "./player.php";
 	<br><br>
 	<div id="playgroup">
 		<div id="localplay" class="playarea" align="center">
-			<canvas id="mapCanvas" width="1000" height="1000">
+			<canvas id="mapCanvas" width="450" height="450">
 				Your browser does not support the canvas element.
 			</canvas>
 			<canvas id="canvas" width="450" height="450" style="border:1px solid #c3c3c3;">

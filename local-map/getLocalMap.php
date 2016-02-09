@@ -35,7 +35,7 @@ function map($row,$col)
 		{
 			$row=$r['row'];
 			$col=$r['col'];
-			$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid=$playerid;";
+			$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid='$playerid';";
 			$res1=$conn->query($sql);
 			if($res1->num_rows>0)
 			{
@@ -57,7 +57,7 @@ function map($row,$col)
 		"fortification":"'.$fortification.'","faction":"'.$faction1.'","troops":"'.$troops.'"},';
 	}
 
-	$sql="SELECT * FROM player WHERE tek_emailid=$playerid";
+	$sql="SELECT * FROM player WHERE tek_emailid='$playerid'";
 	$res=$conn->query($sql);
 	$r=$res->fetch_assoc();
 	$food=$r['food'];

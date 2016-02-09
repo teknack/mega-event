@@ -7,7 +7,7 @@ $output="[";
 function scout($row,$col)
 {
 	global $conn,$playerid,$output;
-	$sql="SELECT occupied,fortification,troops,faction FROM grid WHERE row=$row and col=$col;";
+	$sql="SELECT occupied,fortification,troops,faction,special FROM grid WHERE row=$row and col=$col;";
 	$res=$conn->query($sql);
 	$troops=0;
 	$ptroops=0; //player Troops
@@ -35,24 +35,36 @@ function scout($row,$col)
 	}
 	else //slot is occupied by an ally ,ally occupant's troops calculated at line 23
 	{
-		$sql="SELECT SUM(quantity) FROM troops WHERE row=$row and col=$col and playerid<>$playerid;";
+		$sql="SELECT SUM(quantity) FROM troops WHERE row=$row and col=$col and playerid!='$playerid';";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$troops+=$r1['SUM(quantity)']; //total troops without player troops 
-		$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid=$playerid;";
+		$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid='$playerid';";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$ptroops=$r1['quantity'];
 		$troops+=$ptroops; //player troops added to total troops
 	}
+	if($r['special']==0)
+		$slotType="normal";
+	if($r['special']==1)
+		$slotType="grass";
+	else if($r['special']==2)
+		$slotType="sand";
+	else if($r['special']==3)
+		$slotType="mountain";
+	else if($r['special']==4)
+		$slotType="water";
 	$output=$output.'{"response":"Occupant:'.$r["occupied"].'<br>Fortification:'.$r["fortification"].'<br>troops:'
-					.$troops.'<br>your troops:'.$ptroops.'<br>Faction:'.$r["faction"].'"}]';
+					.$troops.'<br>your troops:'.$ptroops.'<br>Faction:'.$r["faction"].'<br>Type:'.$slotType.'"}]';
 }
 function troopPresent($row,$col)
 {
 	global $conn,$playerid;
-	$sql="SELECT troops FROM grid WHERE row=$row and col=$col and occupied=$playerid;";
+	$sql="SELECT troops FROM grid WHERE row=$row and col=$col and occupied='$playerid';";
 	$res=$conn->query($sql);
+	if(!$res)
+		echo $conn->error;
 	if($res->num_rows>0)
 	{
 		$r=$res->fetch_assoc();
@@ -63,7 +75,7 @@ function troopPresent($row,$col)
 	}
 	else
 	{
-		$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid=$playerid;";
+		$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid='$playerid';";
 		$res=$conn->query($sql);
 		if($res->num_rows>0)
 		{
@@ -89,24 +101,25 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 	$r=$row;
 	$c=$col;
 	global $playerid,$conn,$output;
-	$sql="SELECT occupied,faction FROM grid WHERE row=$row and col=$col;";
+	$sql="SELECT occupied,faction,special FROM grid WHERE row=$row and col=$col;";
 	if(!$res=$conn->query($sql))
 	{
 		echo "error: ".$conn->error;
 	}
-	$sql1="SELECT playerid,quantity FROM troops WHERE row=$row and col=$col and playerid=$playerid;";
+	$sql1="SELECT playerid,quantity FROM troops WHERE row=$row and col=$col and playerid='$playerid';";
 	$res1=$conn->query($sql1);
 	$fortification=0;
 	if($res->num_rows>0)
 	{
 		while($rw = $res->fetch_assoc())
 		{
+			$slotType=$rw['special'];
 			if($rw['faction']!=$faction and $rw['faction']!=0)  //enemy faction
 			{
 				//echo $row['faction'];
 				if(isset($_SESSION['selectedRow']))
 				{
-					$output=$output.'{"action":"scout"},{"action":"attack"},{"visible":"false"}]';
+					$output=$output.'{"action":"scout"},{"action":"attack"},{"action":"sim_attack"},{"visible":"false"}]';
 				}
 				else
 				{
@@ -178,7 +191,9 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 			{
 				if(isset($_SESSION['selectedRow']))
 				{
-					$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';	
+					$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';
+					if($slotType==3)
+						$output=$output.'{"action":"loot_scout"},{"action":"loot"},{"visible":"false"}]';
 				}
 				else
 				{
@@ -198,10 +213,10 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 	}
 	echo $output;
 }
-// if(isset($_REQUEST['row']) and !empty($_REQUEST['row']))
-// {
+//if(isset($_REQUEST['row']) and !empty($_REQUEST['row']))
+{
 	$row=$_REQUEST['row'];
 	$col=$_REQUEST['col'];
 	getActions($row,$col);
-//}
+}
 ?>

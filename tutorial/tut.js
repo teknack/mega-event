@@ -99,30 +99,57 @@ function updateResources()
 	document.getElementById("power").innerHTML="power"+power+"/"+powerr;
 }
 
-function show(actionmenu,quantityTB)
+function show(actionmenu,quantityTB,type)
 {
 		var menu=[];
-		menu['allyMenu']=document.getElementById("ally");
-		menu['allyMenuS']=document.getElementById("sally");
-		menu['enemyMenuS']=document.getElementById("sEnemy");
-        menu['quantityTextBox']=document.getElementById("quantity");
-		menu['enemyMenu']=document.getElementById("enemy");
-        menu['playerMenu']=document.getElementById("player");
-        menu['playerMenuS']=document.getElementById("splayer");
-        menu['neutralMenuS']=document.getElementById("sneutral");
-        menu['neutralMenu']=document.getElementById("neutral");
-        for(var i in menu)
-        {
-        	if(i==actionmenu)
-        	{
-        		menu[i].style.visibility="visible";
-        	}
-        	else
-        	{
-        		menu[i].style.visibility="hidden";
-        	}
-        }
+		if(type="leftClick")
+		{
+			menu['allyMenu']=document.getElementById("ally");
+			menu['allyMenuS']=document.getElementById("sally");
+			menu['enemyMenuS']=document.getElementById("sEnemy");
+	        menu['quantityTextBox']=document.getElementById("quantity");
+			menu['enemyMenu']=document.getElementById("enemy");
+	        menu['playerMenu']=document.getElementById("player");
+	        menu['playerMenuS']=document.getElementById("splayer");
+	        menu['neutralMenuS']=document.getElementById("sneutral");
+	        menu['neutralMenu']=document.getElementById("neutral");
+	        for(var i in menu)
+	        {
+	        	if(i==actionmenu)
+	        	{
+	        		menu[i].style.visibility="visible";
+	        	}
+	        	else
+	        	{
+	        		menu[i].style.visibility="hidden";
+	        	}
+	        }
+		}
+		else if(type="rightClick")
+		{
+			menu['allyMenu']=document.getElementById("ally1");
+			menu['allyMenuS']=document.getElementById("sally1");
+			menu['enemyMenuS']=document.getElementById("sEnemy1");
+	        menu['quantityTextBox']=document.getElementById("quantity1");
+			menu['enemyMenu']=document.getElementById("enemy1");
+	        menu['playerMenu']=document.getElementById("player1");
+	        menu['playerMenuS']=document.getElementById("splayer1");
+	        menu['neutralMenuS']=document.getElementById("sneutral1");
+	        menu['neutralMenu']=document.getElementById("neutral1");
+		}
+		for(var i in menu)
+	        {
+	        	if(i==actionmenu)
+	        	{
+	        		menu[i].style.visibility="visible";
+	        	}
+	        	else
+	        	{
+	        		menu[i].style.visibility="hidden";
+	        	}
+	        }
         if(quantityTB)
+
         	menu['quantityTextBox'].style.visibility="visible";
 }
 
@@ -144,7 +171,7 @@ function hideAll()
         }
 }
 
-function getActions(event)
+function actions(event)
 {
 	var coord=getCursorPosition(canvas,event);
 	var cx=coord.x;
@@ -153,28 +180,29 @@ function getActions(event)
 	var j=Math.floor(cx/slotSize);
 	document.getElementById("row").value=i;
 	document.getElementById("col").value=j;
+	HideMenu("ctxMenu");
 	options=document.getElementById("bottom_action");
 	if(grid[i][j]['color']=="blue")
 	{
 		scout();
 		if(selectedTroops==0)
 		{
-			show("playerMenu",true);
+			show("playerMenu",true,"leftClick");
 		}
 		else
 		{
-			show("playerMenuS",false);
+			show("playerMenuS",false,"leftClick");
 		}
 	}
 	else if(grid[i][j]['color']=="yellow")
 	{
 		if(selectedTroops==0)
 		{
-			show("allyMenu",true);
+			show("allyMenu",true,"leftClick");
 		}
 		else
 		{
-			show("allyMenuS",false);
+			show("allyMenuS",false,"leftClick");
 		}
 	}	
 	else if(grid[i][j]['color']=="red")
@@ -182,11 +210,11 @@ function getActions(event)
 		//console.log(selectedTroops);
 		if(selectedTroops==0)
 		{
-			show("enemyMenu",false);
+			show("enemyMenu",false,"leftClick");
 		}
 		else
 		{
-			show("enemyMenuS",false);
+			show("enemyMenuS",false,"leftClick");
 		}
 	}
 	else
@@ -195,13 +223,29 @@ function getActions(event)
 			scout();
 		if(selectedTroops==0)
 		{
-			show("neutralMenu",true);
+			show("neutralMenu",true,"leftClick");
 		}
 		else
 		{
-			show("neutralMenuS",false);
+			show("neutralMenuS",false,"leftClick");
 		}
 	}
+}
+
+function HideMenu(control) 
+{ 
+    document.getElementById(control).style.display = 'none'; 
+}
+
+function ShowMenu(e) 
+{
+    contextActions(canvas,e);
+    var posx = e.clientX +window.pageXOffset +'px'; //Left Position of Mouse Pointer
+    var posy = e.clientY + window.pageYOffset + 'px'; //Top Position of Mouse Pointer
+    document.getElementById('ctxMenu').style.position = 'absolute';
+    document.getElementById('ctxMenu').style.display = 'inline';
+    document.getElementById('ctxMenu').style.left = posx;
+    document.getElementById('ctxMenu').style.top = posy;           
 }
 
 function selectTroops() //pass max as 0 to remove select troops constraint
@@ -505,10 +549,6 @@ function attack()
 	selectedTroops=0;
 }
 
-function find()
-{
-	alert("fuck yeah");
-}
 
 function simBattle(row,col)
 {
@@ -577,7 +617,6 @@ function move()
 
 function introduce()
 {
-	alert("Hi ,There ,welcome to the mega event!");
 	var prompt="           INTRODUCTION             <br>"+
 		  "All the colorful tiles you see is the area you are gonna play on<br>"+ 
 		  "-your objective is to occupy as many of these tiles as possible<br>"+ 
@@ -590,7 +629,8 @@ function introduce()
 		  "-the white tiles are unoccupied and you can send your troops to occupy them<br>"+
 		  "-You will get to choose your faction once you actually start the game<br>"+ 
 		   "but for now you could fiddle with the game to learn it or u could"+
-		   "select the tutorial options on the right to let the game teach you<br>"+ 
+		   "select the tutorial options on the right to let the game teach you<br>"+
+		  "-YOUR OBJECTIVE IS TO GET AS MANY BLUE TILES AS POSSIBLE"; 
 		  "- YOU HAVEN'T STARTED THE GAME YET<br>"+
 		  "- HAVE FUN"
 	response("prompt",prompt);
@@ -600,13 +640,29 @@ function basics()
 {
 	var prompt="                        BASICS                     <br>"+
 			   "At the top left are the resources you need to play the game<br>"+
-			   "They look like   '1000/0'  so the number on the left of '/'' is the<bR>"+
+			   "They look like   '1000/0'  so the number on the left of '/' is the<bR>"+
 			   "amount of a resource you have while the number on the right is <br>"+
 			   "regeneration rate of those resources per minute<br>"+
+			   "To get the actions that you can perform on each tile use either left or right<br>"+
+			   "click based on your comfort"
 			   "At the bottom right are the local map navigation buttons which you<br>"+
 			   " could use to shift the local map to right,left,up or down by one <br>"+
-			   " column/row"
+			   " column/row(this feature is not available in the tutorial)"
 	response("prompt",prompt);
+}
+
+function tileTypes()
+{
+	var prompt="                        TILE TYPES                     <br>"+
+			   "The map you see below the tiles is not just for looks it has a purpose<br>"+
+			   "-the tiles above "
+			   "-green areas give bonus FOOD and WATER(+1 food/min and +1 water/min)<br>"+
+			   "-sandy areas areas give bonus POWER(+2 power/min)<br>"+
+			   "-water areas cannot be settled on but,are resource rich so you can loot<bR>"+
+			   " them as many times as you want but it will be hard<br>"+
+			   "-mountain areas can be settled on but you need certain amount of tech for that to happen(+2 metal/min and +2 water/min)<br>"+
+			   "-brown colored muddy areas give bonus FOOD(+2 food/min)";
+	response("prompt",prompt);	
 }
 
 function scouting()
@@ -617,7 +673,9 @@ function scouting()
 			   "-you get all details of tiles occupied by you or unoccupied tiles on which"+
 			   " you have stationed your troops<br>"+
 			   "-click any tile not occupied by you and not having any of your troops,"+
-			   " then click the scout option on the bottom right<br>"+
+			   " then click the scout option<br>"+
+			   "-It lets you check out how many troops (if any) are stationed in a tile<br>"+
+			   " and who's occupying it as well as their faction and also the type of tile"+
 			   "**IF YOU CAN'T GET SCOUT OPTION YOU MIGHT BE DOING SOMETHING WRONG <br>**";
 	response("prompt",prompt);
 }
@@ -642,17 +700,52 @@ function selMove()
 	response("prompt",prompt);
 }
 
-function creAttack()
+function selMove2()
 {
-	var prompt=" SETTLING,CREATING TROOPS AND ATTACKING <br>"+
+	var prompt="         SELECTING TROOPS and MOVING-II(AMBUSH)               <br>"+
+			   "Now you know how to move your troops,lets see how you could use it<br>"+
+			   "You could move your soldiers to unoccupied tiles.These soldiers will attack any<br>"+
+			   "enemy troops which move in to the tile your troops are stationed in.<br>"+
+			   "so you could make an invisible barrier(of sorts) around your tiles so the enemy<bR>"+
+			   "will have a tougher time settling around you.But keep in mind your troops will be visible to scouting<br>"+
+			   " however you could perform relevant research to decrease the troops visible to scouting to upto 0!<br>"+
+			   " So in such a case if you had 10 troops and if 5 are hidden ,the enemy sees 5 troops.<br>Also your 5 hidden troops<br>"+
+			   "will be as effective as 10 soldiers(2x as effective)."
+	response("prompt",prompt);
+}
+
+function settling()
+{
+	var prompt="     SETTLING       <br>"+
+			   "-The most important part of the game,which is the first way to acquire more tiles<bR>"+
 			   " I would be assuming at this point that you have moved atleast one of your soldiers<br>"+
 			   " to an occupied (white)tile .If not then DO IT<br>"+
-			   " Click on the green colored tile then select settle<br>"+
+			   " Click on the cyan(light blue) colored tile then select settle<br>"+
+			   "-pros:<br>"+
+			   " -you get more resource regen per slot occupied i.e you get minimum"+
+			   "  3 points to distribute among any resource and ofcourse, the tile bonuses apply<br>"+
+			   "  upon which your allocated 3 points will be added<br>"+
+			   "-cons:<br>"+
+			   " -if you lose your tile you will lose a portion of your resource(10% to be precise) to<br>"+ 
+			   " the attacker as plunder which you can retaliate and take back without restrications.<br>"+
+			   "<br><br><br>";//add a mini-game tutorial button
+			   response("prompt",prompt);
+}
+
+function creAttack()
+{
+	var prompt=" CREATING TROOPS AND ATTACKING <br>"+
 			   " Now select all troops in your newly settled tiles<br>"+
 			   " click on an enemy(red) tile and click on scout option NOT ATTACK<br>"+
 			   " You can see the probability of attack success at the bottom of the page<br>"+
 			   " Clearly you don't have enough troops, so make atleast 20 troops and then try<br>"+
-			   " to attack your enemy";
+			   " to attack your enemy.<br>"+
+			   " BTW you will be redirected to a minigame which you have to succeed in so that your attack is<br>"+
+			   " win.In the highly unlikely case of you not wanting to play the attack mini-game ,you could<br>"+
+			   " sim the attack (which will be available in the main game) the result will be decided based on probability<br>"+
+			   " and well a figurative throw of dice.<br>"+
+			   " If you win you go through the same process of settling where you allocate regen points<br>"+
+			   " IF you lose , you lose all your troops";
 	response("prompt",prompt);
 }
 
@@ -682,7 +775,7 @@ window.onload=function renderLocal()
 	introduce();
 	updateResources();
 	canvas.setAttribute("onmousemove","getCursorPosition(canvas,event)");
-	canvas.setAttribute("onclick","getActions(event)");
+	canvas.setAttribute("onclick","actions(event)");
 	document.getElementById("sTroops").setAttribute("onclick","selectTroops()");
 	document.getElementById("sTroops1").setAttribute("onclick","selectTroops()");
 	document.getElementById("sTroops2").setAttribute("onclick","selectTroops()");
@@ -698,10 +791,12 @@ window.onload=function renderLocal()
 	document.getElementById("move").setAttribute("onclick","move()");
 	document.getElementById("move1").setAttribute("onclick","move()");
 	document.getElementById("move2").setAttribute("onclick","move()");
-	document.getElementById("scouting").setAttribute("onclick","scouting()");	
+	document.getElementById("scouting").setAttribute("onclick","scouting()");
+	document.getElementById("tileTypes").setAttribute("onclick","tileTypes()");	
 	document.getElementById("selMove").setAttribute("onclick","selMove()");
+	document.getElementById("selMove2").setAttribute("onclick","selMove2()");
+	document.getElementById("settling").setAttribute("onclick","settling()");
 	document.getElementById("creAttack").setAttribute("onclick","creAttack()");
-	document.getElementById("settle").setAttribute("onclick","settle()");
 	document.getElementById("research").setAttribute("onclick","research()");
 	document.getElementById("basics").setAttribute("onclick","basics()");
 }

@@ -43,10 +43,13 @@
 					<div id="tutorials" class="playarea" align="center">
 						<button type="submit" id="basics">basics</button><br><br>
 						<button type="submit" id="scouting">scouting</button><br><br>
+						<button type="submit" id="tileTypes">tile types and bonuses</button><br><br>
 						<button type="submit" id="selMove">selecting and moving troops</button><br><br>
-						<button type="submit" id="creAttack">settle,create troops and attack</button><br><br>
+						<button type="submit" id="selMove2">selecting and moving troops-II</button><br><br>
+						<button type="submit" id="settling">settling</button><br><br>
+						<button type="submit" id="creAttack">create troops and attack</button><br><br>
 						<button type="submit" id="research">research</button><br><br>
-						<button type="submit" id="redeem">redeeming score in mega-event</button><br><br>
+						<button type="submit" id="redeem">get more RESOURCES!</button><br><br>
 						<button type="submit" id="market">market</button><br><br>
 					</div>
 				</td>
@@ -146,10 +149,6 @@
 				</td>
 			</tr>		
 		</table>
-	</div>
-	<div id="contextMenu">
-		<form id="ctxForm" action="player.php" method="post">
-		</form>
 	</div>
 </body>
 </html>
