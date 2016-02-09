@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Landing Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width. initial scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./landing.css">
+
+</head>
+<body>
+
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+
+			<!-- Logo -->
+			<div class="navbar-header">
+				<a href="#" class="navbar-brand">Default</a>
+			</div>
+
+
+			<!-- Menu items -->
+			<div>
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">First</a></li>
+					<li><a href="#">Second</a></li>
+					<li><a href="#">Third</a></li>
+				</ul>
+
+				<!-- Menu right items -->
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">Example</a></li>
+					<li><p class="navbar-text">Sample nonclick text</p></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+
+
+	<div class="container">
+		<div class="jumbotron" style="text-align: center;">
+			<h1>Inceptivus</h1>
+			<h3>Mega Event</h3>
+
+			<p>The world is a bleak place, and as is humanity's tendency, people started to band together, forming communities and gathering resources to rebuild some semblance of the previous modern society.<br>
+			Weeks pass. Some groups dissolve due to internal strife, some groups merged together with others.<br>
+			<b>However</b><br>
+			Two main groups surface, two factions which overshadowed the other minor factions - either adding them to their faction, or annhilating them.<br>
+			It is up to you to choose who you wish to join and support. In this battle between factions, your role could be pivotal...<br>
+			</p>
+		</div>
+
+
+		<!--<div class="row">
+			<div class="col-md-1 col-md-offset-3">
+				<button type="button" class="btn btn-button-hollow btn-lg" data-toggle="modal" data-target="#fact1">Faction 1</button>
+			</div>
+			<div class="col-md-1 col-md-offset-4">
+				<button type="button" class="btn btn-button-hollow btn-lg" data-toggle="modal" data-target="#fact2">Faction 2</button>
+			</div>
+		</div> -->
+
+		<div class="col-md-1 col-md-offset-5 centered">
+			<button type="button" class="btn btn-button-hollow btn-lg" onclick="window.location='../setup.php'">Begin</button>
+		</div>
+	</div>
+
+
+
+	<!-- MODAL -->
+		<!-- Modal  Faction 1 -->
+	<div class="modal fade" id="fact1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  	<div class="modal-dialog" role="document">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        		<h2 class="modal-title" id="myModalLabel">Faction 1</h2>
+	      		</div>
+	      		<div class="modal-body">
+	        		<p>This area will contain text<br>
+					Loads and loads of text for faction 1 here</p>
+	      		</div>
+	      		<div class="modal-footer">
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        		<button type="button" class="btn btn-info">Select</button>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+
+	<!-- Modal  Faction 2 -->
+	<div class="modal fade" id="fact2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h2 class="modal-title" id="myModalLabel">Faction 2</h2>
+	      </div>
+	      <div class="modal-body">
+			<p>This area will contain text<br>
+			Loads and loads of text for faction 2 here</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-info">Select</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</body>
+</html>

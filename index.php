@@ -11,7 +11,7 @@ gameUnset(); //in db.php, unsets non-essential variables
 if (isset($_POST) && !empty($_POST))
 {
 	connect();
-	
+
 	if (!isset($_SESSION["in_game"]))
 	{
 		if (checkPlayerExists($_POST["username"],"player"))
@@ -32,7 +32,7 @@ if (isset($_POST) && !empty($_POST))
 			var_dump($_SESSION);
 			alert("hold");
 			disconnect();
-			redirect("./setup.php");
+			redirect("./landing/index.html");
 		}
 	}
 	else if (isset($_SESSION["in_game"]))

@@ -88,7 +88,7 @@ function insert($columns,$values)
 	//var_dump($op);echo("<br>");
 	if (!$op || $op === false)
 	{
-		echo(mysqli_error($dbconn)."<br>");
+		echo("db.php -> insert: ".mysqli_error($dbconn).":: ".$query." <br>");
 		//var_dump($query);
 		echo("<br>");
 		//var_dump($op);
@@ -160,6 +160,7 @@ function getSlot($x,$y)
 	global $dbconn;
 	//var_dump($x);	
 	$query = "SELECT occupied,fortification,troops,faction FROM grid WHERE row=".$x." AND col=".$y.";";
+	//alert($query);
 	$res = mysqli_query($dbconn,$query);
 	//alert($res);
 	$res = mysqli_fetch_assoc($res);
@@ -169,7 +170,7 @@ function getSlotTroops($x,$y)
 {
 	global $dbconn;
 	$playerid=$_SESSION['tek_emailid'];
-	$query="SELECT quantity FROM troops WHERE row=$x and col=$y and playerid=$playerid";
+	$query="SELECT quantity FROM troops WHERE row=$x and col=$y and playerid='$playerid';";
 	$res = mysqli_query($dbconn,$query);
 	//alert($res);
 	if(mysqli_num_rows($res)>0)

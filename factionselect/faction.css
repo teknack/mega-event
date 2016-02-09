@@ -1,0 +1,63 @@
+head, body{
+	height: 100%;
+	width: 100%;
+	background: url("wasteland_canvas.jpg") no-repeat;
+	background-size: cover;
+}
+.page-header{
+	text-align: center;
+}
+.panel{
+	background: rgba(0,0,0,0.2);
+}
+
+.btn-button-hollow, .btn-button-hollow:link, .btn-button-hollow:visited {
+    -webkit-transition: background-color 1s ease, color 0.5s ease;
+    -moz-transition: background-color 1s ease, color 0.5s ease;
+    -o-transition: background-color 1s ease, color 0.5s ease;
+    transition: background-color 1s ease, color 0.5s ease;
+
+    background-color: transparent;
+    border-radius: 5px;
+    color: #000000;
+    border: 2px solid #000000;
+}
+.btn-button-hollow:active, .btn-button-hollow:hover {
+    background-color: #000000;
+    color: #fff;
+}
+
+.hidden{
+	display: none;
+}
+
+.description{
+	position: absolute; 
+	top: 0px;
+	height: 100%;
+	width: 50%;
+	z-index: 1;
+}
+
+/*Horizontal Slide */
+.collapsible {
+	background: #ff9999;
+	background: -webkit-radial-gradient#ff9999, #1a0000); /* For Safari 5.1 to 6.0 */
+    background: -o-radial-gradient(#ff9999, #1a0000); /* For Opera 11.1 to 12.0 */
+    background: -moz-radial-gradient(#ff9999, #1a0000); /* For Firefox 3.6 to 15 */
+    background: radial-gradient(#ff9999, #1a0000); /* Standard syntax (must be last) */
+	border: 1px solid #CCCCCC;
+	padding: 10px;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #fff;
+	display: block;
+	overflow: hidden;
+	
+	/*pointer-events: none;*/
+}
+.collapsible-left{
+}
+
+.collapsible-right{
+	margin-left: 50%;
+}
