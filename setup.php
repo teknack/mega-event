@@ -168,7 +168,7 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		<p>I need texxt</p>
 
 		<form action="" method="POST">
-				<button type="submit" name="faction1">Faction 1</button>
+				<button class="btn btn-button-hollow btn-block btn-lg" type="submit" name="faction2"><h4>Faction 2</h4></button>
 			</form>
 	</div>
 
@@ -180,7 +180,7 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		<p>I need texxt</p>
 
 		<form action="" method="POST">
-				<button type="submit" name="faction1">Faction 1</button>
+				<button class="btn btn-button-hollow btn-block btn-lg" type="submit" name="faction1"><h4>Faction 1</h4></button>
 			</form>
 
 	</div>

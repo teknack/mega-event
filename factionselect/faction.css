@@ -32,7 +32,7 @@ head, body{
 }
 
 .description{
-	position: absolute; 
+	position: absolute;
 	top: 0px;
 	height: 100%;
 	width: 50%;
@@ -42,17 +42,17 @@ head, body{
 /*Horizontal Slide */
 .collapsible {
 	background: #ff9999;
-	background: -webkit-radial-gradient#ff9999, #1a0000); /* For Safari 5.1 to 6.0 */
-    background: -o-radial-gradient(#ff9999, #1a0000); /* For Opera 11.1 to 12.0 */
-    background: -moz-radial-gradient(#ff9999, #1a0000); /* For Firefox 3.6 to 15 */
-    background: radial-gradient(#ff9999, #1a0000); /* Standard syntax (must be last) */
+	background: -webkit-linear-gradient(#ff9999, #1a0000); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#ff9999, #1a0000); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#ff9999, #1a0000); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#ff9999, #1a0000); /* Standard syntax (must be last) */
 	border: 1px solid #CCCCCC;
 	padding: 10px;
 	font: 12px Arial, Helvetica, sans-serif;
 	color: #fff;
 	display: block;
-	overflow: hidden;
-	
+	overflow-y: hidden;
+
 	/*pointer-events: none;*/
 }
 .collapsible-left{
