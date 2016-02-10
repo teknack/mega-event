@@ -68,7 +68,7 @@ function sendScore($gamename,$score,$player)
 		
 		$new_val = $val + $score;
 		
-		update($colname,$new_val,"tek_emailid=".$player);
+		update($colname,$new_val,"tek_emailid='".$player."'");
 	}
 	else
 	{

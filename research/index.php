@@ -859,7 +859,7 @@ if (isset($_POST) && !empty($_POST))
 
 	<body>
 		<div id="top">
-			Research
+			<h1>Research</h1>
 		</div>
 		<hr>
 		<div id="content">
