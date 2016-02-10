@@ -41,6 +41,16 @@ setTable("market");
 
 if ($values["wood_quant"] > 0)
 {
+	if ($wood_demand - $values["wood_quant"] >= 1)
+	{
+		$wood_demand = $wood_demand - $values["wood_quant"];
+	}
+	else
+	{
+		$wood_demand = 1;
+	}
+	
+	/*
 	if ($values["wood_quant"] < 50)
 	{
 		if ($wood_demand -1 >= 1)
@@ -63,7 +73,7 @@ if ($values["wood_quant"] > 0)
 			$wood_demand = 1;
 		}
 	}
-	
+	*/
 	//$player["wood"] = $player["wood"] - $values["wood_quant"];
 	
 	//setTable("market");
@@ -72,6 +82,17 @@ if ($values["wood_quant"] > 0)
 
 if ($values["water_quant"] > 0)
 {
+	
+	if ($water_demand - $values["water_quant"] >= 1)
+	{
+		$water_demand = $water_demand - $values["water_quant"];
+	}
+	else
+	{
+		$water_demand = 1;
+	}
+	
+	/*
 	if ($values["water_quant"] < 50)
 	{
 		if ($water_demand -1 >= 1)
@@ -94,12 +115,22 @@ if ($values["water_quant"] > 0)
 			$water_demand = 1;
 		}
 	}
-	
+	*/
 	//update("water_demand",$water_demand,"id=1");
 }
 
 if ($values["metal_quant"] > 0)
 {
+	if ($metal_demand - $values["metal_quant"] >= 1)
+	{
+		$metal_demand = $metal_demand - $values["metal_quant"];
+	}
+	else
+	{
+		$metal_demand = 1;
+	}
+	
+	/*
 	if ($values["metal_quant"] < 50)
 	{
 		if ($metal_demand -1 >= 1)
@@ -122,12 +153,22 @@ if ($values["metal_quant"] > 0)
 			$metal_demand = 1;
 		}
 	}
-	
+	*/
 	//update("metal_demand",$metal_demand,"id=1");
 }
 
 if ($values["power_quant"] > 0)
 {
+	if ($power_demand - $values["power_quant"] >= 1)
+	{
+		$power_demand = $power_demand - $values["power_quant"];
+	}
+	else
+	{
+		$power_demand = 1;
+	}
+	
+	/*
 	if ($values["power_quant"] < 50)
 	{
 		if ($power_demand -1 >= 1)
@@ -150,12 +191,22 @@ if ($values["power_quant"] > 0)
 			$power_demand = 1;
 		}
 	}
-	
+	*/
 	//update("power_demand",$power_demand,"id=1");
 }
 
 if ($values["food_quant"] > 0)
 {
+	if ($food_demand - $values["food_quant"] >= 1)
+	{
+		$food_demand = $food_demand - $values["food_quant"];
+	}
+	else
+	{
+		$food_demand = 1;
+	}
+	
+	/*	
 	if ($values["food_quant"] < 50)
 	{
 		if ($food_demand -1 >= 1)
@@ -178,7 +229,7 @@ if ($values["food_quant"] > 0)
 			$food_demand = 1;
 		}
 	}
-	
+	*/
 	//update("food_demand",$food_demand,"id=1");
 }
 

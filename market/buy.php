@@ -31,6 +31,10 @@ setTable("market");
 
 if ($values["wood_quant"] > 0)
 {
+	
+	$wood_demand += $values["wood_quant"];
+	
+	/*
 	if ($values["wood_quant"] < 50)
 	{
 		$wood_demand = $wood_demand + 1;
@@ -39,7 +43,7 @@ if ($values["wood_quant"] > 0)
 	{
 		$wood_demand = $wood_demand + floor($values["wood_quant"]/50);
 	}
-	
+	*/
 	//$player["wood"] = $player["wood"] + $values["wood_quant"];
 	
 	//setTable("market");
@@ -48,6 +52,8 @@ if ($values["wood_quant"] > 0)
 
 if ($values["water_quant"] > 0)
 {
+	$water_demand += $values["water_quant"];
+	/*
 	if ($values["water_quant"] < 50)
 	{
 		$water_demand = $water_demand + 1;
@@ -56,12 +62,15 @@ if ($values["water_quant"] > 0)
 	{
 		$water_demand = $water_demand + floor($values["water_quant"]/50);
 	}
-	
+	*/
 	//update("water_demand",$water_demand,"id=1");
 }
 
 if ($values["metal_quant"] > 0)
 {
+	$metal_demand += $values["metal_quant"];
+	
+	/*
 	if ($values["metal_quant"] < 50)
 	{
 		$metal_demand = $metal_demand + 1;
@@ -70,12 +79,15 @@ if ($values["metal_quant"] > 0)
 	{
 		$metal_demand = $metal_demand + floor($values["metal_quant"]/50);
 	}
-	
+	*/
 	//update("metal_demand",$metal_demand,"id=1");
 }
 
 if ($values["power_quant"] > 0)
 {
+	$power_demand += $values["power_quant"];
+	
+	/*
 	if ($values["power_quant"] < 50)
 	{
 		$power_demand = $power_demand + 1;
@@ -84,12 +96,15 @@ if ($values["power_quant"] > 0)
 	{
 		$power_demand = $power_demand + floor($values["power_quant"]/50);
 	}
-	
+	*/
 	//update("power_demand",$power_demand,"id=1");
 }
 
 if ($values["food_quant"] > 0)
 {
+	$food_demand += $values["food_quant"];
+	
+	/*
 	if ($values["food_quant"] < 50)
 	{
 		$food_demand = $food_demand + 1;
@@ -98,7 +113,7 @@ if ($values["food_quant"] > 0)
 	{
 		$food_demand = $food_demand + floor($values["food_quant"]/50);
 	}
-	
+	*/
 	//update("food_demand",$food_demand,"id=1");
 }
 
