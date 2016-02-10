@@ -46,7 +46,7 @@ function scout($row,$col)
 		$troops+=$ptroops; //player troops added to total troops
 	}
 	if($r['special']==0)
-		$slotType="normal";
+		$slotType="mud";
 	if($r['special']==1)
 		$slotType="grass";
 	else if($r['special']==2)

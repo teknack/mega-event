@@ -1,13 +1,25 @@
-var slotSize=50;
+var slotSize=60;
 var wMapSlotSize=10;
 var playArea=9;
 var grid=[];
+for(var i=0;i<playArea;i++)
+{
+    grid[i]=[];
+    for(var j=0;j<playArea;j++)
+    {
+        grid[i][j]="white";
+    }
+}
 var playerId;
 var faction;
 var canvas, ctx;
 var map;
 var coord;
-
+var playerSprite;
+var allySprite;
+var enemySprite;
+/*orange-enemy troops color in grid 
+  green-allied trooops color in grid*/
 function response(id,message)
 {
     document.getElementById(id).innerHTML=message;
@@ -185,7 +197,6 @@ function action(canvas,event) //call it to get the available actions
 {
   /*row=0;//make method to pass the row and column selected
   col=8;*/
-    console.log("action!");
     var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
@@ -347,6 +358,7 @@ function getGrid()
     {
         if (xhttp.readyState == 4 && xhttp.status == 200) 
         {
+            console.log(xhttp.responseText);
             temp=JSON.parse(xhttp.responseText);
             playerId=temp[playArea*playArea]["player"];
             faction=temp[playArea*playArea]["faction"];
@@ -398,6 +410,22 @@ function assignGrid(jsonVar)
 
         }
     }
+    var row=parseInt(document.getElementById("scoutRow").value)-parseInt(coord[0]);
+    var col=parseInt(document.getElementById("scoutCol").value)-parseInt(coord[1]);
+    var side=document.getElementById("side").value;
+    console.log("side-"+side);
+    if(side=="enemy")
+    {
+        console.log(row+","+col);
+        grid[row][col]="orange";
+    }
+    else if(side=="ally")
+    {
+        console.log("green!");
+        grid[row][col]="green";
+    }
+    console.log(grid[row]);
+    console.log(grid[row+1]);
 }
 
 function renderGrid()
@@ -408,7 +436,26 @@ function renderGrid()
         {
             var value=grid[i][j];
             ctx.fillStyle =value;
-            if(value!="white")
+            if(value=="white")
+            {
+                //don't fill any color
+            }
+            else if(value=="cyan")
+            {
+                console.log("cyan!");
+                ctx.drawImage(playerSprite,x,y,slotSize,slotSize);
+            }
+            else if(value=="orange")
+            {
+                ctx.drawImage(enemySprite,x,y,slotSize,slotSize);
+                console.log("orange!");
+            }
+            else if(value=="green")
+            {
+                console.log("green");
+                ctx.drawImage(allySprite,x,y,slotSize,slotSize);
+            }
+            else
                 ctx.fillRect(x,y,slotSize,slotSize);
             ctx.strokeRect(x,y,slotSize,slotSize);
         }
@@ -500,10 +547,19 @@ function drawMap()
     var sx=col*wMapSlotSize;
     var sy=row*wMapSlotSize;
     console.log(sx+","+sy);
-    ctx1.drawImage(map,sx,sy,playArea*wMapSlotSize,playArea*wMapSlotSize,0,0,450,450);
+    console.log(coord);
+    ctx1.drawImage(map,sx,sy,playArea*wMapSlotSize,playArea*wMapSlotSize,0,0,playArea*slotSize,playArea*slotSize);
 }
 
-window.onload=function loadLocal()
+
+var everythingLoaded = setInterval(function() {
+  if (/loaded|complete/.test(document.readyState)) {
+    clearInterval(everythingLoaded);
+    loadLocal(); // this is the function that gets called when everything is loaded
+  }
+}, 10);
+
+function loadLocal()
 {
     var co=document.getElementById("topLeft").value;
     coord=co.split(",");
@@ -512,10 +568,12 @@ window.onload=function loadLocal()
     mapCanvas=document.getElementById("mapCanvas");
     ctx1 = mapCanvas.getContext("2d");
     window.oncontextmenu=function(){return false}; //disable default context menu 
-    for(var i=0;i<playArea;i++)
-    {
-      grid[i]=[];
-    }
+    playerSprite=new Image();
+    playerSprite.src="../assets/blue.png";
+    allySprite=new Image();
+    allySprite.src="../assets/yellow.png";
+    enemySprite=new Image();
+    enemySprite.src="../assets/red.png";
     map=new Image();
     map.src = "../assets/test1.jpg";
     map.onload=drawMap;
