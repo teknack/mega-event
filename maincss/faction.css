@@ -1,8 +1,6 @@
 head, body{
 	height: 100%;
 	width: 100%;
-	background: url("wasteland_canvas.jpg") no-repeat;
-	background-size: cover;
 }
 .page-header{
 	text-align: center;
