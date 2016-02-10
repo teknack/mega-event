@@ -1,0 +1,29 @@
+/*Main stylesheet that is most common*/
+body{
+	background: url("./image/newland.png") no-repeat;
+	background-size: cover;
+}
+
+/*Navbar details*/
+.navbar{
+	border-radius: 0px;
+	
+}
+.navbar ul li p{
+	color: #ffffb3;
+	font-weight: bold;
+}
+
+/*Part of local map
+
+.resource a{
+	margin-top: 0.15em;
+	border-radius: 5px;
+	background: transparent;
+}
+.resource a p:hover {
+	color: black;
+}*/
+
+
+/*Body details*/
