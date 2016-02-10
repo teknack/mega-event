@@ -111,29 +111,14 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 </head>
 <body>
 
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar">
 		<div class="container-fluid">
 
 			<!-- Logo -->
 			<div class="navbar-header">
-				<a href="#" class="navbar-brand">Default</a>
+				<a href="#" class="navbar-brand"></a>
 			</div>
 
-
-			<!-- Menu items -->
-			<div>
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">First</a></li>
-					<li><a href="#">Second</a></li>
-					<li><a href="#">Third</a></li>
-				</ul>
-
-				<!-- Menu right items -->
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">Example</a></li>
-					<li><p class="navbar-text">Sample nonclick text</p></li>
-				</ul>
-			</div>
 		</div>
 	</nav>
 
