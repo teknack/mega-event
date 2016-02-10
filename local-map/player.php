@@ -2,7 +2,7 @@
 require "../db_access/db.php";
 require "connect.php";
 require "actionCostValues.php";
-$faction=1;//$_SESSION['faction'];
+$faction=$_SESSION['faction'];
 
 $playerid;
 $playerid=$_SESSION['tek_emailid']; //temporary!! don't forget to remove!!
@@ -91,13 +91,16 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 	}
 	else if($action=="attack")
 	{
+		$sql="SELECT fortification FROM grid WHERE row=$row and col=$col;";
+		$res=$conn->query($sql);
+		$r2=$res->fetch_assoc();
 		$sql="SELECT status FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
 		$sql="SELECT faction FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
-		if($r['faction']==$faction or $r['faction']==0 or $r1['status']=="attack")
+		if($r['faction']==$faction or $r['faction']==0 or $r1['status']=="attack" or $r2['fortification']==-9)
 			return false;
 		else
 			return true;
@@ -125,6 +128,9 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 	}
 	else if($action=="settle")
 	{
+		$sql="SELECT fortification FROM grid WHERE row=$row and col=$col;";
+		$res=$conn->query($sql);
+		$r3=$res->fetch_assoc();
 		$sql="SELECT special FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		$r2=$res->fetch_assoc();
@@ -134,7 +140,7 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 		$sql="SELECT faction FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
-		if($r['faction']==0 and $r1['status']!="settle" and $r1['status']!="attack" and $r2['special']!=3) 
+		if($r['faction']==0 and $r1['status']!="settle" and $r1['status']!="attack" and $r2['special']!=3 and $r3['fortification']!=-9) 
 			return true;	//only unoccupied slot
 		else
 			return false;
@@ -862,7 +868,9 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 				//loss calculation
 			if($fortification>=$troopLevel) //low level troops attacking higher level settlements
 			{
-				$minLoss=60+(($fortification-$troopLevel)*10);
+				$minLoss=70+(($fortification-$troopLevel)*10);
+				if($minLoss>=100)
+					$num=100;
 				$num=rand($minLoss,100);
 				$loss=floor($quantity*$num/100);
 				if($maxLoss>0)
@@ -1385,7 +1393,7 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 			    	$sql="SELECT SUM(quantity) FROM troops WHERE row=$rw and col=$cl;";
 			    	$res=$conn->query($sql);
 			    	$r=$res->fetch_assoc();
-			    	$supportTroops+=$r['SUM(troops)'];
+			    	$supportTroops+=$r['SUM(quantity)'];
 			    }
 			    if($teamBonus==1)
 			    {
@@ -1408,7 +1416,7 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$sql="SELECT SUM(quantity) FROM troops WHERE row=$destRow and col=$destCol;";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
-		$defenceTroops+=$r['quantity'];
+		$defenceTroops+=$r['SUM(quantity)'];
 		$sql="SELECT defence FROM research WHERE playerid='$playerid';";
 		$res=$conn->query($sql);
 		$r1=$res->fetch_assoc();
@@ -1443,7 +1451,10 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$defenceTroops*=$eLevel;
 
 		//attack
-
+		$sql="SELECT fortification FROM grid WHERE row=$destRow and col=$destCol;";
+		$res=$conn->query($sql);
+		$r1=$res->fetch_assoc();
+		$fortification=$r1['fortification'];
 		$quantity*=$troopLevel;
 	}
 
@@ -1482,18 +1493,44 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 function loot($srcRow,$srcCol,$destRow,$destCol,$quantity)
 {
 	global $conn,$playerid;
+	/*pending based on location*/
+	/*if($destRow>=x and $destRow<y and $destCol>=a and $destCol<b) //two loot regions
+	{
+		$sql="SELECT ttype FROM research WHERE playerid='$playerid'";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		$tr=$r['ttype'];
+		$tr=explode(":",$tr);
+		$_SESSION['playerLevel']=$tr[1];
+		$_SESSION['baseLevel']=7;
+	}
+	else if($destRow>=x and $destRow<y and $destCol>=a and $destCol<b)
+	{
+		$sql="SELECT ttype FROM research WHERE playerid='$playerid'";
+		$res=$conn->query($sql);
+		$r=$res->fetch_assoc();
+		$tr=$r['ttype'];
+		$tr=explode(":",$tr);
+		$_SESSION['playerLevel']=$tr[1];
+		$_SESSION['baseLevel']=4;	
+	}	
 
-	attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,2);
-
-	$lootPercent=$_SESSION['bpercent'];
-	$loss=$_SESSION['ppercent'];
+	header("location:../mini-game/attack/index.php");*/
 }
 
 function lootScout($row,$col)
 {
-
+	/*if($destRow>=x and $destRow<y and $destCol>=a and $destCol<b) //two loot regions
+	{
+		$op="high difficulty!";
+		decide on the loot
+	}
+	else if($destRow>=x and $destRow<y and $destCol>=a and $destCol<b)
+	{
+		$op="moderate difficulty!";
+		decide on the loot
+	}*/	
 }
-
 function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 {
 	if(!validateAction("attack",$destRow,$destCol))
@@ -1636,7 +1673,7 @@ function attack($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$_SESSION['response']="you cannot attack settlements on water yet.Get civperk2 level 4 first";
 		return;
 	}
-	$sql="UPDATE grid SET status='attack' WHERE row=$row and col=$col;";
+	$sql="UPDATE grid SET status='attack' WHERE row=$destRow and col=$destCol;";
 	if($conn->query($sql)===false)
 		echo "error in status: ".$conn->error;
 	$sql="SELECT civperk1 FROM research WHERE playerid='$playerid';"; //find if player has researched for move
@@ -2032,7 +2069,7 @@ function scout($row,$col)
 	}
 	echo $output;
 	echo $faction."<BR>".$sfaction;
-	if($faction!=$sfaction and $fortification==0)
+	if($faction!=$sfaction and $sfaction!=0 and $fortification==0)
 	{
 		$_SESSION['scoutRow']=$row;
 		$_SESSION['scoutCol']=$col;

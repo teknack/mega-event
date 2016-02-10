@@ -2,7 +2,7 @@
 session_start();
 require "connect.php";
 $playerid=$_SESSION['tek_emailid'];
-$faction=1;/*$_SESSION['faction'];*/
+$faction=$_SESSION['faction'];
 $size=9;
 
 if(isset($_GET['row']) and isset($_GET['col']))
