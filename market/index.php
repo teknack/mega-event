@@ -16,11 +16,6 @@ function getDemand($resource)
 	$res = mysqli_query($conn,$query);
 	$res = mysqli_fetch_assoc($res);
 	
-	if ($res[$resource."_demand"] < 10)
-	{
-		$res[$resource."_demand"] = 10;
-	}
-	
 	return($res[$resource."_demand"]);
 }
 
