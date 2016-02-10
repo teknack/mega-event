@@ -80,11 +80,13 @@ function fortify()
 	$res=$conn->query($sql);
 	$r=$res->fetch_assoc();
 	$fortification=$r['fortification'];
-	$woodCost=$fortifyWoodCost[$fortification-1];
-	$metalCost=$fortifyMetalCost[$fortification-1];
-	$powerCost=$fortifyPowerCost[$fortification-1];
-
-	echo "Fortify<br>Wood:$woodCost<br>Metal:$metalCost<br>Power:$powerCost<br>";
+	if ($fortification != "-9")
+	{
+		$woodCost=$fortifyWoodCost[$fortification-1];
+		$metalCost=$fortifyMetalCost[$fortification-1];
+		$powerCost=$fortifyPowerCost[$fortification-1];
+		echo "Fortify<br>Wood:$woodCost<br>Metal:$metalCost<br>Power:$powerCost<br>";
+	}
 }
 
 function settle()
