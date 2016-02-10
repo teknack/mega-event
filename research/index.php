@@ -315,6 +315,10 @@ function civPerkTwoNextLevelInfo($level)
 		case 3:
 			$ret="+3 base points to use on settling<br><b>Costs</b>: 960 power | 400 metal";
 		break;
+		
+		case 3:
+			$ret="You Can now settle on water!<br><b>Costs</b>: 1000 power | 500 wood |500 metal";
+		break;
 	}
 	
 	return($ret);
@@ -789,6 +793,18 @@ function levelUpCivPerkTwo()
 				alert("Insufficient funds");
 			}
 		break;
+		
+		case 2: //level 3 -> 4 :  1000 power | 500 wood |500 metal
+			if ($_SESSION["resources"]["power"] >= 1000 && $_SESSION["resources"]["metal"] >= 500 && $_SESSION["resources"]["wood"] >= 500)
+			{
+				$level=$level+1;
+				update("civperk2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+			}
+			else
+			{
+				alert("Insufficient funds"); 
+			}
+		break;
 	}
 }
 
@@ -843,7 +859,7 @@ if (isset($_POST) && !empty($_POST))
 
 	<body>
 		<div id="top">
-			Research
+			<h1>Research</h1>
 		</div>
 		<hr>
 		<div id="content">

@@ -105,34 +105,20 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="./factionselect/faction.css">
+    <link rel="stylesheet" type="text/css" href="./maincss/mainstyle.css">
+    <link rel="stylesheet" type="text/css" href="./maincss/faction.css">
 
 </head>
 <body>
 
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar">
 		<div class="container-fluid">
 
 			<!-- Logo -->
 			<div class="navbar-header">
-				<a href="#" class="navbar-brand">Default</a>
+				<a href="#" class="navbar-brand"></a>
 			</div>
 
-
-			<!-- Menu items -->
-			<div>
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">First</a></li>
-					<li><a href="#">Second</a></li>
-					<li><a href="#">Third</a></li>
-				</ul>
-
-				<!-- Menu right items -->
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">Example</a></li>
-					<li><p class="navbar-text">Sample nonclick text</p></li>
-				</ul>
-			</div>
 		</div>
 	</nav>
 
@@ -168,7 +154,7 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		<p>I need texxt</p>
 
 		<form action="" method="POST">
-				<button type="submit" name="faction1">Faction 1</button>
+				<button class="btn btn-button-hollow btn-block btn-lg" type="submit" name="faction2"><h4>Faction 2</h4></button>
 			</form>
 	</div>
 
@@ -180,7 +166,7 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		<p>I need texxt</p>
 
 		<form action="" method="POST">
-				<button type="submit" name="faction1">Faction 1</button>
+				<button class="btn btn-button-hollow btn-block btn-lg" type="submit" name="faction1"><h4>Faction 1</h4></button>
 			</form>
 
 	</div>

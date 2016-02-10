@@ -1,8 +1,6 @@
 head, body{
 	height: 100%;
 	width: 100%;
-	background: url("wasteland_canvas.jpg") no-repeat;
-	background-size: cover;
 }
 .page-header{
 	text-align: center;
@@ -19,20 +17,21 @@ head, body{
 
     background-color: transparent;
     border-radius: 5px;
-    color: #000000;
+    color: #ffffb3;
     border: 2px solid #000000;
 }
 .btn-button-hollow:active, .btn-button-hollow:hover {
-    background-color: #000000;
-    color: #fff;
+    background-color: #ffffb3;
+    color: #000;
 }
+
 
 .hidden{
 	display: none;
 }
 
 .description{
-	position: absolute; 
+	position: absolute;
 	top: 0px;
 	height: 100%;
 	width: 50%;
@@ -41,18 +40,18 @@ head, body{
 
 /*Horizontal Slide */
 .collapsible {
-	background: #ff9999;
-	background: -webkit-radial-gradient#ff9999, #1a0000); /* For Safari 5.1 to 6.0 */
-    background: -o-radial-gradient(#ff9999, #1a0000); /* For Opera 11.1 to 12.0 */
-    background: -moz-radial-gradient(#ff9999, #1a0000); /* For Firefox 3.6 to 15 */
-    background: radial-gradient(#ff9999, #1a0000); /* Standard syntax (must be last) */
+	background: #001f4d;
+	background: -webkit-linear-gradient(#001f4d, #1a0000 90%); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#001f4d, #1a0000 90%); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#001f4d, #1a0000 90%); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#001f4d, #1a0000 90%); /* Standard syntax (must be last) */
 	border: 1px solid #CCCCCC;
 	padding: 10px;
 	font: 12px Arial, Helvetica, sans-serif;
 	color: #fff;
 	display: block;
-	overflow: hidden;
-	
+	overflow-y: hidden;
+
 	/*pointer-events: none;*/
 }
 .collapsible-left{
