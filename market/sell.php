@@ -43,14 +43,28 @@ if ($values["wood_quant"] > 0)
 {
 	if ($values["wood_quant"] < 50)
 	{
-		$wood_demand = $wood_demand - 1;
+		if ($wood_demand -1 >= 1)
+		{
+			$wood_demand = $wood_demand - 1;
+		}
+		else
+		{
+			$wood_demand = 1;
+		}
 	}
 	else
 	{
-		$wood_demand = $wood_demand - floor($values["wood_quant"]/50);
+		if (($wood_demand - floor($values["wood_quant"]/50)) >= 1)
+		{
+			$wood_demand = $wood_demand - floor($values["wood_quant"]/50);
+		}
+		else
+		{
+			$wood_demand = 1;
+		}
 	}
 	
-	$player["wood"] = $player["wood"] - $values["wood_quant"];
+	//$player["wood"] = $player["wood"] - $values["wood_quant"];
 	
 	//setTable("market");
 	//update("wood_demand",$wood_demand,"id=1");
@@ -60,11 +74,25 @@ if ($values["water_quant"] > 0)
 {
 	if ($values["water_quant"] < 50)
 	{
-		$water_demand = $water_demand - 1;
+		if ($water_demand -1 >= 1)
+		{
+			$water_demand = $water_demand - 1;
+		}
+		else
+		{
+			$water_demand = 1;
+		}
 	}
 	else
 	{
-		$water_demand = $water_demand - floor($values["water_quant"]/50);
+		if (($water_demand - floor($values["water_quant"]/50)) >= 1)
+		{
+			$water_demand = $water_demand - floor($values["water_quant"]/50);
+		}
+		else
+		{
+			$water_demand = 1;
+		}
 	}
 	
 	//update("water_demand",$water_demand,"id=1");
@@ -74,11 +102,25 @@ if ($values["metal_quant"] > 0)
 {
 	if ($values["metal_quant"] < 50)
 	{
-		$metal_demand = $metal_demand - 1;
+		if ($metal_demand -1 >= 1)
+		{
+			$metal_demand = $metal_demand - 1;
+		}
+		else
+		{
+			$metal_demand = 1;
+		}
 	}
 	else
 	{
-		$metal_demand = $metal_demand - floor($values["metal_quant"]/50);
+		if (($metal_demand - floor($values["metal_quant"]/50)) >= 1)
+		{
+			$metal_demand = $metal_demand - floor($values["metal_quant"]/50);
+		}
+		else
+		{
+			$metal_demand = 1;
+		}
 	}
 	
 	//update("metal_demand",$metal_demand,"id=1");
@@ -88,11 +130,25 @@ if ($values["power_quant"] > 0)
 {
 	if ($values["power_quant"] < 50)
 	{
-		$power_demand = $power_demand - 1;
+		if ($power_demand -1 >= 1)
+		{
+			$power_demand = $power_demand - 1;
+		}
+		else
+		{
+			$power_demand = 1;
+		}
 	}
 	else
 	{
-		$power_demand = $power_demand - floor($values["power_quant"]/50);
+		if (($power_demand - floor($values["power_quant"]/50)) >= 1)
+		{
+			$power_demand = $power_demand - floor($values["power_quant"]/50);
+		}
+		else
+		{
+			$power_demand = 1;
+		}
 	}
 	
 	//update("power_demand",$power_demand,"id=1");
@@ -102,11 +158,25 @@ if ($values["food_quant"] > 0)
 {
 	if ($values["food_quant"] < 50)
 	{
-		$food_demand = $food_demand - 1;
+		if ($food_demand -1 >= 1)
+		{
+			$food_demand = $food_demand - 1;
+		}
+		else
+		{
+			$food_demand = 1;
+		}
 	}
 	else
 	{
-		$food_demand = $food_demand - floor($values["food_quant"]/50);
+		if (($food_demand - floor($values["food_quant"]/50)) >= 1)
+		{
+			$food_demand = $food_demand - floor($values["food_quant"]/50);
+		}
+		else
+		{
+			$food_demand = 1;
+		}
 	}
 	
 	//update("food_demand",$food_demand,"id=1");

@@ -40,7 +40,7 @@ if ($values["wood_quant"] > 0)
 		$wood_demand = $wood_demand + floor($values["wood_quant"]/50);
 	}
 	
-	$player["wood"] = $player["wood"] + $values["wood_quant"];
+	//$player["wood"] = $player["wood"] + $values["wood_quant"];
 	
 	//setTable("market");
 	//update("wood_demand",$wood_demand,"id=1");
