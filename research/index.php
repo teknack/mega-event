@@ -194,17 +194,20 @@ function factionPerkOneNextLevelInfo($level)
 		switch($level+1)
 		{
 			case 1:
-				$ret="Scout cost is 50% of original cost<br><b>Costs</b>: 480 power | 480 food";
+				$ret="+10% plunder bonus on successful attack<br><b>Costs</b>: 480 power | 480 food";
 			break;
 			
 			case 2:
-				$ret="Scout cost is 25% of original cost<br><b>Costs</b>: 960 power | 960 food | 400 metal";
+				$ret="+15% plunder bonus on successful attack<br><b>Costs</b>: 960 power | 960 food | 400 metal";
 			break;
 			
 			case 3:
-				$ret="No Scout cost! :D<br><b>Costs</b>: 960 power | 960 food | 800 metal";
+				$ret="+30% plunder bonus on successful attack<br><b>Costs</b>: 960 power | 960 food | 800 metal";
 			break;
 		}
+		
+		
+		
 	}
 	else if ($_SESSION["faction"] == "2")
 	{
@@ -258,17 +261,17 @@ function factionPerkTwoNextLevelInfo($level)
 	else if ($_SESSION["faction"] == "2")
 	{
 		switch($level+1)
-		{
+		{	
 			case 1:
-				$ret="+10% plunder bonus on successful attack<br><b>Costs</b>: 480 power | 480 food";
+				$ret="Scout cost is 50% of original cost<br><b>Costs</b>: 480 power | 480 food";
 			break;
 			
 			case 2:
-				$ret="+15% plunder bonus on successful attack<br><b>Costs</b>: 960 power | 960 food | 400 metal";
+				$ret="Scout cost is 25% of original cost<br><b>Costs</b>: 960 power | 960 food | 400 metal";
 			break;
 			
 			case 3:
-				$ret="+30% plunder bonus on successful attack<br><b>Costs</b>: 960 power | 960 food | 800 metal";
+				$ret="No Scout cost! :D<br><b>Costs</b>: 960 power | 960 food | 800 metal";
 			break;
 		}
 	}
