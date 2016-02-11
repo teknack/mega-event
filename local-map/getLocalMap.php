@@ -2,13 +2,13 @@
 session_start();
 require "connect.php";
 $playerid=$_SESSION['tek_emailid'];
-$faction=1;/*$_SESSION['faction'];*/
+$faction=$_SESSION['faction'];
 $size=9;
 
-if(isset($_GET['row']))
+if(isset($_GET['row']) and isset($_GET['col']))
 {
 	map($_GET['row'],$_GET['col']);
-	//map(0,12);
+	//map(25,50);
 }
 
 function map($row,$col)
@@ -27,7 +27,7 @@ function map($row,$col)
 		$occupied=$r['occupied'];
 		$fortification=$r['fortification'];
 		$faction1=$r['faction'];
-		if($fortification>0)
+		if($fortification!=0)
 		{
 			$troops=0;
 		}

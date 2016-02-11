@@ -1,7 +1,8 @@
 <?php
 //This file serves as a temporary re-directing transition page...
 //include "../db_access/db.php";
-include "./player.php";
+session_start();
+//include "./player.php";
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -30,10 +31,10 @@ include "./player.php";
 	<br><br>
 	<div id="playgroup">
 		<div id="localplay" class="playarea" align="center">
-			<canvas id="mapCanvas" width="450" height="450">
+			<canvas id="mapCanvas" width="540" height="540">
 				Your browser does not support the canvas element.
 			</canvas>
-			<canvas id="canvas" width="450" height="450" style="border:1px solid #c3c3c3;">
+			<canvas id="canvas" width="540" height="540">
 				Your browser does not support the canvas element.
 			</canvas>
 		</div>
@@ -102,18 +103,36 @@ include "./player.php";
 		<form id="ctxForm" action="player.php" method="post">
 			<div id="action1">
 			</div>
-			<div>
-				<input type="hidden" name="row" id="row1">
-				<input type="hidden" name="col" id="col1">
-				<input type="number" name="quantity" id="quantity1">
-			</div>
+				<div>
+					<input type="hidden" name="row" id="row1">
+					<input type="hidden" name="col" id="col1">
+					<input type="number" name="quantity" id="quantity1">
+				</div>
 		</form>
+	</div>
+	<div>
+		<input type="hidden"  id="scoutRow">
+		<input type="hidden"  id="scoutCol">
+		<input type="hidden"  id="side">
 	</div>
 	<?php 
 		//some request method
 		$res=$_SESSION['coord'];
 		$x=$res[0];
 		$y=$res[1];
+		if(isset($_SESSION['side']))
+		{
+			$r=intval($_SESSION['scoutRow']);
+			$c=intval($_SESSION["scoutCol"]);
+			$side=$_SESSION["side"];
+			echo "$side";
+			echo "<script>document.getElementById('scoutRow').value=$r</script>";
+			echo "<script>document.getElementById('scoutCol').value=$c</script>";
+			echo "<script>document.getElementById('side').value='$side'</script>";
+			unset($_SESSION['side']);
+			unset($_SESSION['scoutRow']);
+			unset($_SESSION['scoutCol']);
+		}
 		echo "<script>document.getElementById('topLeft').value='$x,$y'</script>" 
 	?>
 </body>

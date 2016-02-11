@@ -180,7 +180,7 @@ function actions(event)
 	var j=Math.floor(cx/slotSize);
 	document.getElementById("row").value=i;
 	document.getElementById("col").value=j;
-	HideMenu("ctxMenu");
+	//HideMenu("ctxMenu");
 	options=document.getElementById("bottom_action");
 	if(grid[i][j]['color']=="blue")
 	{

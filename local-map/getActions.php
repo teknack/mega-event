@@ -2,7 +2,7 @@
 session_start();
 require "connect.php";
 $playerid=$_SESSION['tek_emailid'];
-$faction=1;/*$_SESSION['faction']*/
+$faction=$_SESSION['faction'];
 $output="[";
 function scout($row,$col)
 {
@@ -46,7 +46,7 @@ function scout($row,$col)
 		$troops+=$ptroops; //player troops added to total troops
 	}
 	if($r['special']==0)
-		$slotType="normal";
+		$slotType="mud";
 	if($r['special']==1)
 		$slotType="grass";
 	else if($r['special']==2)
@@ -191,9 +191,10 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 			{
 				if(isset($_SESSION['selectedRow']))
 				{
-					$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';
 					if($slotType==3)
 						$output=$output.'{"action":"loot_scout"},{"action":"loot"},{"visible":"false"}]';
+					else
+						$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';
 				}
 				else
 				{
