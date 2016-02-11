@@ -1,10 +1,10 @@
 <?php
-session_start();
+require "../db_access/db.php";
 require "connect.php";
 $playerid=$_SESSION['tek_emailid'];
 $faction=$_SESSION['faction'];
 if(!isset($_SESSION['faction']))
-	$faction=2;
+	$_SESSION['faction']=getFaction($playerid);
 $size=9;
 
 

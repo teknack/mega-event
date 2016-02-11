@@ -5,13 +5,13 @@ action cost before they are actually performed
 
 
 <?php
-session_start();
+require "../db_access/db.php";
 require "actionCostValues.php"; //to get resoruce cost
 require "connect.php";
 $playerid=$_SESSION['tek_emailid'];
 $faction=$_SESSION['faction'];
 if(!isset($_SESSION['faction']))
-	$faction=2;
+	$_SESSION['faction']=getFaction($playerid);
 $func="possible function values";
 
 function createTroops()

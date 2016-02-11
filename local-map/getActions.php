@@ -1,10 +1,10 @@
 <?php
-session_start();
 require "connect.php";
+require "../db_access/db.php";
 $playerid=$_SESSION['tek_emailid'];
 $faction=$_SESSION['faction'];
 if(!isset($_SESSION['faction']))
-	$faction=2;
+	$_SESSION['faction']=getFaction($playerid);
 $output="[";
 function scout($row,$col)
 {

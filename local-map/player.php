@@ -2,11 +2,10 @@
 require "../db_access/db.php";
 require "connect.php";
 require "actionCostValues.php";
+$playerid=$_SESSION['tek_emailid']; //temporary!! don't forget to remove!!
 $faction=$_SESSION['faction'];
 if(!isset($_SESSION['faction']))
-	$faction=2;
-$playerid;
-$playerid=$_SESSION['tek_emailid']; //temporary!! don't forget to remove!!
+	$_SESSION['faction']=getFaction($playerid);
 /*1-preserver
   2-exploiter*/
 
@@ -234,7 +233,7 @@ function troopExist($row,$col,$quantity)
 	$res=$conn->query($sql);                  //check if required troops present in grid table
 	if($res->num_rows>0)
 	{
-		$row=$res->fetch_assoc();
+		$r=$res->fetch_assoc();
 		if($r['troops']<$quantity)
 		{
 			$_SESSION['response']=$row['troops'];
