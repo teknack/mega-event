@@ -117,7 +117,6 @@ session_start();
 	</div>
 	<?php 
 		//some request method
-		var_dump($_SESSION);
 		$res=$_SESSION['coord'];
 		$x=$res[0];
 		$y=$res[1];
