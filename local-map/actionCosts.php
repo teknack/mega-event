@@ -11,7 +11,7 @@ require "connect.php";
 $playerid=$_SESSION['tek_emailid'];
 $faction=$_SESSION['faction'];
 if(!isset($_SESSION['faction']))
-	$faction=1;
+	$faction=2;
 $func="possible function values";
 
 function createTroops()

@@ -4,7 +4,7 @@ require "connect.php";
 require "actionCostValues.php";
 $faction=$_SESSION['faction'];
 if(!isset($_SESSION['faction']))
-	$faction=1;
+	$faction=2;
 $playerid;
 $playerid=$_SESSION['tek_emailid']; //temporary!! don't forget to remove!!
 /*1-preserver
