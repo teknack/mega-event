@@ -6,8 +6,8 @@ body{
 
 
 .navimage{
-	height: 40px; 
-	width: 40px;
+	height: 35px; 
+	width: 35px;
 }
 
 .navbar ul li p{
@@ -36,9 +36,9 @@ body{
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:focus,
 .nav-tabs > li.active > a:hover{
-    background-color: #cc8b00 !important;
+    background-color: #FF6B6B;
     border-color: #7f5700;
-    color: white;
+    color: #1A535C;
 }
 
 #bottomTable{

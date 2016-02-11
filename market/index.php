@@ -152,8 +152,8 @@ if (isset($_POST) && !empty($_POST))
 						<li><a href="../local-map/index.php">Local</a></li>
 						<li class="active"><a href="#">Market</a></li>
 						<li><a href="#">Research</a></li>
-						<li><a href="./resources.php">Collect Resource</a></li>
-						<li><a href="#">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
+						<li><a href="./resources.php">Collect</a></li>
+						<li><a href="../world-map/canvas1.html">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
 					</ul>
 				</div>
 			</div>
@@ -170,7 +170,7 @@ if (isset($_POST) && !empty($_POST))
 			
 			<div class="row">
 				<div class="col-md-3 pull-right">
-					<h3 style="color: #ffb619">Gold: <?php getGold() ?></h3>
+					<h3 style="color: #fefeb0; font-family: Georgia;">Gold: <?php getGold() ?></h3>
 				</div>
 				<div class="inner-wrapper col-md-6 col-md-offset-3">
 					<div class="form-group">

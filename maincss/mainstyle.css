@@ -1,6 +1,6 @@
 /*Main stylesheet that is most common*/
 body{
-	background: url("./image/newland.png") no-repeat;
+	background: url("./image/oldpaper.jpg") no-repeat;
 	background-size: cover;
 }
 
@@ -9,7 +9,6 @@ body{
 .navbar ul > li > a{
 	color: #ffffb3;
 	font-weight: bold;
-	margin-top: 0.15em;
 	border-radius: 5px;
 	background: transparent;
 	
@@ -25,9 +24,9 @@ body{
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:focus,
 .nav-tabs > li.active > a:hover{
-    background-color: #cc8b00 !important;
+    background-color: #FF6B6B !important;
     border-color: #7f5700;
-    color: white;
+    color: #1A535C;
 }
 
 
