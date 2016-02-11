@@ -46,54 +46,60 @@ session_start();
 		</div>
 	</nav>
 
-	<br><br>
-	<div id="playgroup">
+	<!-- <div id="playgroup">   Unsure if you need this SID. Let me know -->
 
-		<div id="localplay" class="playarea" align="center">
-			<canvas id="mapCanvas" width="540" height="540">
-				Your browser does not support the canvas element.
-			</canvas>
-			<canvas id="canvas" width="540" height="540">
-				Your browser does not support the canvas element.
-			</canvas>
-		</div>
-	</div>
-	<hr>
-	<div id="bottomgroup" border=1>
-		<table id="bottomTable"> 
-			<tr>
-				<td>
-					<div id="bottom_action" style="float:left">
+	<div class="container">
+		<div class="row" id="main">
+			<div id="localplay" class="col-md-6 bigpart">
+				<canvas id="mapCanvas" width="540" height="540">
+					Your browser does not support the canvas element.
+				</canvas>
+				<canvas id="canvas" width="540" height="540">
+					Your browser does not support the canvas element.
+				</canvas>
+			</div>
+
+			<div class="col-md-3 littlepart">
+				<div class="panel panel-default">
+					<div id="bottom_action" class="panel-body">
 						<form action="player.php" method="POST">
-							<div>
-								<input type="hidden" name="topLeft" id="topLeft">
-								<input type="hidden" name="row" id="row">
-								<input type="hidden" name="col" id="col">
-								<input type="number" name="quantity" id="quantity">
-							</div>
-							<div id="action">
-							</div>
-							<div id="cost">
-							</div>
-						</form>
+							<input type="hidden" name="topLeft" id="topLeft">
+							<input type="hidden" name="row" id="row">
+							<input type="hidden" name="col" id="col">
+							<input type="number" name="quantity" id="quantity">
+						</form> <!-- Is this okay SID? I moved the end of form tag before the divs -->
+						<div id="action">
+						</div>
 					</div>
-				</td>
-				<td>
-					<div id="bottom_hint">
-						<?php
-							if(isset($_SESSION['response']))
-							{
-								echo $_SESSION['response'];
-								unset($_SESSION['response']);
-							}
-						?>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div id="cost">
+						</div>
 					</div>
-					<div id="rc">
+				</div>
+			</div>
+						<!-- </form> -->
+			<div class="col-md-3 littlepart">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div id="bottom_hint">
+							<?php
+								if(isset($_SESSION['response']))
+								{
+									echo $_SESSION['response'];
+									unset($_SESSION['response']);
+								}
+							?>
+						</div>
+						<div id="rc"> <!-- What does this do SID? -->
 
+						</div>
 					</div>
-				</td>
-				<td>
-					<div style="float:right">
+				</div>
+			
+				<div class="panel panel-default">
+					<div class="panel-body">	
 						<form method="POST" action="shift.php">
 							<table id="nav_buttons" border=0 align="center">
 								<tr>
@@ -114,10 +120,11 @@ session_start();
 							</table>
 						</form>
 					</div>
-				</td>
-			</tr>		
-		</table>
+				</div>
+			</div>
+		</div>
 	</div>
+	
 	<div id="ctxMenu" style="display:none;">
 		<form id="ctxForm" action="player.php" method="post">
 			<div id="action1">

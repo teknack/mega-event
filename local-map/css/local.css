@@ -47,23 +47,16 @@ body{
 }
 
 /*Canvas part*/
-#localplay{
-	position: relative;
 
-}
 #canvas
 {
 	position:absolute;
-	left:100px;
-	top:100px;
 	/*opacity: 0.3;*/
 }
 
 #mapCanvas
 {
 	position:absolute;
-	left:100px;
-	top:100px;
 }	
 
 
