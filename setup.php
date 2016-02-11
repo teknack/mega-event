@@ -32,7 +32,7 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 
 	if(isset($_POST["faction1"]))
 	{
-		alert("you have picked faction 1");
+		//alert("you have picked faction 1");
 		insert("tek_emailid,faction,collect","'".$_SESSION["tek_emailid"]."',1,".time()); //set current time as "collect" value in db
 		$_SESSION["collect_time"] = time();
 		$_SESSION["faction"] = "1";
@@ -61,7 +61,7 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 	}
 	else if (isset($_POST["faction2"])) //same as above
 	{
-		alert("you have picked faction 2");
+		//alert("you have picked faction 2");
 		insert("tek_emailid,faction,collect","'".$_SESSION["tek_emailid"]."',2,".time());
 		$_SESSION["collect_time"] = time();
 		$_SESSION["faction"] = "2";

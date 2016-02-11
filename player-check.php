@@ -13,7 +13,7 @@ if (checkPlayerExists($_SESSION["tek_emailid"],"player"))
 }
 else
 {
-	alert("setting you up!");
+	//alert("setting you up!");
 	disconnect();
 	redirect("./setup.php");
 }
