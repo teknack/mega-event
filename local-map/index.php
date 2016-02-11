@@ -47,7 +47,7 @@ session_start();
 					<div id="bottom_action" style="float:left">
 						<form action="player.php" method="POST">
 							<div>
-								<input type="text" name="topLeft" id="topLeft">
+								<input type="hidden" name="topLeft" id="topLeft">
 								<input type="hidden" name="row" id="row">
 								<input type="hidden" name="col" id="col">
 								<input type="number" name="quantity" id="quantity">

@@ -210,7 +210,23 @@ function fetchAll($player)
 
 function getFaction($player)
 {
-	return(fetch($player,"faction"));
+	global $dbconn;
+	
+	$check = "";
+	if (!$dbconn || $dbconn === "")
+	{
+		connect();
+		$check = true;
+	}
+	setTable("player");
+	$faction = fetch($player,"faction");
+	
+	if ($check == true)
+	{
+		disconnect();
+	}
+	
+	return($faction);
 }
 
 function redirect($url="index.php")

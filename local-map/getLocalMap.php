@@ -1,9 +1,13 @@
 <?php
-session_start();
+require "../db_access/db.php";
 require "connect.php";
 $playerid=$_SESSION['tek_emailid'];
 $faction=$_SESSION['faction'];
+if(!isset($_SESSION['faction']))
+	$_SESSION['faction']=getFaction($playerid);
 $size=9;
+
+
 
 if(isset($_GET['row']) and isset($_GET['col']))
 {

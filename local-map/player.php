@@ -2,10 +2,10 @@
 require "../db_access/db.php";
 require "connect.php";
 require "actionCostValues.php";
-$faction=$_SESSION['faction'];
-
-$playerid;
 $playerid=$_SESSION['tek_emailid']; //temporary!! don't forget to remove!!
+$faction=$_SESSION['faction'];
+if(!isset($_SESSION['faction']))
+	$_SESSION['faction']=getFaction($playerid);
 /*1-preserver
   2-exploiter*/
 
@@ -233,8 +233,8 @@ function troopExist($row,$col,$quantity)
 	$res=$conn->query($sql);                  //check if required troops present in grid table
 	if($res->num_rows>0)
 	{
-		$row=$res->fetch_assoc();
-		if($row['troops']<$quantity)
+		$r=$res->fetch_assoc();
+		if($r['troops']<$quantity)
 		{
 			$_SESSION['response']=$row['troops'];
 			$troopExist=false;
@@ -245,16 +245,16 @@ function troopExist($row,$col,$quantity)
 			$troopExist=true;
 		}
 	}
-	$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid;"; //check if required troops present
+	$sql="SELECT quantity FROM troops WHERE row=$row and col=$col and playerid='$playerid';"; //check if required troops present
 	$res=$conn->query($sql);                                                        //in troops table
 	if($res->num_rows>0)
 	{
-		$row=$res->fetch_assoc();
-		if($row['quantity']<$quantity)
+		$r=$res->fetch_assoc();
+		if($r['quantity']<$quantity)
 		{
 			if(!$troopExist) //troops not enough but present in troops table
 			{
-				$_SESSION['response']="You don't have those many troops.Create more soldiers!";
+				$_SESSION['response']="You don't have those many troops.Create more soldiers!(troops)";
 				unset($_SESSION['selectedRow']);
 				unset($_SESSION['selectedCol']);
 				unset($_SESSION['selectedTroops']);
@@ -594,7 +594,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 			$r=$res2->fetch_assoc();
 			if($r['occupied']!='$playerid') //player moves from unoccupied/allied slots to unoccupied/allied slots
 			{
-				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol and playerid='$playerid;";
+				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol and playerid='$playerid';";
 				if($conn->query($sql)==false)
 					echo "error (143): ".$conn->error."<br>";
 				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol and playerid='$playerid';"; //check if troops are already present
@@ -2205,7 +2205,7 @@ if(isset($_POST['settle']))
 	//$row=1;
 	//$col=13;
 	settle($row,$col);
-	//header("location:index.php");
+	header("location:index.php");
 }
 
 
