@@ -319,84 +319,97 @@ function proceed()
 <html>
 
 	<head>
-		<title>Market -> Buy</title>
+		<title>Market -> Sell</title>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width. initial scale=1">
+
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+	    <link rel="stylesheet" type="text/css" href="../maincss/mainstyle.css">
+	    <link rel="stylesheet" type="text/css" href="./market.css">
 	</head>
 
 	<body>
-		<div id="top">
-			<h1>Market -> Buy</h1>
+		<div class="container">	
+
+			<div class="row">			
+				<div class="page-header">
+				<h1>Marketplace -> Sell</h1>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="inner-wrapper col-md-6 col-md-offset-3">
+					<div class="form-group">
+						
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Resource</th>
+										<th>Quantity</th>
+										<th>Cost</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="col-md-1">Wood</td>
+										<td class="col-md-1"><?php echo($values["wood_quant"]) ?></td>
+										<td class="col-md-1"><?php echo($costs["wood"]) ?></td>
+									</tr>
+									<tr>
+										<td class="col-md-1">Food</td>
+										<td class="col-md-1"><?php echo($values["food_quant"]) ?></td>
+										<td class="col-md-1"><?php echo($costs["food"]) ?></td>
+									</tr>
+									<tr>
+										<td class="col-md-1">Water</td>
+										<td class="col-md-1"><?php echo($values["water_quant"]) ?></td>
+										<td class="col-md-1"><?php echo($costs["water"]) ?></td>
+									</tr>
+									<tr>
+										<td class="col-md-1">Power</td>
+										<td class="col-md-1"><?php echo($values["power_quant"]) ?></td>
+										<td class="col-md-1"><?php echo($costs["power"]) ?></td>
+									</tr>
+									<tr>
+										<td class="col-md-1">Metal</td>
+										<td class="col-md-1"><?php echo($values["metal_quant"]) ?></td>
+										<td class="col-md-1"><?php echo($costs["metal"]) ?></td>
+									</tr>
+									<tr>
+										<th>Total</th>
+										<th></th>
+										<th><?php echo(getTotal()) ?></th>
+									</tr>
+								</tbody>
+							</table>	
+						<h4 class="col-md-offset-4">
+							<?php
+								if (check() === False)
+								{
+									echo("INSUFFICIENT RESOURCES");
+								}
+								else
+								{
+									proceed();
+									echo("TRANSACTION SUCCESSFUL");
+								}
+							?>
+						</h4>
+						<form action="index.php" >
+							<button type="submit" class="btn btn-default btn-lg col-md-2 col-md-offset-6"><b>Return</b></button>
+						</form>
+					</div>
+				</div>
+			</div>
+
 		</div>
-		<hr>
-		<div id="content">
-			<center>
-				<table border="1">
-					<tr>
-						<th>
-							Resource
-						</th>
-						<th>
-							Quantity
-						</th>
-						<th>
-							Cost
-						</th>
-					</tr>
-					<tr>
-						<tr>
-						<td>Wood</td>
-						<td><?php echo($values["wood_quant"]) ?></td>
-						<td align="center"><?php echo($costs["wood"]) ?></td>
-					</tr>
-					<tr>
-						<td>Food</td>
-						<td><?php echo($values["food_quant"]) ?></td>
-						<td align="center"><?php echo($costs["food"]) ?></td>
-					</tr>
-					<tr>
-						<td>Water</td>
-						<td><?php echo($values["water_quant"]) ?></td>
-						<td align="center"><?php echo($costs["water"]) ?></td>
-					</tr>
-					<tr>
-						<td>Metal</td>
-						<td><?php echo($values["metal_quant"]) ?></td>
-						<td align="center"><?php echo($costs["metal"]) ?></td>
-					</tr>
-					<tr>
-						<td>Power</td>
-						<td><?php echo($values["power_quant"]) ?></td>
-						<td align="center"><?php echo($costs["power"]) ?></td>
-					</tr>
-					<tr>
-						<th align="center">
-							Total
-						</th>
-						<th>
-							
-						</th>
-						<th align="center">
-							<?php echo(getTotal()) ?>
-						</th>
-					</tr>
-				</table>
-				<br>
-				<?php
-					if (check() === False)
-					{
-						echo("INSUFFICIENT RESOURCES");
-					}
-					else
-					{
-						proceed();
-						echo("TRANSACTION SUCCESSFUL");
-					}
-				?>
-				<br>
-				<form action="index.php">
-					<button type="submit">Return</button>
-				</form>
-			</center>
-		</div>
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	</body>
 
 </html>
+<?php
+unset($_SESSION["values"]);
+unset($_SESSION["costs"]);
+?>
