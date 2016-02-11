@@ -104,17 +104,17 @@ session_start();
 							<table id="nav_buttons" border=0 align="center">
 								<tr>
 									<td></td>
-									<td align="center"><button type="submit" name="up" id="up">UP</button></td>
+									<td align="center"><button name="up" id="up"></button></td>
 									<td></td>
 								</tr>
 								<tr>
-									<td align="center"><button name="left" id="left">LEFT</button></td>
-									<td align="center"><button name="world-map" id="world">WORLD MAP</button></td>
-									<td align="center"><button name="right" id="right">RIGHT</button></td>
+									<td align="center"><button name="left" id="left"></button></td>
+									<td align="center"><button name="world-map" id="world"></button></td>
+									<td align="center"><button name="right" id="right"></button></td>
 								</tr>
 								<tr>
 									<td></td>
-									<td align="center"><button name="down" id="down">DOWN</button></td>
+									<td align="center"><button name="down" id="down"></button></td>
 									<td></td>
 								</tr>
 							</table>
