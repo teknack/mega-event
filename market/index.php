@@ -165,64 +165,6 @@ if (isset($_POST) && !empty($_POST))
 			</div>
 		</nav>
 
-		<!-- <div id="top">
-			<h1>Marketplace</h1>
-		</div>
-		<hr>
-		<div id="content">
-			<b>Gold : <?php getGold() ?></b>
-			<center>
-
-
-				<form action="" method="POST">
-				<table border = 1>
-					<tr>
-						<th>Resource</th>
-						<th>Cost (gold per unit)</th>
-						<th>Amount</th>
-						<th>Inventory</th>
-					</tr>
-					<tr>
-						<td>Wood</td>
-						<td align="center"><?php echo(round(woodCost(),2)) ?></td>
-						<td><input name="wood_quant" id="wood_quant" type="number" placeholder="amount of wood"/></td>
-						<td><?php echo(fetch($_SESSION["tek_emailid"],"wood"))?></td>
-					</tr>
-					<tr>
-						<td>Food</td>
-						<td align="center"><?php echo(round(foodCost(),2)) ?></td>
-						<td><input name="food_quant" id="food_quant" type="number" placeholder="amount of food"/></td>
-						<td><?php echo(fetch($_SESSION["tek_emailid"],"food"))?></td>
-					</tr>
-					<tr>
-						<td>Water</td>
-						<td align="center"><?php echo(round(waterCost(),2)) ?></td>
-						<td><input name="water_quant" id="water_quant" type="number" placeholder="amount of water"/></td>
-						<td><?php echo(fetch($_SESSION["tek_emailid"],"water"))?></td>
-					</tr>
-					<tr>
-						<td>Metal</td>
-						<td align="center"><?php echo(round(metalCost(),2)) ?></td>
-						<td><input name="metal_quant" id="metal_quant" type="number" placeholder="amount of metal"/></td>
-						<td><?php echo(fetch($_SESSION["tek_emailid"],"metal"))?></td>
-					</tr>
-					<tr>
-						<td>Power</td>
-						<td align="center"><?php echo(round(powerCost(),2)) ?></td>
-						<td><input name="power_quant" id="power_quant" type="number" placeholder="amount of power"/></td>
-						<td><?php echo(fetch($_SESSION["tek_emailid"],"power"))?></td>
-					</tr>
-				</table>
-				<br>
-				<center>
-					<button name="buy" type="submit">Buy</button> <button name="sell" type="submit">Sell</button>
-				</center>
-				</form>
-			</center>
-		</div>
- -->
-
-
 		<!--Heading and Gold part -->
 		<div class="container">	
 
@@ -232,11 +174,12 @@ if (isset($_POST) && !empty($_POST))
 				</div>
 			</div>
 			<div class="row">			
-				<div class="col-md-3 pull-right">
-					<h3>Gold: <?php getGold() ?></h3>
-				</div>
+				
 			</div>
 			<div class="row">
+				<div class="col-md-3 pull-right">
+					<h3 style="color: #ffb619">Gold: <?php getGold() ?></h3>
+				</div>
 				<div class="inner-wrapper col-md-6 col-md-offset-3">
 					<div class="form-group">
 						<form action="" method="POST">
@@ -253,31 +196,31 @@ if (isset($_POST) && !empty($_POST))
 									<tr>
 										<td class="col-md-1">Wood</td>
 										<td class="col-md-1"><?php echo(round(woodCost(),2)) ?></td>
-										<td class="col-md-1"><input class="form-control" name="wood_quant" type="number"/></td>
+										<td class="col-md-1"><input class="form-control input-lg" name="wood_quant" type="number"/></td>
 										<td class="col-md-1"><?php echo(fetch($_SESSION["tek_emailid"],"wood"))?></td>
 									</tr>
 									<tr>
 										<td class="col-md-1">Food</td>
 										<td class="col-md-1"><?php echo(round(foodCost(),2)) ?></td>
-										<td class="col-md-1"><input class="form-control" name="food_quant" type="number"/></td>
+										<td class="col-md-1"><input class="form-control input-lg" name="food_quant" type="number"/></td>
 										<td class="col-md-1"><?php echo(fetch($_SESSION["tek_emailid"],"food"))?></td>
 									</tr>
 									<tr>
 										<td class="col-md-1">Water</td>
 										<td class="col-md-1"><?php echo(round(waterCost(),2)) ?></td>
-										<td class="col-md-1"><input class="form-control" name="water_quant" type="number"/></td>
+										<td class="col-md-1"><input class="form-control input-lg" name="water_quant" type="number"/></td>
 										<td class="col-md-1"><?php echo(fetch($_SESSION["tek_emailid"],"water"))?></td>
 									</tr>
 									<tr>
 										<td class="col-md-1">Power</td>
 										<td class="col-md-1"><?php echo(round(powerCost(),2)) ?></td>
-										<td class="col-md-1"><input class="form-control" name="power_quant" type="number"/></td>
+										<td class="col-md-1"><input class="form-control input-lg" name="power_quant" type="number"/></td>
 										<td class="col-md-1"><?php echo(fetch($_SESSION["tek_emailid"],"power"))?></td>
 									</tr>
 									<tr>
 										<td class="col-md-1">Metal</td>
 										<td class="col-md-1"><?php echo(round(metalCost(),2)) ?></td>
-										<td class="col-md-1"><input class="form-control" name="metal_quant" type="number"/></td>
+										<td class="col-md-1"><input class="form-control input-lg" name="metal_quant" type="number"/></td>
 										<td class="col-md-1"><?php echo(fetch($_SESSION["tek_emailid"],"metal"))?></td>
 									</tr>
 								</tbody>
