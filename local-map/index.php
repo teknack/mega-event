@@ -48,7 +48,7 @@ session_start();
 
 	<!-- <div id="playgroup">   Unsure if you need this SID. Let me know -->
 
-	<div class="container">
+	<div class="container white-bg">
 		<div class="row" id="main">
 			<div id="localplay" class="col-md-6 bigpart">
 				<canvas id="mapCanvas" width="540" height="540">
@@ -125,18 +125,17 @@ session_start();
 		</div>
 	</div>
 	
-	<div id="ctxMenu" style="display:none;">
+	<div class="white-bg" id="ctxMenu" style="display:none;">
 		<form id="ctxForm" action="player.php" method="post">
-			<div id="action1">
-			</div>
-				<div>
-					<input type="hidden" name="row" id="row1">
-					<input type="hidden" name="col" id="col1">
-					<input type="number" name="quantity" id="quantity1">
-				</div>
+			<div id="action1"></div>
+				<input type="hidden" name="row" id="row1">
+				<input type="hidden" name="col" id="col1">
+				<label for="quantity1">Q:</label>
+				<input type="number" name="quantity" id="quantity1">
+			
 		</form>
 	</div>
-	<div>
+	<div class="white-bg">
 		<input type="hidden"  id="scoutRow">
 		<input type="hidden"  id="scoutCol">
 		<input type="hidden"  id="side">

@@ -57,23 +57,41 @@ body{
 #mapCanvas
 {
 	position:absolute;
+	/*z-index: -1;*/
 }	
 
 
 /* Main Content */
+
+.container{
+	background: rgba(0,0,0,0.6);
+	padding: 1em;
+}
+
+.white-bg{
+	color: black;
+}
+
+/* 81 vh viewport height*/
 .bigpart{
 	/*background-color: #dddddd;*/
 	height:100%;
 }
 .littlepart{
 	/*background-color: #444444;*/
-	height:100%;
+	height:81vh;
 }
 .panel{
 	margin-top: 1em;
 	height: 45%;
 
+	background: rgba(255,255,255,0.5);
+}
+
+.panel-body{
 }
 
 
-
+#ctxMenu{
+	background-color: white;
+}
