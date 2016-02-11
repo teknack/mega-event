@@ -1,0 +1,83 @@
+body{
+	color: #ffffb3;
+}
+#main{
+	background: transparent;
+	height:40em; 
+	color:#000000;
+}
+
+/* navbar area */
+
+.navbar{
+	border-radius: 0px;
+	
+}
+.navimage{
+	height: 40px; 
+	width: 40px;
+}
+
+.navbar ul li p{
+	color: #ffffb3;
+	font-weight: bold;
+}
+
+/*
+.resource a{
+	margin-top: 0.15em;
+	border-radius: 5px;
+	background: transparent;
+	/*background: -webkit-linear-gradient#1a8cff, #ffdd99); /* For Safari 5.1 to 6.0 
+    background: -o-linear-gradient(#1a8cff, #ffdd99); /* For Opera 11.1 to 12.0 
+    background: -moz-linear-gradient(#1a8cff, #ffdd99); /* For Firefox 3.6 to 15 
+    background: linear-gradient(#1a8cff, #ffdd99); /* Standard syntax (must be last) 
+}
+.resource a p:hover {
+	color: black;
+}
+*/
+
+/*Navbar */
+
+.navbar ul > li > a{
+	color: #ffffb3;
+	font-weight: bold;
+	margin-top: 0.15em;
+	border-radius: 5px;
+	background: transparent;
+	
+}
+
+/*Tab details*/
+
+.nav-tabs > li > a:hover{
+  background-color: #ffc64c !important;
+    border: medium none;
+    color:#000;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover{
+    background-color: #cc8b00 !important;
+    border-color: #7f5700;
+    color: white;
+}
+
+/* Main Content */
+.bigpart{
+	/*background-color: #dddddd;*/
+	height:100%;
+}
+.littlepart{
+	/*background-color: #444444;*/
+	height:100%;
+}
+.panel{
+	margin-top: 1em;
+	height: 45%;
+
+}
+
+
+
