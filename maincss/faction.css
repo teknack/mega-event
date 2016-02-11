@@ -1,12 +1,15 @@
 head, body{
 	height: 100%;
 	width: 100%;
+	background-color: #F0F3BD;
 }
 .page-header{
 	text-align: center;
 }
-.panel{
-	background: rgba(0,0,0,0.2);
+
+button p{
+	width: inherit;
+	overflow: hidden;
 }
 
 .btn-button-hollow, .btn-button-hollow:link, .btn-button-hollow:visited {
@@ -15,19 +18,28 @@ head, body{
     -o-transition: background-color 1s ease, color 0.5s ease;
     transition: background-color 1s ease, color 0.5s ease;
 
-    background-color: transparent;
+    height: 20em;
+    background-color:#000;
     border-radius: 5px;
-    color: #ffffb3;
+    color: #F0F3BD;
     border: 2px solid #000000;
 }
 .btn-button-hollow:active, .btn-button-hollow:hover {
-    background-color: #ffffb3;
-    color: #000;
+    background-color: #444B6E;
+    color: white;
+}
+.inside-btn{
+	height: 4em;
 }
 
 
 .hidden{
 	display: none;
+}
+
+.list-group, .list-group-item{
+	color: #000;
+	background-color: ;
 }
 
 .description{
@@ -40,11 +52,11 @@ head, body{
 
 /*Horizontal Slide */
 .collapsible {
-	background: #001f4d;
-	background: -webkit-linear-gradient(#001f4d, #1a0000 90%); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#001f4d, #1a0000 90%); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#001f4d, #1a0000 90%); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#001f4d, #1a0000 90%); /* Standard syntax (must be last) */
+	background: #444B6E;
+	background: -webkit-linear-gradient(#444B6E, #F8F991); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#444B6E, #F8F991); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#444B6E, #F8F991); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#444B6E, #F8F991); /* Standard syntax (must be last) */
 	border: 1px solid #CCCCCC;
 	padding: 10px;
 	font: 12px Arial, Helvetica, sans-serif;
