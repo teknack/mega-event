@@ -2205,7 +2205,7 @@ if(isset($_POST['settle']))
 	//$row=1;
 	//$col=13;
 	settle($row,$col);
-	//header("location:index.php");
+	header("location:index.php");
 }
 
 
