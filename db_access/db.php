@@ -208,6 +208,11 @@ function fetchAll($player)
 	return($res);
 }
 
+function getFaction($player)
+{
+	return(fetch($player,"faction"));
+}
+
 function redirect($url="index.php")
 {
 	echo("<script>window.location='".$url."'</script>");
