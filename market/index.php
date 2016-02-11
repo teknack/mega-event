@@ -282,9 +282,10 @@ if (isset($_POST) && !empty($_POST))
 									</tr>
 								</tbody>
 							</table>	
+						
+							<button type="submit" class="btn btn-default btn-lg col-md-2 col-md-offset-3" name="buy"><b>Buy</b></button>
+							<button type="submit" class="btn btn-default btn-lg col-md-2 col-md-offset-1" name="sell"><b>Sell</b></button>
 						</form>
-					<button type="submit" class="btn btn-default btn-lg col-md-2 col-md-offset-3" name="buy"><b>Buy</b></button>
-					<button type="submit" class="btn btn-default btn-lg col-md-2 col-md-offset-1" name="sell"><b>Sell</b></button>
 					</div>
 				</div>
 			</div>
