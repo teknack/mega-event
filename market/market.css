@@ -30,12 +30,13 @@ body{
 
 /*Main content*/
 
-.panel{
-	color: white;
-	background: rgba(0,0,0,0.4);
+.form-control{
+	padding: 2px; 
 }
-table td{
+
+table td, table th{
 	font-family: Georgia;
-	font-size: 1.3em;
+	font-size: 1.1em;
 	overflow: hidden;
+	text-align: center;
 }
