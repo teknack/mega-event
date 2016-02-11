@@ -131,9 +131,40 @@ if (isset($_POST) && !empty($_POST))
 
 	<head>
 		<title>Marketplace</title>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width. initial scale=1">
+
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+	    <link rel="stylesheet" type="text/css" href="../maincss/mainstyle.css">
+	    <link rel="stylesheet" type="text/css" href="./market.css">
 	</head>
 
 	<body>
+
+		<nav class="navbar">
+			<div class="container-fluid">
+
+				<!-- Logo -->
+				<div class="navbar-header">
+					<a href="#" class="navbar-brand"></a>
+				</div>
+
+
+				<!-- Menu items -->
+				<div>
+								
+					<!-- Menu right items -->
+					<ul class="nav nav-tabs navbar-nav navbar-right">
+						<li class="active"><a href="#">Market</a></li><!-- href to ./.php -->
+						<li><a href="#">Research</a></li><!-- href to ./.php -->
+						<li><a href="#">Collect Resource</a></li><!-- href to ./resources.php -->
+						<li><a href="#">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
 		<div id="top">
 			<h1>Marketplace</h1>
 		</div>
@@ -141,6 +172,8 @@ if (isset($_POST) && !empty($_POST))
 		<div id="content">
 			<b>Gold : <?php getGold() ?></b>
 			<center>
+
+
 				<form action="" method="POST">
 				<table border = 1>
 					<tr>
@@ -187,6 +220,77 @@ if (isset($_POST) && !empty($_POST))
 				</form>
 			</center>
 		</div>
+
+
+
+		<!--Heading and Gold part -->
+		<div class="container">	
+
+			<div class="row">			
+				<div class="page-header">
+				<h1>Marketplace</h1>
+				</div>
+			</div>
+			<div class="row">			
+				<div class="col-md-3">
+					<h3>Gold: <?php getGold() ?></h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="inner-wrapper col-md-6 col-md-offset-3">
+					<div class="form-group">
+						<form action="" method="POST">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Resource</th>
+										<th>Cost (gold per unit)</th>
+										<th>Amount</th>
+										<th>Inventory</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="col-md-1">Food</td>
+										<td class="col-md-1">Cost text</td>
+										<td class="col-md-1"><input class="form-control" name="food_quant" type="number"/></td>
+										<td class="col-md-1">Inventory Text</td>
+									</tr>
+									<tr>
+										<td class="col-md-1">Water</td>
+										<td class="col-md-1">Cost text</td>
+										<td class="col-md-1"><input class="form-control" name="food_quant" type="number"/></td>
+										<td class="col-md-1">Inventory Text</td>
+									</tr>
+									<tr>
+										<td class="col-md-1">Power</td>
+										<td class="col-md-1">Cost text</td>
+										<td class="col-md-1"><input class="form-control" name="food_quant" type="number"/></td>
+										<td class="col-md-1">Inventory Text</td>
+									</tr>
+									<tr>
+										<td class="col-md-1">Metal</td>
+										<td class="col-md-1">Cost text</td>
+										<td class="col-md-1"><input class="form-control" name="food_quant" type="number"/></td>
+										<td class="col-md-1">Inventory Text</td>
+									</tr>
+									<tr>
+										<td class="col-md-1">Wood</td>
+										<td class="col-md-1">Cost text</td>
+										<td class="col-md-1"><input class="form-control" name="food_quant" type="number"/></td>
+										<td class="col-md-1">Inventory Text</td>
+									</tr>
+								</tbody>
+							</table>	
+						</form>
+					<button type="submit" class="btn btn-default btn-lg col-md-2 col-md-offset-3" name="buy"><b>Buy</b></button>
+					<button type="submit" class="btn btn-default btn-lg col-md-2 col-md-offset-1" name="sell"><b>Sell</b></button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	</body>
 
 </html>
