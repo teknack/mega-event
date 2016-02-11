@@ -9,7 +9,7 @@ function sendScore($gamename,$score,$player)
 {
 	connect();
 	
-	setTable("CommonTable");
+	setTable("commontable");
 	
 	switch($tablename)
 	{
@@ -78,15 +78,61 @@ function sendScore($gamename,$score,$player)
 	disconnect();
 }
 
-function getScores() //may not be needed
+function getScores() //fetch total points 
 {
-	connect();
+	global $dbconn;
+	
+	if ($dbconn === "")
+	{
+		connect();
+		$check=true;
+	}
+	
 	setTable("CommonTable");
-	disconnect();
+	$scores = fetchAll($_SESSION["tek_emailid"]);
+
+	if ($check === true)
+	{
+		disconnect();
+	}
+	
+	return($scores);
 }
 
 function harvest($player) //may not be needed
 {
+	global $dbconn;
+	
+	if ($dbconn === "")
+	{
+		connect();
+		$check=true;
+	}
+	
 	$scores = getScores(); //returns assoc array with scores from each event
+	
+	$sum = $scores["id"] + $scores["th"] + $scores["ftt"] + $scores["c"] + $score["ss"] + $score["r"] + $score["kq"] + $score["ai"] + $score["acoustica"] + $score["s"] + $score["a"] + $score["m"];
+	
+	setTable("player");
+	
+	$val = fetch($player,"gold");
+		
+	$new_val = $val + $sum;
+	
+	update("gold",$new_val,"tek_emailid='".$player."'");
+	
+	setTable("commontable");
+	
+	foreach ($score as $key => $val)
+	{
+		update("$key",fetch($_SESSION["tek_emailid"],"$key") - $val,"tek_emailid='".$_SESSION["tek_emailid"]."'");
+	}
+	
+	//update("id",fetch($_SESSION["tek_emailid"],"id") - $score["id"],"tek_emailid='".$_SESSION["tek_emailid"]."'");
+	
+	if ($check === true)
+	{
+		disconnect();
+	}
 }
 ?>
