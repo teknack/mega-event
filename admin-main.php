@@ -10,10 +10,6 @@ if (!isset($_SESSION["admin"]) || $_SESSION["admin"] != true)
 	alert("nice try... Go play");
 	die(redirect("http://teknack.in"));
 }
-else
-{
-	$_SESSION["admin"] = null;
-}
 
 gameUnset();
 
@@ -29,6 +25,7 @@ if (isset($_POST) && !empty($_POST))
 			$_SESSION["tek_emailid"] = $_POST["username"];
 			$_SESSION["faction"] = fetch($_SESSION["tek_emailid"],"faction");
 			disconnect();
+			$_SESSION["admin"] = null;
 			header("location:world-map/canvas1.html");
 		}
 		else
@@ -38,7 +35,8 @@ if (isset($_POST) && !empty($_POST))
 			var_dump($_SESSION);
 			alert("hold");
 			disconnect();
-			redirect("./landing/index.html");
+			$_SESSION["admin"] = null;
+			redirect("./setup.php");
 		}
 	}
 	else if (isset($_SESSION["in_game"]))
@@ -46,6 +44,7 @@ if (isset($_POST) && !empty($_POST))
 		var_dump($_SESSION);
 		alert("welcome back ".$_POST["username"]."");
 		disconnect();
+		$_SESSION["admin"] = null;
 		redirect("./world-map/canvas1.html");
 	}
 }
