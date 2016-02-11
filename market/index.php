@@ -173,9 +173,7 @@ if (isset($_POST) && !empty($_POST))
 				<h1>Marketplace</h1>
 				</div>
 			</div>
-			<div class="row">			
-				
-			</div>
+			
 			<div class="row">
 				<div class="col-md-3 pull-right">
 					<h3 style="color: #ffb619">Gold: <?php getGold() ?></h3>

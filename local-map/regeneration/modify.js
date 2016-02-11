@@ -1,3 +1,8 @@
+window.onload = function display(){
+	var max = parseInt(document.getElementById("max").value);
+	document.getElementById("disp").innerHTML = max;
+}
+
 function up(type){
 	var max = parseInt(document.getElementById("max").value);
 	var num = parseInt(document.getElementById(type).innerHTML);
@@ -6,6 +11,7 @@ function up(type){
 		max--;
 	}
 	document.getElementById("max").value = max;
+	document.getElementById("disp").innerHTML = max;
 	document.getElementById(type).innerHTML = num;
 	document.getElementById(type).value = num;
 }
@@ -17,11 +23,12 @@ function down(type){
 		max++;
 	}
 	document.getElementById("max").value = max;
+	document.getElementById("disp").innerHTML = max;
 	document.getElementById(type).innerHTML = num;
 	document.getElementById(type).value = num;
 }
 
-function sendback(){
+function sendback(bonus){
 
 	var foodres = parseInt(document.getElementById("fooddiv").value);
 	var waterres = parseInt(document.getElementById("waterdiv").value);
@@ -39,6 +46,26 @@ function sendback(){
 		metalres = 0;
 	if(!(woodres>0))
 		woodres = 0;
+
+	var factor = parseInt(bonus);
+
+	switch(factor) {
+		case 0:
+			waterres = waterres + 2;
+			break;
+		case 1:
+			foodres++;
+			waterres++;
+			break;
+		case 2:
+			powerres++;
+			waterres--;
+			break;
+		case 4:
+			metalres++;
+			woodres++;
+			break;
+	}
 
 	window.location = "../player.php?foodres="+foodres+"&waterres="+waterres+"&powerres="+powerres+"&metalres="+metalres+"&woodres="+woodres;
 }
