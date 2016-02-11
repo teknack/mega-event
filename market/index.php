@@ -144,20 +144,15 @@ if (isset($_POST) && !empty($_POST))
 		<nav class="navbar">
 			<div class="container-fluid">
 
-				<!-- Logo -->
-				<div class="navbar-header">
-					<a href="#" class="navbar-brand"></a>
-				</div>
-
-
 				<!-- Menu items -->
 				<div>
 								
 					<!-- Menu right items -->
 					<ul class="nav nav-tabs navbar-nav navbar-right">
-						<li class="active"><a href="#">Market</a></li><!-- href to ./.php -->
-						<li><a href="#">Research</a></li><!-- href to ./.php -->
-						<li><a href="#">Collect Resource</a></li><!-- href to ./resources.php -->
+						<li><a href="../local-map/index.php">Local</a></li>
+						<li class="active"><a href="#">Market</a></li>
+						<li><a href="#">Research</a></li>
+						<li><a href="./resources.php">Collect Resource</a></li>
 						<li><a href="#">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
 					</ul>
 				</div>

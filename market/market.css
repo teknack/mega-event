@@ -2,32 +2,6 @@ body{
 	color: #ffffb3;
 }
 
-/*Navbar */
-
-.navbar ul > li > a{
-	color: #ffffb3;
-	font-weight: bold;
-	margin-top: 0.15em;
-	border-radius: 5px;
-	background: transparent;
-	
-}
-
-/*Tab details*/
-
-.nav-tabs > li > a:hover{
-  background-color: #ffc64c !important;
-    border: medium none;
-    color:#000;
-}
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:focus,
-.nav-tabs > li.active > a:hover{
-    background-color: #cc8b00 !important;
-    border-color: #7f5700;
-    color: white;
-}
-
 /*Main content*/
 
 .form-control{

@@ -12,31 +12,43 @@ session_start();
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../maincss/mainstyle.css">
-	<link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="../maincss/mainstyle.css">	
 	<link rel="stylesheet" type="text/css" href="./css/local.css">
 	<title>Test page</title>
 	<script src="action.js"></script>
 </head>
 
 <body>
-	<div id="playerinfo" >
-				<div id="leftward">					
-					<span id="food">Food : </span>
-					<span id="water">Water :</span>
-					<span id="power">Power :</span>
-					<span id="metal">Metal :</span>
-					<span id="wood">Wood : </span>
-					
-				</div>
-				<span>
-					<form action="resources.php" method="POST"> 
-						<button type="submit" id="resource">Collect Resources</button>
-					</form>
-				</span>
-	</div>
+
+	<!-- Top Navigation bar with status information -->
+
+	<nav class="navbar">
+		<div class="container-fluid">
+			<!-- Menu items -->
+			<div>
+				<ul class="nav navbar-nav">
+					<li><p class="navbar-text"><img class="navimage" src="./css/image/foodnew.png"><span id="food">Food : </span></p></li>
+					<li><p class="navbar-text"><img class="navimage" src="./css/image/waternew.png"><span id="water">Water: </span></p></li>
+					<li><p class="navbar-text"><img class="navimage" src="./css/image/powernew.png"><span id="power">Power: </span></p></li>
+					<li><p class="navbar-text"><img class="navimage" src="./css/image/metalnew.png"><span id="metal">Metal: </span></p></li>
+					<li><p class="navbar-text"><img class="navimage" src="./css/image/woodnew.png"><span id="wood">Wood: </span></p></li>
+				</ul>
+			
+				<!-- Menu right items -->
+				<ul class="nav nav-tabs navbar-nav navbar-right">
+					<li class="active"><a href="#">Local</a></li>
+					<li><a href="../market/index.php">Market</a></li>
+					<li><a href="#">Research</a></li>
+					<li><a href="./resources.php">Collect Resource</a></li>
+					<li><a href="#">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
 	<br><br>
 	<div id="playgroup">
+
 		<div id="localplay" class="playarea" align="center">
 			<canvas id="mapCanvas" width="540" height="540">
 				Your browser does not support the canvas element.
@@ -145,6 +157,6 @@ session_start();
 
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 </body>
 </html>
