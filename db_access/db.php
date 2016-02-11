@@ -210,6 +210,7 @@ function fetchAll($player)
 
 function getFaction($player)
 {
+	setTable("player");
 	return(fetch($player,"faction"));
 }
 
