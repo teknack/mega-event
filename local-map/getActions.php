@@ -3,6 +3,8 @@ session_start();
 require "connect.php";
 $playerid=$_SESSION['tek_emailid'];
 $faction=$_SESSION['faction'];
+if(!isset($_SESSION['faction']))
+	$faction=1;
 $output="[";
 function scout($row,$col)
 {
