@@ -11,7 +11,7 @@ if (!isset($_SESSION["admin"]) || $_SESSION["admin"] != true)
 	die(redirect("http://teknack.in"));
 }
 
-gameUnset();
+//gameUnset();
 
 if (isset($_POST) && !empty($_POST))
 {
@@ -26,7 +26,7 @@ if (isset($_POST) && !empty($_POST))
 			$_SESSION["faction"] = fetch($_SESSION["tek_emailid"],"faction");
 			disconnect();
 			$_SESSION["admin"] = null;
-			header("location:world-map/canvas1.html");
+			header("location:landing/index.html");
 		}
 		else
 		{
