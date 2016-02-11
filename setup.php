@@ -127,17 +127,22 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		<div class="row">
 			<div class="col-md-6">
 				<button class="btn btn-block btn-button-hollow btn-lg collapsible-button-left">
-					<div class="page-header"><h1>Guthix</h1></div>
+					<div class="page-header"><h1>Diatiro</h1></div>
 				  	<div class="panel-body">
-				  		<p>Decription of Faction 1</p>
+				  		<p>Exploiting nature never pans out nicely for us. 
+				  			So the only way to survive would be to become one with nature and restore it to it's original glory.
+				  			If we support nature , nature will support us</p>
 				  	</div>
 			  	</button>
 			</div>
 			<div class="col-md-6">
 				<button class="btn btn-block btn-button-hollow btn-lg collapsible-button-right">
-					<div class="page-header"><h1>Zaros</h1></div>
+					<div class="page-header"><h1>Kenos</h1></div>
 			  		<div class="panel-body">
-			  			<p>Description of Faction 2</p>
+			  			<p>Nature is fascinating! 
+			  				Even more so when we mould it to our requirements.
+			  				Our ancestors were foolishly careless about nature and we won't make the same mistake.
+			  				Restoring nature to it's original form is important but our survival comes first</p>
 			  		</div>
 				</button>
 			</div>
@@ -149,9 +154,12 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 
 	<div class="description collapsible collapsible-left">
 		<h3>Perks</h3>
-		<p>Contrary to popular belief, Lorem Ipsum is not simply random text.</p>
-		<h3>Cons</h3>
-		<p>I need texxt</p>
+		<p>-cheap settlement
+ cost of settling is discounted for you , research more to get more discount
+
+-resourceful scouts
+ it never hurts to be cautious , scout cost is discounted for you.Research more for the perk
+ to eventually, scout free of cost </p>
 
 		<form action="" method="POST">
 				<button class="btn btn-button-hollow btn-block btn-lg" type="submit" name="faction2"><h4>Faction 2</h4></button>
@@ -161,9 +169,15 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 	<!-- JQuery the height in -->
 	<div class="description collapsible collapsible-right">
 		<h3>Perks</h3>
-		<p>Contrary to popular belief, Lorem Ipsum is not simply random text.</p>
-		<h3>Cons</h3>
-		<p>I need texxt</p>
+		<p>-bonus plunder 
+ -when you attack or loot your enemy you can get upto 30% more plunder
+-team work
+ -if you are attacking an enemy and if there are allied settlements adjacent to your target tile,
+   they support your troops from the sidelines and increase probability of success
+ -if you are attacked by an enemy and there are allied settlements or your settlements adjacent to that tile
+   they support your defence from the sidelines
+ For this perk to work , there must be soldiers stationed in the adjacent tiles and the percent of troops who
+ support you increases on research  </p>
 
 		<form action="" method="POST">
 				<button class="btn btn-button-hollow btn-block btn-lg" type="submit" name="faction1"><h4>Faction 1</h4></button>
