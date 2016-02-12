@@ -868,6 +868,23 @@ if (isset($_POST) && !empty($_POST))
 	</head>
 
 	<body>
+
+		<nav class="navbar">
+		<div class="container-fluid">
+			<!-- Menu items -->
+			<div>
+				<!-- Menu right items -->
+				<ul class="nav nav-tabs navbar-nav navbar-right">
+					<li><a href="./resources.php">Collect</a></li>
+					<li><a href="../local-map/index.php">Local</a></li>
+					<li><a href="../market/index.php">Market</a></li>
+					<li class="active"><a href="../research/index.php">Research</a></li>
+					<li><a href="../world-map/canvas1.html">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
 		<div class="container">
 			
 			<div class="page-header">
