@@ -1,6 +1,7 @@
 body{
 	font-family: 'Josefin Slab', serif;
 	color: #ffffb3;
+	font-size: 1.6em;
 }
 
 /* navbar area */
@@ -62,6 +63,7 @@ body{
 }	
 
 
+
 /* Main Content */
 
 .container{
@@ -83,14 +85,11 @@ body{
 	/*background-color: #444444;*/
 	height:81vh;
 }
-.panel{
+.panel, .panel-default{
 	margin-top: 1em;
 	height: 45%;
-
+	overflow: auto;
 	background: rgba(255,255,255,0.5);
-}
-
-.panel-body{
 }
 
 /*Navigation controls*/
