@@ -10,7 +10,8 @@
 4-mountain -- +1 metal ; +1 wood
 	
 	*/
-	$bon = $_SESSION['bonus'] 
+	$bon = $_SESSION['bonus'];
+	unset($_SESSION['bonus']);
 ?>
 
 <html>
@@ -80,7 +81,7 @@
 						<tr>
 							<td></td>
 							<td></td>
-							<td><button class="btn btn-default" type="submit" name="resourceregen" onclick='sendback(<?php $bon ?>)'>Confirm</button></td>
+							<td><button class="btn btn-default" type="submit" name="resourceregen" onclick='sendback(<?php $bon; ?>)'>Confirm</button></td>
 							<td></td>
 						</tr>
 					</tbody>
