@@ -7,6 +7,7 @@ session_start();
 <!DOCTYPE HTML>
 <html>
 <head>
+	<title>Local Map</title>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width. initial scale=1">
 
@@ -15,7 +16,6 @@ session_start();
     <link href='https://fonts.googleapis.com/css?family=Josefin+Slab:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="../maincss/mainstyle.css">	
 	<link rel="stylesheet" type="text/css" href="./css/local.css">
-	<title>Test page</title>
 	<script src="action.js"></script>
 </head>
 
@@ -47,8 +47,7 @@ session_start();
 		</div>
 	</nav>
 
-	<!-- <div id="playgroup">   Unsure if you need this SID. Let me know -->
-
+	
 	<div class="container white-bg">
 		<div class="row" id="main">
 			<div id="localplay" class="col-md-6 bigpart">
