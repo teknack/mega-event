@@ -14,8 +14,10 @@
 
 <html>
 <head>
-	<script src="./modify.js"></script>
-	<link type="text/css" rel="stylesheet" href="./regen.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">  
+	<link type="text/css" rel="stylesheet" href="../../maincss/mainstyle.css"> 
+	<link type="text/css" rel="stylesheet" href="../css/regen.css">
 </head>
 <body>
 	<h2>Distribute Statistics</h2>
@@ -29,7 +31,7 @@
 		unset($_SESSION['regen_points']);
 	?>
 
-	<p>Max points: <span id="disp"></span></p>
+	<p>Max points: <span id="disp">0</span></p>
 
 	Food:
 	<div class="linear">
@@ -84,5 +86,7 @@
 
 	<button type="submit" name="resourceregen" onclick='sendback(<?php $_SESSION['bonus'] ?>)'>Confirm</button>
 	
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script src="./modify.js"></script>
 </body>
 </html>

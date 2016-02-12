@@ -1,5 +1,7 @@
 window.onload = function display(){
 	var max = parseInt(document.getElementById("max").value);
+	if(!(max>0))
+		max=0;
 	document.getElementById("disp").innerHTML = max;
 }
 
