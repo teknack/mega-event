@@ -156,11 +156,11 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		<h3>Perks</h3>
 		<ul class="list-group">
 			<li class="list-group-item">Cheap Settlement
-			 	<ul class="list-group"><li class="list-group-item innerpart">Cost of settling is discounted for you , research more to get more discount</li></ul>
+			 	<ul class="list-group"><li class="list-group-item innerpart"> -- Cost of settling is discounted for you , research more to get more discount</li></ul>
 			 </li>
 
 			<li class="list-group-item">Resourceful Scouts
-				<ul class="list-group"><li class="list-group-item innerpart">It never hurts to be cautious , scout cost is discounted for you.Research more for the perk
+				<ul class="list-group"><li class="list-group-item innerpart"> -- It never hurts to be cautious , scout cost is discounted for you.Research more for the perk
 			 to eventually, scout free of cost </li></ul>
 			</li>
 		</ul>
@@ -175,11 +175,11 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		<h3>Perks</h3>
 		<ul class="list-group">
 			<li class="list-group-item">Bonus Plunder
-				<ul class="list-group"><li class="list-group-item innerpart">When you attack or loot your enemy you can get upto 30% more plunder</li></ul>
+				<ul class="list-group"><li class="list-group-item innerpart"> -- When you attack or loot your enemy you can get upto 30% more plunder</li></ul>
 			</li>
 			<li class="list-group-item">Team Work
-				<ul class="list-group"><li class="list-group-item innerpart">If you are attacking an enemy and if there are allied settlements adjacent to your target tile, they support your troops from the sidelines and increase probability of success</li>
-				<li class="list-group-item innerpart">If you are attacked by an enemy and there are allied settlements or your settlements adjacent to that tile, 
+				<ul class="list-group"><li class="list-group-item innerpart"> -- If you are attacking an enemy and if there are allied settlements adjacent to your target tile, they support your troops from the sidelines and increase probability of success</li>
+				<li class="list-group-item innerpart"> -- If you are attacked by an enemy and there are allied settlements or your settlements adjacent to that tile, 
 					they support your defence from the sidelines<br><br>
 				 For this perk to work , there must be soldiers stationed in the adjacent tiles and the percent of troops who
 				 support you increases on research</li></ul>
