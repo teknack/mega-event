@@ -3,7 +3,7 @@ html, body{
 	width: 100%;
 	margin: 0px;
 	background: url("../maincss/image/oldpaper.jpg") no-repeat;
-	background-size: auto;
+	background-size: cover;
 	font-size: 1.2em;
 	color: white;
 }

@@ -67,7 +67,7 @@ session_start();
 							<input type="hidden" name="row" id="row">
 							<input type="hidden" name="col" id="col">
 							<input type="number" name="quantity" id="quantity">
-						</form> <!-- Is this okay SID? I moved the end of form tag before the divs -->
+						</form>
 						<div id="action">
 						</div>
 					</div>

@@ -68,6 +68,7 @@ body{
 .container{
 	background: rgba(0,0,0,0.6);
 	padding: 1em;
+	font-size: 1.4em;
 }
 
 .white-bg{
@@ -87,12 +88,10 @@ body{
 .panel{
 	margin-top: 1em;
 	height: 45%;
-
+	overflow: hidden;
 	background: rgba(255,255,255,0.5);
 }
 
-.panel-body{
-}
 
 /*Navigation controls*/
 /*move navigation*/

@@ -10,7 +10,7 @@ body{
 	border-color: black;
 }
 .jumbotron p{
-	font-size: 14px;
+	font-size: 1.4em;
 }
 
 .btn-button-hollow, .btn-button-hollow:link, .btn-button-hollow:visited {
