@@ -60,11 +60,11 @@ function scout($row,$col)
 	$dispfaction="unknown";
 	if($faction==1 )
 	{
-		$dispfaction="Diatiro";
+		$dispfaction="Eos";
 	}
 	else if($faction==2)
 	{
-		$dispfaction="kenos";
+		$dispfaction="Zephyros";
 	}
 
 	$output=$output.'{"response":"Occupant:'.$r["occupied"].'<br>Fortification:'.$r["fortification"].'<br>troops:'

@@ -1,7 +1,7 @@
 head, body{
 	height: 100%;
 	width: 100%;
-	background-color: #F0F3BD;
+	background: #F0F3BD;
 }
 .page-header{
 	text-align: center;
@@ -32,14 +32,14 @@ button p{
 	height: 4em;
 }
 
+.innerpart{
+	font-size: 1.2em;
+	background: white;
+	color: black;
+}
 
 .hidden{
 	display: none;
-}
-
-.list-group, .list-group-item{
-	color: #000;
-	background-color: ;
 }
 
 .description{
@@ -50,7 +50,7 @@ button p{
 	z-index: 1;
 }
 
-/*Horizontal Slide */
+/*Vertical Slide */
 .collapsible {
 	background: #444B6E;
 	background: -webkit-linear-gradient(#444B6E, #F8F991); /* For Safari 5.1 to 6.0 */
@@ -65,8 +65,6 @@ button p{
 	overflow-y: hidden;
 
 	/*pointer-events: none;*/
-}
-.collapsible-left{
 }
 
 .collapsible-right{

@@ -320,7 +320,7 @@ function civPerkTwoNextLevelInfo($level)
 		break;
 		
 		case 3:
-			$ret="You Can now settle on water!<br><b>Costs</b>: 1000 power | 500 wood |500 metal";
+			$ret="You Can now settle on Mountains!<br><b>Costs</b>: 1000 power | 500 wood |500 metal";
 		break;
 	}
 	
@@ -858,73 +858,91 @@ if (isset($_POST) && !empty($_POST))
 
 	<head>
 		<title>Research</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">    
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">  
+		<link type="text/css" rel="stylesheet" href="../maincss/mainstyle.css"> 
+		<link type="text/css" rel="stylesheet" href="../maincss/research.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 	</head>
 
 	<body>
-		<div id="top">
-			<h1>Research</h1>
-		</div>
-		<hr>
-		<div id="content">
+		<div class="container">
+			
+			<div class="page-header">
+				<h1 style="color: #ffffb3">Research</h1>
+			</div>
+
 			<form action="" method="POST">
-			<table border=1>
-				<tr>
-					<th>Name</th>
-					<th>Current Level</th>
-					<th>Next Level Info</th>
-					<th>Next Level</th>
-				</tr>
-				<tr>
-					<td align="center"><b>Defense</b></td>
-					<td align="center"><?php echo(getLevel("defensive")) ?></td>
-					<td align="center"><?php echo(defenseNextLevelInfo($level["defensive"]))?></td>
-					<td align="center"><button name="defense_research" type="submit">Research</button></td>
-				</tr>
-				<tr>
-					<td align="center"><b>Open Battle</b></td>
-					<td align="center"><?php echo(getLevel("open")) ?></td>
-					<td align="center"><?php echo(openBattleNextLevelInfo($level["open"])) ?></td>
-					<td align="center"><button name="open_research" type="submit">Research</button></td>
-				</tr>
-				<tr>
-					<td align="center"><b>Stealth Troop</b></td>
-					<td align="center"><?php getTroopLevel(); echo($troop["s"]); ?></td>
-					<td align="center"><?php echo(stealthNextLevelInfo($troop["s"])) ?></td>
-					<td align="center"><button name="stealth_research" type="submit">Research</button></td>
-				</tr>
-				<tr>
-					<td align="center"><b>Warrior Troop</b></td>
-					<td align="center"><?php echo($troop["w"]) ?></td>
-					<td align="center"><?php echo(warriorNextLevelInfo($troop["w"])) ?></td>
-					<td align="center"><button name="warrior_research" type="submit">Research</button></td>
-				</tr>
-				<tr>
-					<td align="center"><b>Faction Perk 1</b></td>
-					<td align="center"><?php echo(getLevel("faction1")) ?></td>
-					<td align="center"><?php echo(factionPerkOneNextLevelInfo($level["faction1"])) ?></td>
-					<td align="center"><button name="faction1_research" type="submit">Research</button></td>
-				</tr>
-				<tr>
-					<td align="center"><b>Faction Perk 2</b></td>
-					<td align="center"><?php echo(getLevel("faction2")) ?></td>
-					<td align="center"><?php echo(factionPerkTwoNextLevelInfo($level["faction2"])) ?></td>
-					<td align="center"><button name="faction2_research" type="submit">Research</button></td>
-				</tr>
-				<tr>
-					<td align="center"><b>Civilisation Perk 1</b></td>
-					<td align="center"><?php echo(getLevel("civperk1")) ?></td>
-					<td align="center"><?php echo(civPerkOneNextLevelInfo($level["civperk1"])) ?></td>
-					<td align="center"><button name="civperk1_research" type="submit">Research</button></td>
-				</tr>
-				<tr>
-					<td align="center"><b>Civilisation Perk 2</b></td>
-					<td align="center"><?php echo(getLevel("civperk2")) ?></td>
-					<td align="center"><?php echo(civPerkTwoNextLevelInfo($level["civperk2"])) ?></td>
-					<td align="center"><button name="civperk2_research" type="submit">Research</button></td>
-				</tr>
-			</table>
+			<div class="innerpart well well-lg">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Current Level</th>
+							<th>Next Level Info</th>
+							<th>Next Level</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center"><b>Defense</b></td>
+							<td align="center"><?php echo(getLevel("defensive")) ?>/3</td>
+							<td align="center"><?php echo(defenseNextLevelInfo($level["defensive"]))?></td>
+							<td align="center"><button name="defense_research" type="submit">Research</button></td>
+						</tr>
+						<tr>
+							<td align="center"><b>Open Battle</b></td>
+							<td align="center"><?php echo(getLevel("open")) ?>/3</td>
+							<td align="center"><?php echo(openBattleNextLevelInfo($level["open"])) ?></td>
+							<td align="center"><button name="open_research" type="submit">Research</button></td>
+						</tr>
+						<tr>
+							<td align="center"><b>Stealth Troop</b></td>
+							<td align="center"><?php getTroopLevel(); echo($troop["s"]); ?>/7</td>
+							<td align="center"><?php echo(stealthNextLevelInfo($troop["s"])) ?></td>
+							<td align="center"><button name="stealth_research" type="submit">Research</button></td>
+						</tr>
+						<tr>
+							<td align="center"><b>Warrior Troop</b></td>
+							<td align="center"><?php echo($troop["w"]) ?>/7</td>
+							<td align="center"><?php echo(warriorNextLevelInfo($troop["w"])) ?></td>
+							<td align="center"><button name="warrior_research" type="submit">Research</button></td>
+						</tr>
+						<tr>
+							<td align="center"><b>Faction Perk 1</b></td>
+							<td align="center"><?php echo(getLevel("faction1")) ?>/3</td>
+							<td align="center"><?php echo(factionPerkOneNextLevelInfo($level["faction1"])) ?></td>
+							<td align="center"><button name="faction1_research" type="submit">Research</button></td>
+						</tr>
+						<tr>
+							<td align="center"><b>Faction Perk 2</b></td>
+							<td align="center"><?php echo(getLevel("faction2")) ?>/3</td>
+							<td align="center"><?php echo(factionPerkTwoNextLevelInfo($level["faction2"])) ?></td>
+							<td align="center"><button name="faction2_research" type="submit">Research</button></td>
+						</tr>
+						<tr>
+							<td align="center"><b>Civilisation Perk 1</b></td>
+							<td align="center"><?php echo(getLevel("civperk1")) ?>/3</td>
+							<td align="center"><?php echo(civPerkOneNextLevelInfo($level["civperk1"])) ?></td>
+							<td align="center"><button name="civperk1_research" type="submit">Research</button></td>
+						</tr>
+						<tr>
+							<td align="center"><b>Civilisation Perk 2</b></td>
+							<td align="center"><?php echo(getLevel("civperk2")) ?>/3</td>
+							<td align="center"><?php echo(civPerkTwoNextLevelInfo($level["civperk2"])) ?></td>
+							<td align="center"><button name="civperk2_research" type="submit">Research</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 			</form>
 		</div>
+
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
 	</body>
 	
 </html>

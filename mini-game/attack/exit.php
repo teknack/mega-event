@@ -122,5 +122,5 @@
 	$_SESSION['ppercent'] = $currenthealthpercent;
 	$_SESSION['bpercent'] = $destruction;
 	//header($goto);
-	//echo "<script>window.location.href='../../local-map/player.php';</script>";
+	echo "<script>window.location.href='../../local-map/player.php';</script>";
 ?>

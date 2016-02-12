@@ -74,6 +74,7 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 				grid[i][j]="grey";
 			else
 				grid[i][j]="white";*/
+
 		}
 	}
 }
@@ -138,11 +139,17 @@ function passCursorPosition(canvas, event) {
     	col=100-hSize;
     var res=row+","+col;	
     window.location="../transfer.php?coord="+res;
-    
+   
     //terrain stuff
     //var xhttp;
     ///*terrain stuff*/ var size=5; // CHANGE THE TERRAIN SETTING SLOT OVER HERE!!!!! do not set to 0
 	/*if (window.XMLHttpRequest)
+=======
+    //terrain stuff
+    /*
+    var xhttp;
+	if (window.XMLHttpRequest)
+>>>>>>> ec661d872ece8e82b2d525e96b60eb817c66984a
 	{
 	    // code for modern browsers
 		xhttp = new XMLHttpRequest();

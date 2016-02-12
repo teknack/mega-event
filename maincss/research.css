@@ -1,0 +1,12 @@
+body{
+	height: 100%;
+	width: 100%;
+	font-size: 1.8em;
+}
+table{
+	font-size: 1.2em;
+	color: #000;
+}
+.innerpart{
+	background: rgba(255,255,255,0.4);
+}

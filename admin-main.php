@@ -4,11 +4,9 @@
  * Used by us to mess around and see stats
  */
 include "./db_access/db.php";
- 
 if (!isset($_SESSION["admin"]) || $_SESSION["admin"] != true)
 {
-	alert("nice try... Go play");
-	die(redirect("http://teknack.in"));
+	header("location: http://teknack.in");
 }
 
 //gameUnset();
@@ -30,10 +28,10 @@ if (isset($_POST) && !empty($_POST))
 		}
 		else
 		{
-			alert("Setting you up!");
+			//alert("Setting you up!");
 			$_SESSION["tek_emailid"] = $_POST["username"];
 			var_dump($_SESSION);
-			alert("hold");
+			//alert("hold");
 			disconnect();
 			$_SESSION["admin"] = null;
 			redirect("./setup.php");

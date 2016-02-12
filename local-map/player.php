@@ -823,7 +823,7 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 			}
 			$message="you lost your settlement at ($destRow,$destCol) to an attack.";
 			message($enemy,$message);
-			$sql="UPDATE grid SET status='' WHERE row=$row and col=$col;";
+			$sql="UPDATE grid SET status='' WHERE row=$destRow and col=$destCol;";
 			if($conn->query($sql)===false)
 				echo "error : ".$conn->error;
 			if($action=="attack")
@@ -853,7 +853,7 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 				if($conn->query($sql)===false)
 					echo "<br>error: ".$conn->error;
 			}
-			$sql="UPDATE grid SET status='' WHERE row=$row and col=$col;";
+			$sql="UPDATE grid SET status='' WHERE row=$destRow and col=$destCol;";
 			if($conn->query($sql)===false)
 				echo "error in status: ".$conn->error;
 			$sql="SELECT troops FROM grid WHERE row=$destRow and col=$destCol;";
@@ -862,17 +862,27 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 			$troops=$r['troops'];
 			$percent=$_SESSION['bpercent'];
 			$troops=$troops*$percent/100;
-			$sql="UPDATE grid SET troops=troops-troops*$x WHERE row=$destRow and col=$destCol;";
+			$sql="UPDATE grid SET troops=troops-troops*$percent WHERE row=$destRow and col=$destCol;";
 			if($conn->query($sql)===false)
 				echo "error: ".$conn->error;
-			$_SESSION['response']="You lost the attack";
 			if($action=="attack")
-				$_SESSION['response']='You won the attack! '.$quantity.' soldiers survived.';
+				$_SESSION['response']="You lost the attack";
 			else if($action=="loot")
-				$_SESSION['response']='That was a okay , try with upgraded troops for better luck';
+				$_SESSION['response']='That was okay , try with upgraded troops for better luck';
 			unset($_SESSION['result']);
 			unset($_SESSION['ppercent']);
 			unset($_SESSION['bpercent']);
+			$sql="UPDATE grid SET status='' WHERE row=$destRow and col=$destCol;";
+			if(!$conn->query($sql))
+			{
+				echo "error : ".$conn->error."   <br>";
+				var_dump($sql);
+			}
+			if($result)
+			{
+				$_SESSION['claim']=true;
+				header("location:../mini-game/settle/settle.php");
+			}
 		}
 	}
 	else
@@ -1086,36 +1096,24 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 				echo "error: ".$conn->error;
 			$_SESSION['response']="You lost the attack";
 		}
+		$sql="UPDATE grid SET status='' WHERE row=$destRow and col=$destCol;";
+		if(!$conn->query($sql))
+		{
+			echo "error : ".$conn->error."   <br>";
+			var_dump($sql);
+		}
+		if($battleResult)
+		{
+			$_SESSION['claim']=true;
+			header("location:../mini-game/settle/settle.php");
+		}
 	}	
 	unset($_SESSION['selectedRow']);
 	unset($_SESSION['selectedCol']);
 	unset($_SESSION['selectedTroops']);
 	unset($_SESSION['destRow']);
 	unset($_SESSION['destCol']);
-	$sql="UPDATE grid SET status='' WHERE row=$destRow and col=$destCol;";
-	if(!$conn->query($sql))
-	{
-		echo "error : ".$conn->error."   <br>";
-		var_dump($sql);
-	}
 
-	if($battleResult==true or $result==true)
-	{
-		$sql="SELECT civperk2 FROM research WHERE playerid='$playerid';";
-		$res=$conn->query($sql);
-		var_dump($sql);
-		$r=$res->fetch_assoc();
-		$points=3;
-		$level=$r['civperk2'];
-		$points=$points+$level;
-		//babe babe
-		$_SESSION['regen_points']=$points;
-		$_SESSION['row']=$destRow;
-		$_SESSION['col']=$destCol;
-		/*pending caroline queeny mini game*/
-		echo $_SESSION['regen_points'];
-		header("location:./regeneration/regen.php");
-	}
 }
 
 function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
@@ -1635,6 +1633,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 	/*warrior-0 stealth-1*/
 	$type=$result['troopType'];
 	$addDiff=0;
+	$decDiff=0;
 	if($type=="s" or $type=="n")
 	{
 		$type=1;
@@ -1644,6 +1643,32 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 		$type=0;
 	}
 	$winChance=$result['winChance'];
+	if($winChance>=90 and $winChance<100) // decrease difficulty if there are enough troops
+	{
+		$decDiff=1;
+	}
+	if($winChance>=100 and $winChance<110)
+	{
+		$decDiff=2;
+	}
+	if($winChance>=110 and $winChance<120)
+	{
+		$decDiff=3;
+	}
+	if($winChance>=120 and $winChance<130)
+	{
+		$decDiff=4;
+	}
+	if($winChance>=130 and $winChance<140)
+	{
+		$decDiff=5;
+	}
+	else if($winChance>=140)
+	{
+		$decDiff=6;
+	}
+
+
 	if($winChance<50 and $winChance>40) //if win chance is very less we add more difference between the troops
 	{									// and base i.e increase the difficulty
 		$addDiff=1;
@@ -1660,21 +1685,34 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 	{
 		$addDiff=4;
 	}
-	else
+	else if($winChance<10)
 	{
 		$addDiff=5;
 	}
-	if($fortification-$playerLevel<$addDiff)
+	if($fortification-$playerLevel<$addDiff and $addDiff>0)
 	{
 		while($fortification<8 and $fortification-$playerLevel<$addDiff)
 		{
 			$fortification++;
 		}
-		while($playerLevel<1 and $fortification-$playerLevel<$addDiff)
+		while($playerLevel>1 and $fortification-$playerLevel<$addDiff)
 		{
 			$playerLevel--;
 		}
 	}
+	if($playerLevel-$fortification<$decDiff and $decDiff>0)
+	{
+		while($fortification>2 and $playerLevel-$fortification>$decDiff)
+		{
+			$fortification--;
+		}
+		while($playerLevel<8 and $fortification-$playerLevel>$decDiff)
+		{
+			$playerLevel++;
+		}
+	}
+	echo "difference:".$addDiff."<br>";
+	echo $fortification;
 	$_SESSION['playerLevel']=$playerLevel;
 	$_SESSION['troopType']=$type;
 	$_SESSION['baseLevel']=$fortification; 
@@ -1948,20 +1986,8 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 		echo "<br>";
 		echo "error: ".$conn->error."<br>";
 	}
-	$sql="SELECT civperk2 FROM research WHERE playerid='$playerid';";
-	$res=$conn->query($sql);
-	$r=$res->fetch_assoc();
-	$points=3;
-	$level=$r['civperk2'];
-	$points+=$level;
-	$_SESSION['bonus']=$slotType;
-	$_SESSION['regen_points']=$points;
-	$_SESSION['row']=$row;
-	$_SESSION['col']=$col;
-	var_dump($_SESSION);
-	/*pending caroline queeny mini game integration*/
-	$_SESSION['response']="successfully settled.";
-	header("location:./regeneration/regen.php");
+	$_SESSION['claim']=true;
+	header("location:../mini-game/settle/settle.php");
 }
 
 
@@ -2086,11 +2112,11 @@ function scout($row,$col)
 
 	if($sfaction==1 )
 	{
-		$dispfaction="Diatiro";
+		$dispfaction="Eos";
 	}
 	else if($sfaction==2)
 	{
-		$dispfaction="kenos";
+		$dispfaction="Zephyros";
 	}
 
 	if($chance==0)

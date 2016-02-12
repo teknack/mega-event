@@ -1,5 +1,7 @@
 <?php
-	include "./db_access/db.php";
+include "./db_access/db.php";
+//session_start();
+
 	
 	if (isset($_POST) && !empty($_POST))
 	{
@@ -10,9 +12,8 @@
 		{
 			if ($password === "ThreeGandus")
 			{
-				alert("yo, ".$username);
 				$_SESSION["admin"] = true;
-				redirect("./admin-main.php");
+				header("location: ./admin-main.php");
 			}
 		} 
 	}
