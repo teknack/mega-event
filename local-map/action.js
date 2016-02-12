@@ -2,6 +2,7 @@ var slotSize=60;
 var wMapSlotSize=10;
 var playArea=9;
 var grid=[];
+var fortSet=1;
 for(var i=0;i<playArea;i++)
 {
     grid[i]=[];
@@ -18,6 +19,9 @@ var coord;
 var playerSprite;
 var allySprite;
 var enemySprite;
+var allyFort;
+var playerFort;
+var enemyFort;
 /*orange-enemy troops color in grid 
   green-allied trooops color in grid*/
 function response(id,message)
@@ -456,8 +460,12 @@ function renderGrid()
                 console.log("green");
                 ctx.drawImage(allySprite,x,y,slotSize,slotSize);
             }
-            else
-                ctx.fillRect(x,y,slotSize,slotSize);
+            else if(value=="blue")
+                ctx.drawImage(playerFort,x,y,slotSize,slotSize);   
+            else if(value=="red")
+                ctx.drawImage(enemyFort,x,y,slotSize,slotSize);
+            else if(value=="yellow")
+                ctx.drawImage(allyFort,x,y,slotSize,slotSize);
             ctx.strokeRect(x,y,slotSize,slotSize);
         }
 
@@ -575,8 +583,14 @@ function loadLocal()
     allySprite.src="../assets/yellow.png";
     enemySprite=new Image();
     enemySprite.src="../assets/red.png";
+    playerFort=new Image();
+    playerFort.src="../assets/"+fortSet+"b.png";
+    enemyFort=new Image();
+    enemyFort.src="../assets/"+fortSet+"r.png";
+    allyFort=new Image();
+    allyFort.src="../assets/"+fortSet+"y.png";
     map=new Image();
-    map.src = "../assets/test1.jpg";
+    map.src = "../assets/map.png";
     map.onload=drawMap;
     getGrid();
     canvas.setAttribute("onClick","action(canvas,event)");
