@@ -12,112 +12,130 @@ session_start();
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../maincss/mainstyle.css">
-	<link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="../maincss/mainstyle.css">	
 	<link rel="stylesheet" type="text/css" href="./css/local.css">
 	<title>Test page</title>
 	<script src="action.js"></script>
 </head>
 
 <body>
-	<div id="playerinfo" >
-				<div id="leftward">					
-					<span id="food">Food : </span>
-					<span id="water">Water :</span>
-					<span id="power">Power :</span>
-					<span id="metal">Metal :</span>
-					<span id="wood">Wood : </span>
-					
-				</div>
-				<span>
-					<form action="resources.php" method="POST"> 
-						<button type="submit" id="resource">Collect Resources</button>
-					</form>
-				</span>
-	</div>
-	<br><br>
-	<div id="playgroup">
-		<div id="localplay" class="playarea" align="center">
-			<canvas id="mapCanvas" width="540" height="540">
-				Your browser does not support the canvas element.
-			</canvas>
-			<canvas id="canvas" width="540" height="540">
-				Your browser does not support the canvas element.
-			</canvas>
-		</div>
-	</div>
-	<hr>
-	<div id="bottomgroup" border=1>
-		<table id="bottomTable"> 
-			<tr>
-				<td>
-					<div id="bottom_action" style="float:left">
-						<form action="player.php" method="POST">
-							<div>
-								<input type="hidden" name="topLeft" id="topLeft">
-								<input type="hidden" name="row" id="row">
-								<input type="hidden" name="col" id="col">
-								<input type="number" name="quantity" id="quantity">
-							</div>
-							<div id="action">
-							</div>
-							<div id="cost">
-							</div>
-						</form>
-					</div>
-				</td>
-				<td>
-					<div id="bottom_hint">
-						<?php
-							if(isset($_SESSION['response']))
-							{
-								echo $_SESSION['response'];
-								unset($_SESSION['response']);
-							}
-						?>
-					</div>
-					<div id="rc">
 
+	<!-- Top Navigation bar with status information -->
+
+	<nav class="navbar">
+		<div class="container-fluid">
+			<!-- Menu items -->
+			<div>
+				<ul class="nav navbar-nav">
+					<li><p class="navbar-text"><img class="navimage" src="./css/image/foodnew.png"><span id="food">Food : </span></p></li>
+					<li><p class="navbar-text"><img class="navimage" src="./css/image/waternew.png"><span id="water">Water: </span></p></li>
+					<li><p class="navbar-text"><img class="navimage" src="./css/image/powernew.png"><span id="power">Power: </span></p></li>
+					<li><p class="navbar-text"><img class="navimage" src="./css/image/metalnew.png"><span id="metal">Metal: </span></p></li>
+					<li><p class="navbar-text"><img class="navimage" src="./css/image/woodnew.png"><span id="wood">Wood: </span></p></li>
+				</ul>
+			
+				<!-- Menu right items -->
+				<ul class="nav nav-tabs navbar-nav navbar-right">
+					<li class="active"><a href="#">Local</a></li>
+					<li><a href="../market/index.php">Market</a></li>
+					<li><a href="#">Research</a></li>
+					<li><a href="./resources.php">Collect</a></li>
+					<li><a href="../world-map/canvas1.html">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!-- <div id="playgroup">   Unsure if you need this SID. Let me know -->
+
+	<div class="container white-bg">
+		<div class="row" id="main">
+			<div id="localplay" class="col-md-6 bigpart">
+				<canvas id="mapCanvas" width="540" height="540">
+					Your browser does not support the canvas element.
+				</canvas>
+				<canvas id="canvas" width="540" height="540">
+					Your browser does not support the canvas element.
+				</canvas>
+			</div>
+
+			<div class="col-md-3 littlepart">
+				<div class="panel panel-default">
+					<div id="bottom_action" class="panel-body">
+						<form action="player.php" method="POST">
+							<input type="hidden" name="topLeft" id="topLeft">
+							<input type="hidden" name="row" id="row">
+							<input type="hidden" name="col" id="col">
+							<input type="number" name="quantity" id="quantity">
+						</form> <!-- Is this okay SID? I moved the end of form tag before the divs -->
+						<div id="action">
+						</div>
 					</div>
-				</td>
-				<td>
-					<div style="float:right">
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div id="cost">
+						</div>
+					</div>
+				</div>
+			</div>
+						<!-- </form> -->
+			<div class="col-md-3 littlepart">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div id="bottom_hint">
+							<?php
+								if(isset($_SESSION['response']))
+								{
+									echo $_SESSION['response'];
+									unset($_SESSION['response']);
+								}
+							?>
+						</div>
+						<div id="rc"> <!-- What does this do SID? -->
+
+						</div>
+					</div>
+				</div>
+			
+				<div class="panel panel-default">
+					<div class="panel-body">	
 						<form method="POST" action="shift.php">
 							<table id="nav_buttons" border=0 align="center">
 								<tr>
 									<td></td>
-									<td align="center"><button type="submit" name="up" id="up">UP</button></td>
+									<td align="center"><button name="up" id="up"></button></td>
 									<td></td>
 								</tr>
 								<tr>
-									<td align="center"><button name="left" id="left">LEFT</button></td>
-									<td align="center"><button name="world-map" id="world">WORLD MAP</button></td>
-									<td align="center"><button name="right" id="right">RIGHT</button></td>
+									<td align="center"><button name="left" id="left"></button></td>
+									<td align="center"><button name="world-map" id="world"></button></td>
+									<td align="center"><button name="right" id="right"></button></td>
 								</tr>
 								<tr>
 									<td></td>
-									<td align="center"><button name="down" id="down">DOWN</button></td>
+									<td align="center"><button name="down" id="down"></button></td>
 									<td></td>
 								</tr>
 							</table>
 						</form>
 					</div>
-				</td>
-			</tr>		
-		</table>
-	</div>
-	<div id="ctxMenu" style="display:none;">
-		<form id="ctxForm" action="player.php" method="post">
-			<div id="action1">
-			</div>
-				<div>
-					<input type="hidden" name="row" id="row1">
-					<input type="hidden" name="col" id="col1">
-					<input type="number" name="quantity" id="quantity1">
 				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="white-bg" id="ctxMenu" style="display:none;">
+		<form id="ctxForm" action="player.php" method="post">
+			<div id="action1"></div>
+				<input type="hidden" name="row" id="row1">
+				<input type="hidden" name="col" id="col1">
+				<label for="quantity1">Q:</label>
+				<input type="number" name="quantity" id="quantity1">
+			
 		</form>
 	</div>
-	<div>
+	<div class="white-bg">
 		<input type="hidden"  id="scoutRow">
 		<input type="hidden"  id="scoutCol">
 		<input type="hidden"  id="side">
@@ -145,6 +163,6 @@ session_start();
 
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 </body>
 </html>
