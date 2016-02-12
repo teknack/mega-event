@@ -880,6 +880,8 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 			}
 			if($result)
 			{
+				$_SESSION['settleRow']=$destRow;
+				$_SESSION['settleCol']=$destCol;
 				$_SESSION['claim']=true;
 				header("location:../mini-game/settle/settle.php");
 			}
@@ -1104,6 +1106,8 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 		}
 		if($battleResult)
 		{
+			$_SESSION['settleRow']=$destRow;
+			$_SESSION['settleCol']=$destCol;
 			$_SESSION['claim']=true;
 			header("location:../mini-game/settle/settle.php");
 		}
@@ -1986,6 +1990,8 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 		echo "<br>";
 		echo "error: ".$conn->error."<br>";
 	}
+	$_SESSION['settleRow']=$row;
+	$_SESSION['settleCol']=$col;
 	$_SESSION['claim']=true;
 	header("location:../mini-game/settle/settle.php");
 }
