@@ -28,10 +28,10 @@ if (isset($_POST) && !empty($_POST))
 		}
 		else
 		{
-			alert("Setting you up!");
+			//alert("Setting you up!");
 			$_SESSION["tek_emailid"] = $_POST["username"];
 			var_dump($_SESSION);
-			alert("hold");
+			//alert("hold");
 			disconnect();
 			$_SESSION["admin"] = null;
 			redirect("./setup.php");

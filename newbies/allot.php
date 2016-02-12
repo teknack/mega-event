@@ -26,7 +26,7 @@ function allot()
 		$x = "";
 		$y = "";
 		
-		if ($_SESSION["faction"] == "1")
+		if ($_SESSION["faction"] === "1")
 		{
 			$x = 25;
 			$y = 50;
@@ -37,8 +37,9 @@ function allot()
 			$y = 50;
 		}
 		
-		$query="INSERT INTO map_res (row_tail,col_tail) VALUES (".$x.",".$y.") WHERE faction=".$_SESSION['faction'].";";
+		$query="INSERT INTO map_res (faction,row_tail,col_tail) VALUES (".$_SESSION["faction"].",".$x.",".$y.");";
 		$op=mysqli_query($conn,$query);
+		alert($query);
 		$res["row"] = $x;
 		$res["col"] = $y;
 		//alert(var_dump($res));
