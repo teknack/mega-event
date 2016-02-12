@@ -84,7 +84,7 @@ window.onload=function loadDoc(){
 	  //window.alert(xhttp.responseText);
       temp=JSON.parse(xhttp.responseText);             //editable
       map=new Image();
-      map.src="../assets/test1.jpg";
+      map.src="../assets/map.png"; //change back to "test1.jpg"
 	  map.onload=drawMap;
       playerId=temp[10000]["player"];
       faction=temp[10000]["faction"];                                  
