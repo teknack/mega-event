@@ -1,5 +1,15 @@
 <?php
 	session_start();
+
+
+	/* 
+0-mud  -- +2 water
+1-grass -- +1 food ; +1 water
+2-sand -- +1 power ; -1 water
+3-water -- no bonus
+4-mountain -- +1 metal ; +1 wood
+	
+	*/
 ?>
 
 <html>
@@ -11,13 +21,15 @@
 	<h2>Distribute Statistics</h2>
 
 
-	<span id="max" style="display: none">Max points: 3</span><br>
+	<span id="max" style="display: none"></span><br>
 
 	<?php
 		$var = $_SESSION['regen_points'];
 		echo '<script type="text/javascript">document.getElementById("max").value='.$var.' </script>';
 		unset($_SESSION['regen_points']);
 	?>
+
+	<p>Max points: <span id="disp"></span></p>
 
 	Food:
 	<div class="linear">
@@ -70,7 +82,7 @@
 		</table>
 	</div> <br>
 
-	<button type="submit" name="resourceregen" onclick='sendback()'>Confirm</button>
+	<button type="submit" name="resourceregen" onclick='sendback(<?php $_SESSION['bonus'] ?>)'>Confirm</button>
 	
 </body>
 </html>

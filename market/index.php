@@ -5,6 +5,8 @@
  * DEMAND AND SUPPLY, BITCHACHOS!
  */
 include "../db_access/db.php";
+include "../common-code.php";
+harvest();
 $conn = connect();
 $demands = array();
 
@@ -133,7 +135,6 @@ if (isset($_POST) && !empty($_POST))
 		<title>Marketplace</title>
 		<meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width. initial scale=1">
-
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 	    <link rel="stylesheet" type="text/css" href="../maincss/mainstyle.css">
@@ -145,21 +146,16 @@ if (isset($_POST) && !empty($_POST))
 		<nav class="navbar">
 			<div class="container-fluid">
 
-				<!-- Logo -->
-				<div class="navbar-header">
-					<a href="#" class="navbar-brand"></a>
-				</div>
-
-
 				<!-- Menu items -->
 				<div>
 								
 					<!-- Menu right items -->
 					<ul class="nav nav-tabs navbar-nav navbar-right">
-						<li class="active"><a href="#">Market</a></li><!-- href to ./.php -->
-						<li><a href="#">Research</a></li><!-- href to ./.php -->
-						<li><a href="#">Collect Resource</a></li><!-- href to ./resources.php -->
-						<li><a href="#">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
+						<li><a href="../local-map/index.php">Local</a></li>
+						<li class="active"><a href="#">Market</a></li>
+						<li><a href="#">Research</a></li>
+						<li><a href="../local-map/resources.php">Collect</a></li>
+						<li><a href="../world-map/canvas1.html">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
 					</ul>
 				</div>
 			</div>
@@ -173,12 +169,10 @@ if (isset($_POST) && !empty($_POST))
 				<h1>Marketplace</h1>
 				</div>
 			</div>
-			<div class="row">			
-				
-			</div>
+			
 			<div class="row">
 				<div class="col-md-3 pull-right">
-					<h3 style="color: #ffb619">Gold: <?php getGold() ?></h3>
+					<h3 style="color: #fefeb0; font-family: Georgia;">Gold: <?php getGold() ?></h3>
 				</div>
 				<div class="inner-wrapper col-md-6 col-md-offset-3">
 					<div class="form-group">

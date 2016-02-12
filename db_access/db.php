@@ -28,7 +28,7 @@
  */
 session_start();
 
-//validate(); //VALIDATION CHECK
+validate(); //VALIDATION CHECK
 
 $dbusername="root";
 $dbpassword="";
@@ -111,7 +111,7 @@ function update($column,$value,$condition)
 	if (!$op || $op === false)
 	{
 		echo("db.php -> update: ".mysqli_error($dbconn)."<br>");
-		var_dump($query);
+		//var_dump($query);
 		echo("<br>");
 		//var_dump($op);
 		//echo("<br>");
@@ -259,8 +259,9 @@ function validate()
 	if (!isset($_SESSION["tek_emailid"]))
 	{
 		alert("Well, someone is feeling adventurous... Go log in and come back :P");
-		redirect("www.teknack.in");
-	} 
+		header("location: http://teknack.in"); //this works, if page is not loading, it's because teknack.in is unreachable
+		die();
+	}
 }
 
 function gameUnset()

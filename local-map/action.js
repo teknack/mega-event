@@ -434,6 +434,7 @@ function assignGrid(jsonVar)
 
 function renderGrid()
 {
+	console.log(grid[1]);
     for(var i=0,y=0;i<playArea;i++,y+=slotSize)
     {
         for(var j=0,x=0;j<playArea;j++,x+=slotSize)

@@ -92,9 +92,9 @@ function allot()
 	
 	$res=array();
 	
-	if ($res_row > 99 || $res_row < 0 || $res_col > 99 || $res_col < 0 || getSlot($res_row,$res_col)["occupied"] !== "0")
+	if ($res_row > 99 || $res_row < 0 || $res_col > 99 || $res_col < 0 || getSlot($res_row,$res_col)["occupied"] !== "0" || getSlot($res_row,$res_col)["special"] === "3")
 	{
-		alert("$res_row , $res_col");
+		//alert("$res_row , $res_col");
 		return(false);
 	}
 	else

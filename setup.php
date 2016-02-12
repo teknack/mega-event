@@ -32,7 +32,7 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 
 	if(isset($_POST["faction1"]))
 	{
-		alert("you have picked faction 1");
+		//alert("you have picked faction 1");
 		insert("tek_emailid,faction,collect","'".$_SESSION["tek_emailid"]."',1,".time()); //set current time as "collect" value in db
 		$_SESSION["collect_time"] = time();
 		$_SESSION["faction"] = "1";
@@ -61,7 +61,7 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 	}
 	else if (isset($_POST["faction2"])) //same as above
 	{
-		alert("you have picked faction 2");
+		//alert("you have picked faction 2");
 		insert("tek_emailid,faction,collect","'".$_SESSION["tek_emailid"]."',2,".time());
 		$_SESSION["collect_time"] = time();
 		$_SESSION["faction"] = "2";
@@ -105,7 +105,6 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="./maincss/mainstyle.css">
     <link rel="stylesheet" type="text/css" href="./maincss/faction.css">
 
 </head>
@@ -127,17 +126,23 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		<div class="row">
 			<div class="col-md-6">
 				<button class="btn btn-block btn-button-hollow btn-lg collapsible-button-left">
-					<div class="page-header"><h1>Guthix</h1></div>
+					<div class="page-header"><h1>Eos</h1></div>
 				  	<div class="panel-body">
-				  		<p>Decription of Faction 1</p>
+				  		<p>Exploiting nature never pans out nicely for us.<br>
+				  			So the only way to survive...<br> Become one with nature and restore it<br> to it's original glory.<br>
+				  			If we support nature , nature will support us</p>
 				  	</div>
+				  	
 			  	</button>
 			</div>
 			<div class="col-md-6">
 				<button class="btn btn-block btn-button-hollow btn-lg collapsible-button-right">
-					<div class="page-header"><h1>Zaros</h1></div>
+					<div class="page-header"><h1>Zephyros</h1></div>
 			  		<div class="panel-body">
-			  			<p>Description of Faction 2</p>
+			  			<p>Nature is fascinating!<br>
+			  				Even more so when we mould it to our needs.<br>
+			  				Our ancestors were foolish and careless about nature<br> We won't be making the same mistakes.<br>
+			  				Restoring nature to it's original form is important<br> But our survival comes first</p>
 			  		</div>
 				</button>
 			</div>
@@ -149,24 +154,39 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 
 	<div class="description collapsible collapsible-left">
 		<h3>Perks</h3>
-		<p>Contrary to popular belief, Lorem Ipsum is not simply random text.</p>
-		<h3>Cons</h3>
-		<p>I need texxt</p>
+		<ul class="list-group">
+			<li class="list-group-item">cheap settlement
+			 	<ul class="list-group"><li class="list-group-item">cost of settling is discounted for you , research more to get more discount</li></ul>
+			 </li>
+
+			<li class="list-group-item">resourceful scouts
+				<ul class="list-group"><li class="list-group-item">it never hurts to be cautious , scout cost is discounted for you.Research more for the perk
+			 to eventually, scout free of cost </li></ul>
+			</li>
+		</ul>
 
 		<form action="" method="POST">
-				<button class="btn btn-button-hollow btn-block btn-lg" type="submit" name="faction2"><h4>Faction 2</h4></button>
+				<button class="inside-btn btn btn-button-hollow btn-block btn-lg" type="submit" name="faction2"><h4>Faction 2</h4></button>
 			</form>
 	</div>
 
 	<!-- JQuery the height in -->
 	<div class="description collapsible collapsible-right">
 		<h3>Perks</h3>
-		<p>Contrary to popular belief, Lorem Ipsum is not simply random text.</p>
-		<h3>Cons</h3>
-		<p>I need texxt</p>
+		<ul class="list-group">
+			<li class="list-group-item">bonus plunder
+				<ul class="list-group"><li class="list-group-item">when you attack or loot your enemy you can get upto 30% more plunder</li></ul>
+			</li>
+			<li class="list-group-item">team work
+				<ul class="list-group"><li class="list-group-item">if you are attacking an enemy and if there are allied settlements adjacent to your target tile, they support your troops from the sidelines and increase probability of success</li>
+				<li class="list-group-item">if you are attacked by an enemy and there are allied settlements or your settlements adjacent to that tile, they support your defence from the sidelines<br>
+				 For this perk to work , there must be soldiers stationed in the adjacent tiles and the percent of troops who
+				 support you increases on research</li></ul>
+			</li>
+		</ul>
 
 		<form action="" method="POST">
-				<button class="btn btn-button-hollow btn-block btn-lg" type="submit" name="faction1"><h4>Faction 1</h4></button>
+				<button class="inside-btn btn btn-button-hollow btn-block btn-lg" type="submit" name="faction1"><h4>Faction 1</h4></button>
 			</form>
 
 	</div>
@@ -216,3 +236,6 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 
 </body>
 </html>
+
+
+
