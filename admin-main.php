@@ -30,7 +30,7 @@ if (isset($_POST) && !empty($_POST))
 		{
 			//alert("Setting you up!");
 			$_SESSION["tek_emailid"] = $_POST["username"];
-			var_dump($_SESSION);
+			//var_dump($_SESSION);
 			//alert("hold");
 			disconnect();
 			$_SESSION["admin"] = null;

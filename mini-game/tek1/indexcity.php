@@ -6,6 +6,9 @@
     // echo $_GET['var_PHP_data'];
 //echo "<script type='text/javascript'>alert('$message');</script>";
   $data=$_GET['var_PHP_data'];
+    $_SESSION["battery"] = $data;
+
+  /*
 $servername = 'localhost';
 $username = 'root';
 $password = '';
@@ -13,7 +16,7 @@ $databasename = 'teknack';
  
 $conn = mysqli_connect($servername, $username, $password, $databasename);
 $tek_username='queeny';
-$land='snow';
+$land='city';
 if(!$conn)
 {
 die("connection failed".mysqli_connect_error());
@@ -25,7 +28,9 @@ $row=mysqli_fetch_array($res);
   {
     $sql="INSERT INTO `resource`(`tek_username`, `battery`, `land`) VALUES ('$tek_username',$data,'$land')";
 if(mysqli_query($conn,$sql)){
+*/ 
 echo " Hi! Your changes have been saved.";
+/*
 }
   }
   else
@@ -35,6 +40,7 @@ echo " Hi! Your changes have been saved.";
     }
   }
    // put your redirect html here!
+  */
     }
      else {
     ?>
@@ -50,11 +56,12 @@ echo " Hi! Your changes have been saved.";
 
                    
                     $.ajax({
-                        url: 'http://localhost/tek1/indexsnow.php',
+                        url: 'indexcity.php',
                         type: 'GET',
                          data: { var_PHP_data: tot }, 
                          success: function(data) {
                            alert(data);
+                           window.location="../transitionToAlloc.php";
                            // $('#result').html(data)
                          }
                      });
@@ -64,7 +71,6 @@ echo " Hi! Your changes have been saved.";
         $("p").hide(600);
         $('#game').show();
     });
-            
              });
 
         </script>
@@ -135,7 +141,7 @@ section
 {
   width:1200px; 
 height:468px;
-  background-image: url(snow2.jpg);
+  background-image: url(city.jpg);
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -145,13 +151,13 @@ height:468px;
 width: 900px;
 height:100px;
 }
+
 #option
 {
 width: 1200px;
 height:100px;
 
 }
-
 </style>
 <script type="text/javascript" src="jquery-1.12.0.js"></script>
 <script type="text/javascript">
@@ -164,9 +170,9 @@ document.getElementById('click').innerHTML = "Tries left= " + clicks ;
 } 
 </script>
 <script>
-var correct=0;var clicks=20;
+var correct=0;var clicks=15;
 	var incorrect=0;
-  var bflag=0; var wflag=0;var wflag2=0; var tflag=0; var gflag=0; var hflag=0;var hflag2=0; var sflag=0; var tot=0;
+  var bflag=0; var wflag=0;var wflag2=0; var tflag=0; var gflag=0; var hflag=0;var sflag2=0; var sflag=0; var tot=0;
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -175,7 +181,7 @@ function drag(ev) {
 if(clicks===0){
   alert("sorry! You have exhausted your clicks. Click on Save changes.");
   $.ajax({
-                        url: 'http://localhost/tek1/indexsnow.php',
+                        url: 'indexcity.php',
                         type: 'GET',
                          data: { var_PHP_data: tot }, 
                          success: function(data) {
@@ -183,7 +189,7 @@ if(clicks===0){
                            // $('#result').html(data)
                          }
                      });
-window.location="transitionToAlloc.php";
+window.location="../transitionToAlloc.php";
 return;
   }
     ev.dataTransfer.setData("text", ev.target.id);
@@ -273,13 +279,23 @@ hflag2=1; tot=tot+20;}}}
 
 
     else if (data2=="solar")
- {if(sflag==0)
+ {if (data2==data){
+  if(sflag==0)
         {
 $("#s2").animate({
            
             height: '-=12px',
         });
 sflag=1; tot=tot+20;}}
+else{
+
+ if(sflag2==0)
+        {
+$("#s2").animate({
+           
+            height: '-=12px',
+        });
+sflag2=1; tot=tot+20;}}}
     else if (data2=="geo")
  {if(gflag==0)
         {
@@ -289,12 +305,24 @@ $("#s2").animate({
         });
 
       gflag=1; tot=tot+20;}}
-   
+   else if (data=="thermal")
+ {
+
+  if(tflag==0)
+        {
+$("#s2").animate({
+           
+            height: '-=12px',
+        });
+      tflag=1; tot=tot+20;}} 
+
       result();  //    alert("incorrect="+incorrect);
 
     
     
 	}
+
+
 	else {
     incorrect++;
     if(data2=="biogas")
@@ -366,6 +394,7 @@ $("#s2").animate({
      }
     }}
     else if (data2=="solar"){
+      if (data2==data){
      if(sflag==1){
        correct--;
        sflag=0;
@@ -377,7 +406,32 @@ $("#s2").animate({
         });
      }
     }
-   
+    else{
+        if(sflag2==1){
+       correct--;
+       sflag2=0;
+       tot=tot-20;
+
+        $("#s2").animate({
+           
+            height: '+=12px',
+        });
+     }
+    }}
+   else if (data=="thermal"){
+     if(tflag==1){
+       correct--;
+       tflag=0;
+       tot=tot-20;
+         
+
+        $("#s2").animate({
+           
+            height: '+=12px',
+        });
+     }
+    }
+ 
 
   }
 
@@ -434,28 +488,28 @@ $("#s2").animate({
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-
-
-
-
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="Wind" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="Solar" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+
+
+
+
 <div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="Wind" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
 
 
@@ -463,7 +517,7 @@ $("#s2").animate({
 
 
 <div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="Solar" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
@@ -484,7 +538,7 @@ $("#s2").animate({
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="Thermal" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
@@ -500,7 +554,7 @@ $("#s2").animate({
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="Biogas" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
@@ -520,7 +574,7 @@ $("#s2").animate({
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="Hydro" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="Hydro" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
@@ -539,33 +593,34 @@ $("#s2").animate({
 
 
 <br><br><br><br>
-</section> 
-<div id="option">
+</section>
+<div id="option"> 
 <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" style="background-color: rgba(250,240,230,0.3);">
 <br>
-  <img src="biogas.png" draggable="true" ondragstart="drag(event)" id="biogas" style="width: 6em;
-  height: 5em;">
+  
   <img src="wind.png" draggable="true" ondragstart="drag(event)" id="wind" style="width: 6em;
   height: 5em;">
-  
+  <img src="solar.png" draggable="true" ondragstart="drag(event)" id="solar" style="width: 6em;
+  height: 5em;">
+ 
   <img src="tidal.png" draggable="true" ondragstart="drag(event)" id="hydro" style="width: 6em;
   height: 5em;">
-  <img src="wind.png" draggable="true" ondragstart="drag(event)" id="WinD" style="width: 6em;
+  <img src="thermal.png" draggable="true" ondragstart="drag(event)" id="thermal" style="width: 6em;
   height: 5em;">
-   <img src="tidal.png" draggable="true" ondragstart="drag(event)" id="HyDro" style="width: 6em;
+   <img src="solar.png" draggable="true" ondragstart="drag(event)" id="SoLar" style="width: 6em;
   height: 5em;">
 
 </div>
  
-<div id="click" style="color:#fff;width: 9em; height: 2em;"> Tries left = 20 </div>
+<div id="click" style="color:#fff;width: 9em; height: 2em;"> Tries left = 15 </div>
 <br>
- <div id="sub" style="margin-top:7; margin-left:40;"> Save</div> 
+<div id="sub" style="margin-top:7; margin-left:40;"> Save</div> 
 
 
-       
-</div>
+       </div>
+
  
-     </div>   
+    </div>    
 </body>
 </html>
 <?php } ?>

@@ -39,7 +39,7 @@ function allot()
 		
 		$query="INSERT INTO map_res (faction,row_tail,col_tail) VALUES (".$_SESSION["faction"].",".$x.",".$y.");";
 		$op=mysqli_query($conn,$query);
-		alert($query);
+		//alert($query);
 		$res["row"] = $x;
 		$res["col"] = $y;
 		//alert(var_dump($res));

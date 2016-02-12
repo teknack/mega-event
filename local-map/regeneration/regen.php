@@ -1,10 +1,12 @@
 <?php
 	session_start();
-
-
-	/* 
+$row = $_SESSION["settleRow"];
+$col = $_SESSION["settleCol"];
+$bonus = $_SESSION["bonus"];
+unset($_SESSION["bonus"]);	
+/* 
 0-mud  -- +2 water
-1-grass -- +1 food ; +1 water
+1-grass -- no bonus
 2-sand -- +1 power ; -1 water
 3-water -- no bonus
 4-mountain -- +1 metal ; +1 wood
@@ -94,7 +96,7 @@
 			</table>
 		</div> <br>
 
-		<button class="btn btn-default" type="submit" name="resourceregen" onclick='sendback(<?php $_SESSION['bonus'] ?>)'>Confirm</button>
+		<button class="btn btn-default" type="submit" name="resourceregen" onclick='sendback(<?php echo($bonus) ?>)'>Confirm</button>
 
 
 	<!-- Current Main use this yup -->
