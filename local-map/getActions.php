@@ -3,12 +3,11 @@ require "connect.php";
 require "../db_access/db.php";
 $playerid=$_SESSION['tek_emailid'];
 $faction=$_SESSION['faction'];
-if(!isset($_SESSION['faction']))
-	$_SESSION['faction']=getFaction($playerid);
+$_SESSION['faction']=getFaction($playerid);
 $output="[";
 function scout($row,$col)
 {
-	global $conn,$playerid,$output;
+	global $conn,$playerid,$output,$faction;
 	$sql="SELECT occupied,fortification,troops,faction,special FROM grid WHERE row=$row and col=$col;";
 	$res=$conn->query($sql);
 	$troops=0;
@@ -58,13 +57,14 @@ function scout($row,$col)
 	else if($r['special']==4)
 		$slotType="water";
 
-	if($r['faction']==1 )
+	$dispfaction="unknown";
+	if($faction==1 )
 	{
-		$dispfaction="Diatiro";
+		$dispfaction="Eos";
 	}
-	else if($r['faction']==2)
+	else if($faction==2)
 	{
-		$dispfaction="kenos";
+		$dispfaction="Zephyros";
 	}
 
 	$output=$output.'{"response":"Occupant:'.$r["occupied"].'<br>Fortification:'.$r["fortification"].'<br>troops:'

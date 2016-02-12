@@ -62,14 +62,19 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 					grid[i][j]=enemyColor;
 			}
 			//terrain stuff
-			/*
-			if(temp[k]['terrain']==1)
+			/*if(temp[k]['terrain']==0)
+				grid[i][j]="cyan";
+			else if(temp[k]['terrain']==1)
 				grid[i][j]="green";
+			else if(temp[k]["terrain"]==2)
+				grid[i][j]="yellow";
 			else if(temp[k]['terrain']==3)
 				grid[i][j]="blue";
+			else if(temp[k]['terrain']==4)
+				grid[i][j]="grey";
 			else
-				grid[i][j]="white";
-				*/ 
+				grid[i][j]="white";*/
+
 		}
 	}
 }
@@ -112,7 +117,7 @@ window.onload=function loadDoc(){
 
 	document.getElementById("canvas").setAttribute("onClick","passCursorPosition(canvas,event)")	;
 	document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
-	//document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
+	document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
 
   //playerId=temp[10]["player"];
 }
@@ -128,17 +133,23 @@ function passCursorPosition(canvas, event) {
 		y=0;
     var row=Math.floor(y/slotSize);
     var col=Math.floor(x/slotSize);
-    /*terrain stuff*///var size=5; // CHANGE THE TERRAIN SETTING SLOT OVER HERE!!!!! do not set to 0
     if(row>99-hSize)
     	row=100-hSize;
     if(col>99-hSize)
     	col=100-hSize;
     var res=row+","+col;	
     window.location="../transfer.php?coord="+res;
+   
+    //terrain stuff
+    //var xhttp;
+    ///*terrain stuff*/ var size=5; // CHANGE THE TERRAIN SETTING SLOT OVER HERE!!!!! do not set to 0
+	/*if (window.XMLHttpRequest)
+=======
     //terrain stuff
     /*
     var xhttp;
 	if (window.XMLHttpRequest)
+>>>>>>> ec661d872ece8e82b2d525e96b60eb817c66984a
 	{
 	    // code for modern browsers
 		xhttp = new XMLHttpRequest();
@@ -155,8 +166,7 @@ function passCursorPosition(canvas, event) {
 	  }
 	xhttp.open("POST", "setSpecial.php", true);
   	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  	xhttp.send("row="+row+"&col="+col+"&size="+size);
-  	*/ 
+  	xhttp.send("row="+row+"&col="+col+"&size="+size);*/
 }
 function getCursorPosition(canvas , event) {
   	var rect = canvas.getBoundingClientRect();

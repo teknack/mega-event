@@ -655,7 +655,7 @@ function basics()
 			   "amount of a resource you have while the number on the right is <br>"+
 			   "regeneration rate of those resources per minute<br>"+
 			   "To get the actions that you can perform on each tile use either left or right<br>"+
-			   "click based on your comfort"
+			   "click based on your comfort(right click)"
 			   "At the bottom right are the local map navigation buttons which you<br>"+
 			   " could use to shift the local map to right,left,up or down by one <br>"+
 			   " column/row(this feature is not available in the tutorial)"
@@ -745,9 +745,22 @@ function settling()
 			   response("prompt",prompt);
 }
 
-function creAttack()
+function creatingTroops()
 {
-	var prompt=" CREATING TROOPS AND ATTACKING <br>"+
+	var prompt=" CREATING TROOPS <br>"+
+			   " All your troops ARE necessarily of one type, initially your troops are unspecialised<br>"+
+			   " and WEAK.<br>"+
+			   " you can specialise them to stealth or warrior who have their respective bonuses.<br>"+
+			   " Once you select a specialisation you CAN switch specialisation , but specialisation<br>"+
+			   " will cost you, For ex- if you have level 3 stealth and want to convert to warrior<bR>"+
+			   " you cannot convert to warrior of level 4 the warrior you get is of level 3 which have to be<br>"+
+			   " upgraded later based on discretion.";
+	response("prompt",prompt);
+}
+
+function attacking()
+{
+	var prompt=" ATTACKING <br>"+
 			   " Now select all troops in your newly settled tiles<br>"+
 			   " click on an enemy(red) tile and click on scout option NOT ATTACK<br>"+
 			   " You can see the probability of attack success at the bottom of the page<br>"+
@@ -758,14 +771,24 @@ function creAttack()
 			   " sim the attack (which will be available in the main game) the result will be decided based on probability<br>"+
 			   " and well a figurative throw of dice.<br>"+
 			   " If you win you go through the same process of settling where you allocate regen points<br>"+
-			   " IF you lose , you lose all your troops";
-	response("prompt",prompt);
+			   " IF you lose , you lose all your troops<br><bR>"+
+			   "<button onclick='mini()'>GO TO MINI GAME</button>";
+	response("prompt",prompt);	
+}
+
+function mini()
+{
+	window.location="../mini-game/attack/redirect.php";
 }
 
 function research()
 {
-	var prompt=" you can upgrade various aspects of your civilisation in the research section";
-	response("action",prompt);
+	window.open("research.php");
+}
+
+function research()
+{
+	window.open("market.php");
 }
 
 var everythingLoaded = setInterval(function() {
@@ -825,7 +848,9 @@ function renderLocal()
 	document.getElementById("selMove").setAttribute("onclick","selMove()");
 	document.getElementById("selMove2").setAttribute("onclick","selMove2()");
 	document.getElementById("settling").setAttribute("onclick","settling()");
-	document.getElementById("creAttack").setAttribute("onclick","creAttack()");
+	document.getElementById("creatingTroops").setAttribute("onclick","creatingTroops()");
+	document.getElementById("attacking").setAttribute("onclick","attacking()");
+	document.getElementById("market").setAttribute("onclick","market()");
 	document.getElementById("research").setAttribute("onclick","research()");
 	document.getElementById("basics").setAttribute("onclick","basics()");
 }

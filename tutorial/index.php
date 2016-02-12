@@ -47,10 +47,10 @@
 						<button type="submit" id="selMove">selecting and moving troops</button><br><br>
 						<button type="submit" id="selMove2">selecting and moving troops-II</button><br><br>
 						<button type="submit" id="settling">settling</button><br><br>
-						<button type="submit" id="creAttack">create troops and attack</button><br><br>
+						<button type="submit" id="creatingTroops">creating troops</button><br><br>
+						<button type="submit" id="attacking">attacking</button><br><br>
 						<button type="submit" id="research">research</button><br><br>
-						<button type="submit" id="redeem">get more RESOURCES!</button><br><br>
-						<button type="submit" id="market">market</button><br><br>
+						<button type="submit" id="market">market and getting more resources</button><br><br>
 					</div>
 				</td>
 				<td width="50%">
@@ -112,7 +112,15 @@
 						<tr>
 							<td>
 								<div id="bottom_hint">
-									
+									<?php
+										if(isset($_SESSION['result']))
+										{
+											if($_SESSION['result'])
+												echo "you won!!";
+											else
+												echo "you  lost :( try again";
+										}
+									?>
 								</div>
 							</td>
 							<td>

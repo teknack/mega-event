@@ -13,7 +13,7 @@ if($conn->connect_error)
 else
 {
 }
-$special=3;  // SET YOUR SLOT SPECIAL HERE
+$special=4;  // SET YOUR SLOT SPECIAL HERE
 $trow=$_POST['row'];
 $tcol=$_POST['col'];
 $size=$_POST['size'];
