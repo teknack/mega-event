@@ -40,7 +40,7 @@ session_start();
 					<li><a href="./resources.php">Collect</a></li>
 					<li class="active"><a href="#">Local</a></li>
 					<li><a href="../market/index.php">Market</a></li>
-					<li><a href="#">Research</a></li>
+					<li><a href="../research/index.php">Research</a></li>
 					<li><a href="../world-map/canvas1.html">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
 				</ul>
 			</div>

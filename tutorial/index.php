@@ -134,23 +134,25 @@
 
 				
 		</div>
+
+		<br><br>
 		<div class="row">
 			<div class="col-md-3">
-				<form method="POST" action="shift.php">
+				<form method="" action="">
 					<table id="nav_buttons" border=0 align="center">
 						<tr>
 							<td></td>
-							<td align="center"><button type="submit" name="up">UP</button></td>
+							<td align="center"><button type="button" name="up" id="up"></button></td>
 							<td></td>
 						</tr>
 						<tr>
-							<td align="center"><button name="left">LEFT</button></td>
-							<td align="center"><button name="world-map">WORLD MAP</button></td>
-							<td align="center"><button name="right">RIGHT</button></td>
+							<td align="center"><button type="button" name="left" id="left"></button></td>
+							<td align="center"><button type="button" name="world-map" id="world"></button></td>
+							<td align="center"><button type="button" name="right" id="right"></button></td>
 						</tr>
 						<tr>
 							<td></td>
-							<td align="center"><button name="down">DOWN</button></td>
+							<td align="center"><button type="button" name="down" id="down"></button></td>
 							<td></td>
 						</tr>
 					</table>
