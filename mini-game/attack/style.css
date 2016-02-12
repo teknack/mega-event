@@ -1,0 +1,29 @@
+.full {
+    background: url('website_images/bg.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+.enterbutton img{
+	width: 32%;
+    height: 16%;
+    margin-left: 35%;
+	margin-top: 5%;
+}
+@font-face{
+    font-family: oldlondon;
+    src: url(fonts/OldLondon.ttf);
+}
+h1{
+	font-size: 4.7em;
+	font-family: oldlondon;
+	margin:0 auto;
+	margin-left: 39%;
+}
+h2{
+	font-size: 3em;
+	font-family: oldlondon;
+	margin:0 auto;
+	margin-left: 32%;
+}
