@@ -162,7 +162,7 @@ function proceed()
 
 			<div class="row">			
 				<div class="page-header">
-				<h1>Marketplace</h1>
+				<h1>Marketplace -> Buy</h1>
 				</div>
 			</div>
 
