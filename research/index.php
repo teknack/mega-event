@@ -339,7 +339,7 @@ function getPlayerResources()
 function levelUpDefense()
 {
 	connect();
-	$level = getLevel("defensive");
+	$level = getLevel("defence");
 	setTable("research");
 	switch($level)
 	{
@@ -347,7 +347,7 @@ function levelUpDefense()
 			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["wood"] >= 400)
 			{
 				$level=$level+1;
-				update("defensive",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("defence",$level,"playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else //not enough resources
 			{
@@ -359,7 +359,7 @@ function levelUpDefense()
 			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["wood"] >= 400 && $_SESSION["resources"]["metal"] >= 400)
 			{
 				$level=$level+1;
-				update("defensive",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("defence",$level,"playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -371,7 +371,7 @@ function levelUpDefense()
 			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 800)
 			{
 				$level=$level+1;
-				update("defensive",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				update("defence",$level,"playerid='".$_SESSION["tek_emailid"]."'");
 			}
 			else
 			{
@@ -887,9 +887,9 @@ if (isset($_POST) && !empty($_POST))
 					</thead>
 					<tbody>
 						<tr>
-							<td align="center"><b>Defense</b></td>
-							<td align="center"><?php echo(getLevel("defensive")) ?>/3</td>
-							<td align="center"><?php echo(defenseNextLevelInfo($level["defensive"]))?></td>
+							<td align="center"><b>Defence</b></td>
+							<td align="center"><?php echo(getLevel("defence")) ?>/3</td>
+							<td align="center"><?php echo(defenseNextLevelInfo($level["defence"]))?></td>
 							<td align="center"><button name="defense_research" type="submit">Research</button></td>
 						</tr>
 						<tr>

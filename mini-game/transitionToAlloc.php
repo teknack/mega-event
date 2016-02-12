@@ -14,6 +14,7 @@
 	$battery = $_SESSION["battery"];
 	$val = 3 + floor((3+$research_level)*($battery/100));
 	$_SESSION["regen_points"] = $val;
-	
 	disconnect();
+	
+	redirect("../local-map/regeneration/regen.php");
 ?>
