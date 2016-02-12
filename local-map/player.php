@@ -671,17 +671,6 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 {
 	global $conn,$playerid,$plunderPortion;
-
-	$battleRes=simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity);
-	$battleResult=$battleRes['result'];
-	echo "<br>RESULT:-$battleResult<br>";
-    $plunderBonus=$battleRes['plunderBonus'];
-    $fortification=$battleRes['fortification'];
-    $maxLoss=$battleRes['maxLoss'];
-	$enemy=$battleRes['enemy'];
-	$troopLevel=$battleRes['troopLevel'];
-	$faction=$battleRes['faction'];
-	$winChance=$battleRes['winChance'];
 	if($action=="loot") // for loot
 	{
 		global $foodMax,$metalMax,$waterMax,$waterMax,$woodMax;
@@ -705,6 +694,7 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 		$quantity=$quantity*$surPercent/100;
 		$sql="SELECT occupied FROM grid WHERE row=$srcRow and col=$srcCol;";
 		$res=$conn->query($sql);
+		var_dump($sql);
 		$r=$res->fetch_assoc();
 		if($r['occupied']==$playerid)
 		{
@@ -725,17 +715,34 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 			}	
 		}
 		if($_SESSION['result'])
-			$_SESSION['response']="That was a good loot!";
+			$_SESSION['response']="That was a good loot!<br>Loot:<bR>-food:$foodLoot<bR>-water:$waterLoot<bR>-power:$powerLoot
+								   <bR>-metal:$metalLoot<bR>-wood:$woodLoot";
 		else
-			$_SESSION['response']="Try with stronger troops";
+			$_SESSION['response']="Try with stronger troops<br>Loot:<bR>-food:$foodLoot<bR>-water:$waterLoot<bR>-power:$powerLoot
+								   <bR>-metal:$metalLoot<bR>-wood:$woodLoot";
 		unset($_SESSION['destRow']);
 		unset($_SESSION['destCol']);
-		unset($_SESSION['selectedRow']);
-		unset($_SESSION['selectedCol']);
-		unset($_SESSION['selectedTroops']);
-		return;
+		//unset($_SESSION['selectedRow']);
+		//unset($_SESSION['selectedCol']);
+		//unset($_SESSION['selectedTroops']);
+		header("location:index.php");
 	}
-	else if($action=="attack")
+	$battleRes=simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity);
+	$battleResult=$battleRes['result'];
+	echo "<br>RESULT:-$battleResult<br>";
+    $plunderBonus=$battleRes['plunderBonus'];
+    $fortification=$battleRes['fortification'];
+    $maxLoss=$battleRes['maxLoss'];
+	$enemy=$battleRes['enemy'];
+	$troopLevel=$battleRes['troopLevel'];
+	$faction=$battleRes['faction'];
+	$winChance=$battleRes['winChance'];
+	if(!isset($_SESSION['selectedRow']) or !isset($_SESSION['selectedCol']))
+	{
+		$srcRow=$_SESSION['selectedRow'];
+		$srcCol=$_SESSION['selectedCol'];
+	}
+	if($action=="attack")
 	{
 		if(isset($_SESSION['result'])) //in case called after mini-game
 		{
@@ -893,11 +900,11 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 					$_SESSION['settleRow']=$destRow;
 					$_SESSION['settleCol']=$destCol;
 					$_SESSION['claim']=true;
-					echo "<script>alert('shud')</script>";
+					//echo "<script>alert('shud')</script>";
 					echo "<script>window.location.href='../mini-game/settle.php';</script>";
 				}
 				else
-					echo "<script>alert('$result')</script>";
+					echo "<script>window.location.href='index.php';</script>";
 			}
 			else
 			{
@@ -1407,6 +1414,7 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 
 		$sql="SELECT troops,fortification FROM grid WHERE row=$destRow and col=$destCol;";
 		$res=$conn->query($sql);
+		var_dump($sql);
 		$r1=$res->fetch_assoc();
 		$defenceTroops+=$r1['troops']; //per troop defence probability
 		$fortification=$r1['fortification'];
@@ -1558,6 +1566,8 @@ function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
 	}
 
 	//sim battle
+	if($fortification==0)
+		$fortification=1;
 	$quantity/=$fortification;
 	$attackProb=$quantity*$troopProbability;
 	$defProb=$defenceTroops*$defenceProbability;
@@ -1668,27 +1678,19 @@ function loot($srcRow,$srcCol,$destRow,$destCol,$quantity)
 		$type=0;
 	else 
 		$type=1;
+	if($level==0)
+		$level=1;
 	$_SESSION['playerLevel']=$level;
 	$_SESSION['baseLevel']=6;
-	$_SESSION['troopType']=$type;
+	$_SESSION['troopType']=1;
 	$_SESSION['destRow']=$destRow;
 	$_SESSION['destCol']=$destCol;
+	$_SESSION['selectedRow']=$srcRow;
+	$_SESSION['selectedCol']=$srccol;
 	header("location:../mini-game/attack/redirect.php");
 }
 
-function lootScout($row,$col)
-{
-	/*if($destRow>=x and $destRow<y and $destCol>=a and $destCol<b) //two loot regions
-	{
-		$op="high difficulty!";
-		decide on the loot
-	}
-	else if($destRow>=x and $destRow<y and $destCol>=a and $destCol<b)
-	{
-		$op="moderate difficulty!";
-		decide on the loot
-	}*/	
-}
+
 function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 {
 	global $conn,$playerid,$faction,$moveCostFood,$moveCostWater,$moveCostPower;
@@ -2119,7 +2121,7 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 	$_SESSION['settleRow']=$row;
 	$_SESSION['settleCol']=$col;
 	$_SESSION['claim']=true;
-	header("location:../mini-game/settle/settle.php");
+	header("location:../mini-game/settle.php");
 }
 
 
@@ -2562,8 +2564,10 @@ if(isset($_SESSION['result']))
 			unset($_SESSION['loot']);
 		}	
 	}
-	else	
+	else
+	{
 		simAftermath($srcrow,$srccol,$row,$col,$quantity,"attack");
+	}	
 	//header("location:index.php");
 }
 

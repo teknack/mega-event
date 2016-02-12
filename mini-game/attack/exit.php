@@ -3,11 +3,11 @@
 	if(isset($_SESSION['playerLevel']) && isset($_SESSION['baseLevel']) && isset($_SESSION['troopType']))
 	{
 		//$goto="location:../../local-map/index.php";
-		$goto="location:redirect.php";
+		$goto="<script>window.location.href='../../local-map/player.php';</script>";
 	}
 	else
 	{
-		$goto="location:../../tutorial/index.php";
+		$goto="<script>window.location.href='../../tutorial/index.php';</script>";
 	}
 	$difficulty = $_SESSION['baseLevel'];
 	$playerlevel = $_SESSION['playerLevel'];
@@ -122,5 +122,5 @@
 	$_SESSION['ppercent'] = $currenthealthpercent;
 	$_SESSION['bpercent'] = $destruction;
 	//header($goto);
-	echo "<script>window.location.href='../../local-map/player.php';</script>";
+	echo $goto;
 ?>
