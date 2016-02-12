@@ -49,6 +49,8 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		update("occupied","'".$_SESSION["tek_emailid"]."'","row=".$origin["row"]." AND col=".$origin["col"]."");
 		update("faction","1","row=".$origin["row"]." AND col=".$origin["col"]."");
 		update("fortification","-9","row=".$origin["row"]." AND col=".$origin["col"]."");
+		update("root","'".$origin["row"].",".$origin["col"]."'","row=".$origin["row"]." AND col=".$origin["col"]."");
+		
 		if (!checkPlayerExists($_SESSION["tek_emailid"],"research")) //includes player in reseach table
 		{
 			setTable("research");
@@ -78,6 +80,7 @@ if (isset($_POST) && !empty($_POST)) //creates player and sets faction before re
 		update("occupied","'".$_SESSION["tek_emailid"]."'","row=".$origin["row"]." AND col=".$origin["col"]."");
 		update("faction","2","row=".$origin["row"]." AND col=".$origin["col"]."");
 		update("fortification","-9","row=".$origin["row"]." AND col=".$origin["col"]."");
+		update("root","'".$origin["row"].",".$origin["col"]."'","row=".$origin["row"]." AND col=".$origin["col"]."");
 
 		if (!checkPlayerExists($_SESSION["tek_emailid"],"research"))
 		{

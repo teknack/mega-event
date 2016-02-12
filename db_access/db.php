@@ -159,7 +159,7 @@ function getSlot($x,$y)
 {
 	global $dbconn;
 	//var_dump($x);	
-	$query = "SELECT occupied,fortification,troops,faction FROM grid WHERE row=".$x." AND col=".$y.";";
+	$query = "SELECT occupied,fortification,troops,faction,special,root,type,status FROM grid WHERE row=".$x." AND col=".$y.";";
 	//alert($query);
 	$res = mysqli_query($dbconn,$query);
 	//alert($res);

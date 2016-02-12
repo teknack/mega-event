@@ -6,6 +6,8 @@
     // echo $_GET['var_PHP_data'];
 //echo "<script type='text/javascript'>alert('$message');</script>";
   $data=$_GET['var_PHP_data'];
+  
+/*
      $servername = 'localhost';
 $username = 'root';
 $password = '';
@@ -25,7 +27,9 @@ $row=mysqli_fetch_array($res);
   {
     $sql="INSERT INTO `resource`(`tek_username`, `battery`, `land`) VALUES ('$tek_username',$data,'$land')";
 if(mysqli_query($conn,$sql)){
+*/
 echo " Hi! Your changes have been saved.";
+/*
 }
   }
   else
@@ -35,6 +39,7 @@ echo " Hi! Your changes have been saved.";
     }
   }
    // put your redirect html here!
+   */
     }
      else {
     ?>
@@ -51,11 +56,12 @@ echo " Hi! Your changes have been saved.";
 
                    var var_data = "Hello World";
                     $.ajax({
-                        url: 'http://localhost/tek1/indexnature.php',
+                        url: 'indexnature.php',
                         type: 'GET',
                          data: { var_PHP_data: tot }, 
                          success: function(data) {
                            alert(data);
+                           window.location="transitionToAlloc.php";
                            // $('#result').html(data)
                          }
                      });
@@ -176,7 +182,7 @@ function drag(ev) {
 if(clicks===0){
   alert("sorry! You have exhausted your clicks.");
   $.ajax({
-                        url: 'http://localhost/tek1/indexnature.php',
+                        url: 'indexnature.php',
                         type: 'GET',
                          data: { var_PHP_data: tot }, 
                          success: function(data) {
@@ -184,6 +190,7 @@ if(clicks===0){
                            // $('#result').html(data)
                          }
                      });
+window.location="transitionToAlloc.php";
 return;
   }
     ev.dataTransfer.setData("text", ev.target.id);
