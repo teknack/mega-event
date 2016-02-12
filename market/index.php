@@ -136,6 +136,7 @@ if (isset($_POST) && !empty($_POST))
 	    <meta name="viewport" content="width=device-width, initial scale=1">
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+	    <link href='https://fonts.googleapis.com/css?family=Josefin+Slab:400,700' rel='stylesheet' type='text/css'>
 	    <link rel="stylesheet" type="text/css" href="../maincss/mainstyle.css">
 	    <link rel="stylesheet" type="text/css" href="./market.css">
 	</head>
@@ -152,8 +153,7 @@ if (isset($_POST) && !empty($_POST))
 					<ul class="nav nav-tabs navbar-nav navbar-right">
 						<li><a href="../local-map/index.php">Local</a></li>
 						<li class="active"><a href="#">Market</a></li>
-						<li><a href="#">Research</a></li>
-						<li><a href="../local-map/resources.php">Collect</a></li>
+						<li><a href="../research/index.php">Research</a></li>
 						<li><a href="../world-map/canvas1.html">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
 					</ul>
 				</div>
