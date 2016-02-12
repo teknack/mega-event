@@ -43,7 +43,7 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 	{
 		for(j=0;j<100;j++,k++)
 		{
-			/*if(temp[k]["occupied"]==playerId )
+			if(temp[k]["occupied"]==playerId )
 			{
 				grid[i][j]=playerColor;
 			}
@@ -60,14 +60,16 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 					grid[i][j]=allyColor;
 				else
 					grid[i][j]=enemyColor;
-			}*/
+			}
 			//terrain stuff
+			/*
 			if(temp[k]['terrain']==1)
 				grid[i][j]="green";
 			else if(temp[k]['terrain']==3)
 				grid[i][j]="blue";
 			else
 				grid[i][j]="white";
+				*/ 
 		}
 	}
 }
@@ -104,12 +106,12 @@ window.onload=function loadDoc(){
       renderGrid(grid);                                //editable
     }
   }
-  xhttp.open("GET", "getTerrain.php", true);
+  xhttp.open("GET", "getWMap.php", true);
   xhttp.send();
   //ajax ends--->
 
 	document.getElementById("canvas").setAttribute("onClick","passCursorPosition(canvas,event)")	;
-	//document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
+	document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
 	//document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
 
   //playerId=temp[10]["player"];
@@ -118,22 +120,23 @@ function passCursorPosition(canvas, event) {
   	var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
-    /*x=x-(hSize/2*slotSize);
+    x=x-(hSize/2*slotSize);
 	if(x<0)
 		x=0;
 	y=y-(hSize/2*slotSize);
 	if(y<0)
-		y=0;*/
+		y=0;
     var row=Math.floor(y/slotSize);
     var col=Math.floor(x/slotSize);
-    /*terrain stuff*/var size=5; // CHANGE THE TERRAIN SETTING SLOT OVER HERE!!!!! do not set to 0
-    /*if(row>99-hSize)
+    /*terrain stuff*///var size=5; // CHANGE THE TERRAIN SETTING SLOT OVER HERE!!!!! do not set to 0
+    if(row>99-hSize)
     	row=100-hSize;
     if(col>99-hSize)
-    	col=100-hSize;*/
+    	col=100-hSize;
     var res=row+","+col;	
-    //window.location="../transfer.php?coord="+res;
+    window.location="../transfer.php?coord="+res;
     //terrain stuff
+    /*
     var xhttp;
 	if (window.XMLHttpRequest)
 	{
@@ -153,6 +156,7 @@ function passCursorPosition(canvas, event) {
 	xhttp.open("POST", "setSpecial.php", true);
   	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   	xhttp.send("row="+row+"&col="+col+"&size="+size);
+  	*/ 
 }
 function getCursorPosition(canvas , event) {
   	var rect = canvas.getBoundingClientRect();

@@ -28,7 +28,7 @@
  */
 session_start();
 
-validate(); //VALIDATION CHECK
+//validate(); //VALIDATION CHECK
 
 $dbusername="root";
 $dbpassword="";

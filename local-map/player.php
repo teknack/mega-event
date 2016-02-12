@@ -1653,7 +1653,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 		}
 	}
 	$_SESSION['playerLevel']=$playerLevel;
-	$_SESSION['troopType']
+	$_SESSION['troopType'] = $type;
 	$_SESSION['baseLevel']=$fortification;
 	/*redirect to mini-game*/
  	//header('location:../mini-game/attack/index.php');

@@ -320,7 +320,7 @@ function civPerkTwoNextLevelInfo($level)
 		break;
 		
 		case 3:
-			$ret="You Can now settle on water!<br><b>Costs</b>: 1000 power | 500 wood |500 metal";
+			$ret="You Can now settle on Mountains!<br><b>Costs</b>: 1000 power | 500 wood |500 metal";
 		break;
 	}
 	
@@ -876,49 +876,49 @@ if (isset($_POST) && !empty($_POST))
 				</tr>
 				<tr>
 					<td align="center"><b>Defense</b></td>
-					<td align="center"><?php echo(getLevel("defensive")) ?></td>
+					<td align="center"><?php echo(getLevel("defensive")) ?>/3</td>
 					<td align="center"><?php echo(defenseNextLevelInfo($level["defensive"]))?></td>
 					<td align="center"><button name="defense_research" type="submit">Research</button></td>
 				</tr>
 				<tr>
 					<td align="center"><b>Open Battle</b></td>
-					<td align="center"><?php echo(getLevel("open")) ?></td>
+					<td align="center"><?php echo(getLevel("open")) ?>/3</td>
 					<td align="center"><?php echo(openBattleNextLevelInfo($level["open"])) ?></td>
 					<td align="center"><button name="open_research" type="submit">Research</button></td>
 				</tr>
 				<tr>
 					<td align="center"><b>Stealth Troop</b></td>
-					<td align="center"><?php getTroopLevel(); echo($troop["s"]); ?></td>
+					<td align="center"><?php getTroopLevel(); echo($troop["s"]); ?>/7</td>
 					<td align="center"><?php echo(stealthNextLevelInfo($troop["s"])) ?></td>
 					<td align="center"><button name="stealth_research" type="submit">Research</button></td>
 				</tr>
 				<tr>
 					<td align="center"><b>Warrior Troop</b></td>
-					<td align="center"><?php echo($troop["w"]) ?></td>
+					<td align="center"><?php echo($troop["w"]) ?>/7</td>
 					<td align="center"><?php echo(warriorNextLevelInfo($troop["w"])) ?></td>
 					<td align="center"><button name="warrior_research" type="submit">Research</button></td>
 				</tr>
 				<tr>
 					<td align="center"><b>Faction Perk 1</b></td>
-					<td align="center"><?php echo(getLevel("faction1")) ?></td>
+					<td align="center"><?php echo(getLevel("faction1")) ?>/3</td>
 					<td align="center"><?php echo(factionPerkOneNextLevelInfo($level["faction1"])) ?></td>
 					<td align="center"><button name="faction1_research" type="submit">Research</button></td>
 				</tr>
 				<tr>
 					<td align="center"><b>Faction Perk 2</b></td>
-					<td align="center"><?php echo(getLevel("faction2")) ?></td>
+					<td align="center"><?php echo(getLevel("faction2")) ?>/3</td>
 					<td align="center"><?php echo(factionPerkTwoNextLevelInfo($level["faction2"])) ?></td>
 					<td align="center"><button name="faction2_research" type="submit">Research</button></td>
 				</tr>
 				<tr>
 					<td align="center"><b>Civilisation Perk 1</b></td>
-					<td align="center"><?php echo(getLevel("civperk1")) ?></td>
+					<td align="center"><?php echo(getLevel("civperk1")) ?>/3</td>
 					<td align="center"><?php echo(civPerkOneNextLevelInfo($level["civperk1"])) ?></td>
 					<td align="center"><button name="civperk1_research" type="submit">Research</button></td>
 				</tr>
 				<tr>
 					<td align="center"><b>Civilisation Perk 2</b></td>
-					<td align="center"><?php echo(getLevel("civperk2")) ?></td>
+					<td align="center"><?php echo(getLevel("civperk2")) ?>/3</td>
 					<td align="center"><?php echo(civPerkTwoNextLevelInfo($level["civperk2"])) ?></td>
 					<td align="center"><button name="civperk2_research" type="submit">Research</button></td>
 				</tr>
