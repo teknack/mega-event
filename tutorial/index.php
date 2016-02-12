@@ -33,11 +33,11 @@
 			
 				<!-- Menu right items -->
 				<ul class="nav nav-tabs navbar-nav navbar-right">
-					<li><a href="#">Collect</a></li>
+					<li><a href="../landing/index.html">Return</a></li>
 					<li class="active"><a href="#">Local</a></li>
-					<li><a href="#">Market</a></li>
-					<li><a href="#">Research</a></li>
-					<li><a href="#">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
+					<li><a href="../landing/index.html">Return</a></li>
+					<li><a href="../landing/index.html">Return</a></li>
+					<li><a href="../landing/index.html">Return <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
 				</ul>
 			</div>
 		</div>
