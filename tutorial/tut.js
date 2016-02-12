@@ -786,7 +786,7 @@ function research()
 	window.open("research.php");
 }
 
-function research()
+function market()
 {
 	window.open("market.php");
 }

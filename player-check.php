@@ -4,6 +4,7 @@
  */
 
 include "./db_access/db.php";
+validate();
 connect();
 if (checkPlayerExists($_SESSION["tek_emailid"],"player"))
 {

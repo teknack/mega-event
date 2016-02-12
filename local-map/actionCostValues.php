@@ -14,4 +14,9 @@ $createTroopCostFoodBase=10;
 $createTroopCostWaterBase=13;
 $createTroopCostPowerBase=4;
 $plunderPortion=10;
+$foodMax=500;
+$waterMax=500;
+$powerMax=500;
+$metalMax=500;
+$woodMax=500;
 ?>

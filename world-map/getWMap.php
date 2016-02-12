@@ -4,7 +4,7 @@
 	$username="root";
 	$password="";
 	$db="Mega";
-	$player=$_SESSION["tek_emailid"];
+	$player=$_SESSION['tek_emailid'];
 	$conn=new mysqli($servername,$username,$password,$db);
 	if($conn->connect_error)
 	{
