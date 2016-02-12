@@ -184,6 +184,7 @@ if(clicks===0){
                            // $('#result').html(data)
                          }
                      });
+window.location="transitionToAlloc.php";
 return;
   }
     ev.dataTransfer.setData("text", ev.target.id);
