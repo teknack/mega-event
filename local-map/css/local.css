@@ -160,3 +160,6 @@ body{
 #ctxMenu{
 	background-color: white;
 }
+#ctxMenu button{
+	font-family: 'Josefin Slab', serif;
+}
