@@ -4,9 +4,8 @@
  * Player-based economy
  * DEMAND AND SUPPLY, BITCHACHOS!
  */
-include "../db_access/db.php";
-include "../common-code.php";
-harvest();
+include "../common-code.php"; //contains db.php
+harvest($_SESSION["tek_emailid"]);
 $conn = connect();
 $demands = array();
 

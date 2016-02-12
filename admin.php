@@ -1,14 +1,7 @@
 <?php
 include "./db_access/db.php";
 //session_start();
-function testVar($input="")
-{
-	$input = trim($input);
-	$input = stripslashes($input);
-	$input = htmlspecialchars($input);
 
-	return ($input);
-}
 	
 	if (isset($_POST) && !empty($_POST))
 	{
