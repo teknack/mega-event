@@ -72,7 +72,7 @@ body{
 }
 
 .white-bg{
-	font-family: 'Josefin Slab', serif;
+
 	color: black;
 }
 
@@ -86,14 +86,24 @@ body{
 	height:81vh;
 }
 .panel, .panel-default{
+
 	margin-top: 1em;
 	height: 45%;
 	overflow: auto;
 	background: rgba(255,255,255,0.5);
 }
 
+
+#bottomgroup{
+	background: rgba(255,255,255,0.2);
+}
+
 /*Navigation controls*/
 /*move navigation*/
+#nav_buttons{
+	color: black;
+}
+
 #world{
 	background-color: red;
 	padding: 5px;
@@ -160,8 +170,4 @@ body{
 
 #ctxMenu{
 	background-color: white;
-	font-family: 'Josefin Slab', serif;
-}
-#ctxMenu input{
-	padding: 3px;
 }

@@ -62,7 +62,7 @@ function sendScore($gamename,$score,$player)
 		break;
 	}
 	
-	if (checkPlayerExists($player,"CommonTable")) //($player,"tek16_megaevent.commontable"))
+	if (checkPlayerExists($player,"tek16_megaevent.commontable"))
 	{
 		$val = fetch($player,$colname);
 		
@@ -88,7 +88,7 @@ function getScores() //fetch total points
 		$check=true;
 	}
 	
-	setTable("CommonTable");//("tek16_megaevent.commontable");
+	setTable("tek16_megaevent.commontable");
 	$scores = fetchAll($_SESSION["tek_emailid"]);
 
 	if ($check === true)
