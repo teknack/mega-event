@@ -14,14 +14,29 @@
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
 	$faction=$row['faction'];
-	$sql="SELECT occupied,faction FROM grid";
+	$sql="SELECT row,col,occupied,faction FROM grid";
 	$res= $conn->query($sql);
+	$troops=0;
 	$output="[";                                        //stores JSON string format [{occupied:"value",faction:"value"},
 	if($res->num_rows > 0)                              //                           {occupied:"value",faction:"value"}]
 	{
 		while($row = $res->fetch_assoc())
 		{
-			$output=$output.'{"occupied":"'.$row["occupied"].'","faction":"'.$row["faction"].'"},';
+			if($row['occupied']==0)
+			{
+				$r=$row['row'];
+				$c=$row['col'];
+				$sql="SELECT quantity FROM troops WHERE row=$r and col=$c and playerid='$player';";
+				$res1=$conn->query($sql);
+				$r1=$res1->fetch_assoc();
+				if($r1['quantity']>0)
+					$troops=1;
+				else 
+					$troops=0;
+			}
+			else
+				$troops=0;
+			$output=$output.'{"occupied":"'.$row["occupied"].'","faction":"'.$row["faction"].'","troops":"'.$troops.'"},';
 		}
 		$output=$output.'{"player":"'.$player.'","faction":"'.$faction.'"}]';
 	}

@@ -11,8 +11,8 @@ if(!isset($_SESSION['faction']))
 
 /*1-grass
   2-sand
-  3-mountain
-  4-water*/
+  3-water
+  4-mountain*/
 
 /*for preservers 
   faction1-team bonus
@@ -117,14 +117,24 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 	}
 	else if($action=="createTroops" or $action=="fortify")
 	{
-		$sql="SELECT occupied FROM grid WHERE row=$row and col=$col;";
+		$sql="SELECT occupied,fortification FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		var_dump($sql);
 		$r=$res->fetch_assoc();
-		if($r['occupied']=='$playerid' or $r['occupied']==0) //allied or unoccupied slot
-			return true;
-		else
-			return false;	
+		if($action=="createTroops")
+		{
+			if($r['occupied']=='$playerid')
+				return true;
+			else
+				return false;	
+		}
+		else if($action=="fortify")
+		{
+			if($r['fortification']<8)
+				return true;
+			else
+				return false;		
+		}
 	}
 	else if($action=="settle")
 	{
@@ -1643,6 +1653,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 		}
 	}
 	$_SESSION['playerLevel']=$playerLevel;
+	$_SESSION['troopType']
 	$_SESSION['baseLevel']=$fortification;
 	/*redirect to mini-game*/
  	//header('location:../mini-game/attack/index.php');
@@ -1920,6 +1931,7 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 	$points=3;
 	$level=$r['civperk2'];
 	$points+=$level;
+	$_SESSION['bonus']=$slotType;
 	$_SESSION['regen_points']=$points;
 	$_SESSION['row']=$row;
 	$_SESSION['col']=$col;
@@ -1989,9 +2001,9 @@ function scout($row,$col)
 	else if($r['special']==2)
 		$slotType="sand";
 	else if($r['special']==3)
-		$slotType="mountain";
-	else if($r['special']==4)
 		$slotType="water";
+	else if($r['special']==4)
+		$slotType="mountain";
 	if($fortification!=0)
 	{
 		$troops=$r['troops'];
@@ -2048,10 +2060,20 @@ function scout($row,$col)
 			}
 		}
 	}
+
+	if($sfaction==1 )
+	{
+		$dispfaction="Diatiro";
+	}
+	else if($sfaction==2)
+	{
+		$dispfaction="kenos";
+	}
+
 	if($chance==0)
 	{
 	$output="(".$row.",".$col.") Occupant : ".$occupied."<br>Fortification : ".$fortification."<br>Troops : ".$troops.
-	    "<br>Faction : ".$sfaction."<br>Type:".$slotType;
+	    "<br>Faction : ".$dispfaction."<br>Type:".$slotType;
 	}
 	else
 	{
@@ -2059,12 +2081,12 @@ function scout($row,$col)
 		if($slotType==3)
 		{
 			$output="(".$row.",".$col.") Occupant : ".$occupied."<br>Fortification : ".$fortification."<br>Troops : ".$troops.
-	                 "<br>Faction : ".$sfaction."<br>Type:".$slotType."<br>Loot percentage: ".$winChance;
+	                 "<br>Faction : ".$dispfaction."<br>Type:".$slotType."<br>Loot percentage: ".$winChance;
 		}
 		else
 		{
 			$output="(".$row.",".$col.") Occupant : ".$occupied."<br>Fortification : ".$fortification."<br>Troops : ".$troops.
-	    	        "<br>Faction : ".$sfaction."<br>Type:".$slotType."<br>Win probability : ".$winChance;
+	    	        "<br>Faction : ".$dispfaction."<br>Type:".$slotType."<br>Win probability : ".$winChance;
 		}	
 	}
 	echo $output;
