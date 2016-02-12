@@ -31,6 +31,11 @@ var fortifyPowerCost=[35,70,90,110,140,160,180,200];
 var createTroopCostFoodBase=10;
 var createTroopCostWaterBase=13;
 var createTroopCostPowerBase=4;
+var playerFort;
+var allyFort;
+var enemyFort;
+var fortSet=1;
+var playerSprite;
 function assignGrid()
 {
 	for(var i=0;i<playArea;i++)
@@ -71,9 +76,15 @@ function renderGrid()
 	{
 		for(var j=0,x=0;j<playArea;j++,x+=slotSize)
 		{
-			ctx.fillStyle=grid[i][j]['color'];
+			if(grid[i][j]['color']=="red")
+				ctx.drawImage(enemyFort,x,y,slotSize,slotSize);
+			if(grid[i][j]['color']=="blue")
+				ctx.drawImage(playerFort,x,y,slotSize,slotSize);
+			if(grid[i][j]['color']=="yellow")
+				ctx.drawImage(allyFort,x,y,slotSize,slotSize);
+			if(grid[i][j]['color']=="cyan")
+				ctx.drawImage(playerSprite,x,y,slotSize,slotSize);
 			ctx.strokeRect(x,y,slotSize,slotSize);
-			ctx.fillRect(x,y,slotSize,slotSize);
 		}
 	}
 }
@@ -608,7 +619,7 @@ function move()
 	grid[srcRow][srcCol]['troops']-=selectedTroops;
 	grid[destRow][destCol]['troops']+=selectedTroops;
 	if(grid[destRow][destCol]['color']=="white")
-		grid[destRow][destCol]['color']="green";
+		grid[destRow][destCol]['color']="cyan";
 	renderGrid();
 	//console.log(typeof(grid[destRow][destCol]['troops']));
 	response("bottom_hint","moved "+selectedTroops+" by "+distance+" blocks<br>Cost<br>food:"+foodCost+"<br>water:"+waterCost+"<br>power:"+powerCost);
@@ -618,15 +629,15 @@ function move()
 function introduce()
 {
 	var prompt="           INTRODUCTION             <br>"+
-		  "All the colorful tiles you see is the area you are gonna play on<br>"+ 
+		  "All the tiles you see is the area you are gonna play on<br>"+ 
 		  "-your objective is to occupy as many of these tiles as possible<br>"+ 
-		  "-blue tiles are the tiles on which you have settle you will start"+ 
+		  "-blue forts are the tiles on which you have settle you will start"+ 
 		   "your game with one tile occupied<br>"+ 
-		  "-yellow tiles belong to your allies,they are the ones who belong"+ 
+		  "-yellow forts belong to your allies,they are the ones who belong"+ 
 		   "to the same faction as you do <br>"+ 
-		  "-red tiles belong to all the players who are in the other faction"+ 
+		  "-red forts belong to all the players who are in the other faction"+ 
 		   "your enemies<br>"+
-		  "-the white tiles are unoccupied and you can send your troops to occupy them<br>"+
+		  "-the empty tiles are unoccupied and you can send your troops to occupy them<br>"+
 		  "-You will get to choose your faction once you actually start the game<br>"+ 
 		   "but for now you could fiddle with the game to learn it or u could"+
 		   "select the tutorial options on the right to let the game teach you<br>"+
@@ -657,7 +668,7 @@ function tileTypes()
 			   "The map you see below the tiles is not just for looks it has a purpose<br>"+
 			   "-the tiles above "
 			   "-green areas give bonus FOOD and WATER(+1 food/min and +1 water/min)<br>"+
-			   "-sandy areas areas give bonus POWER(+2 power/min)<br>"+
+			   "-sandy areas areas give bonus POWER(+1 power/min and -1 water/min)<br>"+
 			   "-water areas cannot be settled on but,are resource rich so you can loot<bR>"+
 			   " them as many times as you want but it will be hard<br>"+
 			   "-mountain areas can be settled on but you need certain amount of tech for that to happen(+2 metal/min and +2 water/min)<br>"+
@@ -721,6 +732,8 @@ function settling()
 			   " I would be assuming at this point that you have moved atleast one of your soldiers<br>"+
 			   " to an occupied (white)tile .If not then DO IT<br>"+
 			   " Click on the cyan(light blue) colored tile then select settle<br>"+
+			   " In the main game you will be redirected to resource allocation page wherein you are<br>"
+			   " given 3 points to distribute among resource regenerations, this could be increased by research"
 			   "-pros:<br>"+
 			   " -you get more resource regen per slot occupied i.e you get minimum"+
 			   "  3 points to distribute among any resource and ofcourse, the tile bonuses apply<br>"+
@@ -740,7 +753,7 @@ function creAttack()
 			   " You can see the probability of attack success at the bottom of the page<br>"+
 			   " Clearly you don't have enough troops, so make atleast 20 troops and then try<br>"+
 			   " to attack your enemy.<br>"+
-			   " BTW you will be redirected to a minigame which you have to succeed in so that your attack is<br>"+
+			   " BTW you will be redirected to a minigame which you have to succeed in so that your attack is a<br>"+
 			   " win.In the highly unlikely case of you not wanting to play the attack mini-game ,you could<br>"+
 			   " sim the attack (which will be available in the main game) the result will be decided based on probability<br>"+
 			   " and well a figurative throw of dice.<br>"+
@@ -754,11 +767,27 @@ function research()
 	var prompt=" you can upgrade various aspects of your civilisation in the research section";
 	response("action",prompt);
 }
-window.onload=function renderLocal()
+
+var everythingLoaded = setInterval(function() {
+  if (/loaded|complete/.test(document.readyState)) {
+    clearInterval(everythingLoaded);
+    renderLocal(); // this is the function that gets called when everything is loaded
+  }
+}, 10);
+
+function renderLocal()
 {
 	hideAll();
 	canvas=document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
+	playerFort=new Image();
+    playerFort.src="../assets/"+fortSet+"b.png";
+    enemyFort=new Image();
+    enemyFort.src="../assets/"+fortSet+"r.png";
+    allyFort=new Image();
+    allyFort.src="../assets/"+fortSet+"y.png";
+    playerSprite=new Image();
+    playerSprite.src="../assets/blue.png"
 	for(var i=0;i<9;i++)
 	{
 		grid[i]=[];

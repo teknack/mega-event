@@ -9,10 +9,12 @@ var faction;
 var slotSize=10; //cell size in px
 var hSize=9;     //hover window size , no. of slots/cells
 var grid=[];
-var playerColor="blue";//"rgba(0,71,179,0.5)";
+var playerTroopColor="cyan";
+var playerColor="blue";//rgba(0,71,179,0.5)";
 var allyColor="yellow";//"rgba(203,204,0,0.5)";
 var enemyColor="red";//"rgba(204,0,0,0.5)";
 var neutralColor="white"//"rgba(255,255,255,0.5)";
+var highlightColor="rgba(64,64,64,0.5)";
 for(var i=0;i<100;i++)
 {
 	grid[i]=[];
@@ -38,16 +40,19 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 {
 	console.log(playerId);
 	for(i=0,k=0;i<100;i++)
-	  {
+	{
 		for(j=0;j<100;j++,k++)
 		{
-			if(temp[k]["occupied"]==playerId )
+			/*if(temp[k]["occupied"]==playerId )
 			{
 				grid[i][j]=playerColor;
 			}
 			else if(temp[k]["occupied"]==0)
 			{
-				grid[i][j]=neutralColor;
+				if(temp[k]["troops"]>0)
+					grid[i][j]=playerTroopColor;
+				else
+					grid[i][j]=neutralColor;
 			}
 			else
 			{
@@ -55,9 +60,16 @@ function convertToGrid(temp) //converts 1-D numeric 1-D associative to 2-D numer
 					grid[i][j]=allyColor;
 				else
 					grid[i][j]=enemyColor;
-			}
+			}*/
+			//terrain stuff
+			if(temp[k]['terrain']==1)
+				grid[i][j]="green";
+			else if(temp[k]['terrain']==3)
+				grid[i][j]="blue";
+			else
+				grid[i][j]="white";
 		}
-	  }
+	}
 }
 
 function drawMap()
@@ -81,10 +93,10 @@ window.onload=function loadDoc(){
   }
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState == 4 && xhttp.status == 200) {
-	  //window.alert(xhttp.responseText);
+	  console.log(xhttp.responseText);
       temp=JSON.parse(xhttp.responseText);             //editable
       map=new Image();
-      map.src="../assets/test1.jpg";
+      map.src="../assets/mapnotree.png";
 	  map.onload=drawMap;
       playerId=temp[10000]["player"];
       faction=temp[10000]["faction"];                                  
@@ -92,35 +104,55 @@ window.onload=function loadDoc(){
       renderGrid(grid);                                //editable
     }
   }
-  xhttp.open("GET", "getWMap.php", true);
+  xhttp.open("GET", "getTerrain.php", true);
   xhttp.send();
   //ajax ends--->
 
 	document.getElementById("canvas").setAttribute("onClick","passCursorPosition(canvas,event)")	;
-	document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
-	document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
+	//document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
+	//document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
 
   //playerId=temp[10]["player"];
 }
 function passCursorPosition(canvas, event) {
-  	var xhttp;
   	var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
-    x=x-(hSize/2*slotSize);
+    /*x=x-(hSize/2*slotSize);
 	if(x<0)
 		x=0;
 	y=y-(hSize/2*slotSize);
 	if(y<0)
-		y=0;
+		y=0;*/
     var row=Math.floor(y/slotSize);
     var col=Math.floor(x/slotSize);
-    if(row>99-hSize)
+    /*terrain stuff*/var size=5; // CHANGE THE TERRAIN SETTING SLOT OVER HERE!!!!! do not set to 0
+    /*if(row>99-hSize)
     	row=100-hSize;
     if(col>99-hSize)
-    	col=100-hSize;
+    	col=100-hSize;*/
     var res=row+","+col;	
-    window.location="../transfer.php?coord="+res;
+    //window.location="../transfer.php?coord="+res;
+    //terrain stuff
+    var xhttp;
+	if (window.XMLHttpRequest)
+	{
+	    // code for modern browsers
+		xhttp = new XMLHttpRequest();
+	}
+	else
+	{
+	    // code for IE6, IE5
+		xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xhttp.onreadystatechange = function() {
+	    	if (xhttp.readyState == 4 && xhttp.status == 200) {
+		  console.log(xhttp.responseText);
+	    }
+	  }
+	xhttp.open("POST", "setSpecial.php", true);
+  	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  	xhttp.send("row="+row+"&col="+col+"&size="+size);
 }
 function getCursorPosition(canvas , event) {
   	var rect = canvas.getBoundingClientRect();
@@ -134,8 +166,8 @@ function getCursorPosition(canvas , event) {
  	cx=(slotSize)*col;
 	cy=(slotSize)*row;
 	//console.log("fill with"+ctx.fillStyle);
-	//if(ctx.fillStyle!="#ffffff" || ctx.fillstyle!=null)
- 	ctx.fillRect(cx,cy,slotSize,slotSize); 
+	if(ctx.fillStyle!="#ffffff" || ctx.fillstyle!=null)
+ 		ctx.fillRect(cx,cy,slotSize,slotSize); 
  	//console.log(ctx.strokeStyle);
 	ctx.strokeRect(cx,cy,slotSize,slotSize);
  }
@@ -179,19 +211,27 @@ function highlight(event)
 		if(col>99-hSize)
 			col=100-hSize;
 		document.getElementById("info").innerHTML=x+","+y+"        "+row+","+col;
-		occupy("rgba(128,128,128,0.3)",row,col,hSize);                  // highlighting color
+		occupy(highlightColor,row,col,hSize);                  // highlighting color
 
 	}
 }
+function clearSlot(row,col)
+{
+	var cx=col*slotSize;
+	var cy=row*slotSize;
+	console.log("clear:"+cx+","+cy);
+	ctx.clearRect(cx,cy,slotSize,slotSize);
+}
 function clearc()
 {
-	//console.log("clear");
+	console.log("clear");
 	while(highlighted.length>0)
 	{
 		var cod=highlighted.pop();
 		var c=cod.split(",");
 		var row=parseInt(c[0],10);
-		var col=parseInt(c[1],10);	
+		var col=parseInt(c[1],10);
+		console.log(row+","+col);	
 		var tempCol=col;
 		for(var i=0;i<hSize && row<100;row++,i++)
 		{
@@ -202,6 +242,9 @@ function clearc()
 				ctx.fillStyle=grid[row][col];
 				ctx.strokeRect(cx,cy,slotSize,slotSize);
 				ctx.fillRect(cx,cy,slotSize,slotSize);*/
+				//occupy(grid[row][col],row,col,1);
+				//console.log("clear :"+row+","+col);
+				clearSlot(row,col);
 				occupy(grid[row][col],row,col,1);
 			}
 		}

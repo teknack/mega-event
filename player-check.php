@@ -8,6 +8,7 @@ connect();
 if (checkPlayerExists($_SESSION["tek_emailid"],"player"))
 {
 	$_SESSION["faction"] = getFaction($_SESSION["tek_emailid"]);
+	alert("welcome back, ".$_SESSION["tek_fname"]); //keep?
 	disconnect();
 	redirect("./world-map/canvas1.html");
 }

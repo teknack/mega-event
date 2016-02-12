@@ -5,6 +5,8 @@
  * DEMAND AND SUPPLY, BITCHACHOS!
  */
 include "../db_access/db.php";
+include "../common-code.php";
+harvest();
 $conn = connect();
 $demands = array();
 
@@ -152,6 +154,7 @@ if (isset($_POST) && !empty($_POST))
 						<li><a href="../local-map/index.php">Local</a></li>
 						<li class="active"><a href="#">Market</a></li>
 						<li><a href="#">Research</a></li>
+						<li><a href="../local-map/resources.php">Collect</a></li>
 						<li><a href="../world-map/canvas1.html">World Map <span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
 					</ul>
 				</div>

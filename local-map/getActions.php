@@ -57,8 +57,18 @@ function scout($row,$col)
 		$slotType="mountain";
 	else if($r['special']==4)
 		$slotType="water";
+
+	if($r['faction']==1 )
+	{
+		$dispfaction="Diatiro";
+	}
+	else if($r['faction']==2)
+	{
+		$dispfaction="kenos";
+	}
+
 	$output=$output.'{"response":"Occupant:'.$r["occupied"].'<br>Fortification:'.$r["fortification"].'<br>troops:'
-					.$troops.'<br>your troops:'.$ptroops.'<br>Faction:'.$r["faction"].'<br>Type:'.$slotType.'"}]';
+					.$troops.'<br>your troops:'.$ptroops.'<br>Faction:'.$dispfaction.'<br>Type:'.$slotType.'"}]';
 }
 function troopPresent($row,$col)
 {
