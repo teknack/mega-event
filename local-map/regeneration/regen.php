@@ -2,8 +2,7 @@
 	session_start();
 $row = $_SESSION["settleRow"];
 $col = $_SESSION["settleCol"];
-$bonus = $_SESSION["bonus"];
-unset($_SESSION["bonus"]);	
+
 /* 
 0-mud  -- +2 water
 1-grass -- no bonus
@@ -12,8 +11,7 @@ unset($_SESSION["bonus"]);
 4-mountain -- +1 metal ; +1 wood
 	
 	*/
-	$bon = $_SESSION['bonus'];
-	unset($_SESSION['bonus']);
+	
 ?>
 
 <html>
@@ -84,7 +82,7 @@ unset($_SESSION["bonus"]);
 						<tr>
 							<td></td>
 							<td></td>
-							<td><button class="btn btn-default" type="submit" name="resourceregen" onclick='sendback(<?php $bon; ?>)'>Confirm</button></td>
+							<td><button class="btn btn-default" type="submit" name="resourceregen" onclick='sendback(<?php $var ?>)'>Confirm</button></td>
 							<td></td>
 						</tr>
 					</tbody>
