@@ -888,6 +888,16 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 				unset($_SESSION['result']);
 				unset($_SESSION['ppercent']);
 				unset($_SESSION['bpercent']);
+				if($result)
+				{
+					$_SESSION['settleRow']=$destRow;
+					$_SESSION['settleCol']=$destCol;
+					$_SESSION['claim']=true;
+					echo "<script>alert('shud')</script>";
+					echo "<script>window.location.href='../mini-game/settle.php';</script>";
+				}
+				else
+					echo "<script>alert('$result')</script>";
 			}
 			else
 			{
@@ -938,7 +948,8 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 					$_SESSION['settleRow']=$destRow;
 					$_SESSION['settleCol']=$destCol;
 					$_SESSION['claim']=true;
-					header("location:../mini-game/settle/settle.php");
+					echo "THERE!";
+					echo "<script>window.location.href='../mini-game/settle.php';</script>";
 				}
 			}
 		}
@@ -2467,7 +2478,7 @@ if(isset($_POST['attack']))
 		//echo $quantity;
 		attackM($srcrow,$srccol,$row,$col,$quantity,1);
 	}
-	header("location:index.php");
+	//header("location:index.php");
 }
 
 if(isset($_POST['sim_attack']))

@@ -56,7 +56,7 @@ echo " Hi! Your changes have been saved.";
 
                    
                     $.ajax({
-                        url: 'http://localhost/tek1/indexsnow.php',
+                        url: 'indexsnow.php',
                         type: 'GET',
                          data: { var_PHP_data: tot }, 
                          success: function(data) {
@@ -182,7 +182,7 @@ function drag(ev) {
 if(clicks===0){
   alert("sorry! You have exhausted your clicks. Click on Save changes.");
   $.ajax({
-                        url: 'http://localhost/tek1/indexsnow.php',
+                        url: 'indexsnow.php',
                         type: 'GET',
                          data: { var_PHP_data: tot }, 
                          success: function(data) {

@@ -13,7 +13,7 @@ $target = "";
 switch($level)
 {
 	case 0:
-		$target = "indexcity.php":
+		$target = "indexcity.php";
 	break;
 	
 	case 1:
