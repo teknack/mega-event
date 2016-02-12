@@ -2,6 +2,7 @@
 body{
 	background: url("./image/oldpaper.jpg") no-repeat;
 	background-size: cover;
+	font-size: 1.6em;
 }
 
 /*Navbar tab */
