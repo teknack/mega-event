@@ -4,11 +4,9 @@
  * Used by us to mess around and see stats
  */
 include "./db_access/db.php";
- 
 if (!isset($_SESSION["admin"]) || $_SESSION["admin"] != true)
 {
-	alert("nice try... Go play");
-	die(redirect("http://teknack.in"));
+	header("location: http://teknack.in");
 }
 
 //gameUnset();
