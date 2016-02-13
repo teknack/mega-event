@@ -791,6 +791,25 @@ function market()
 	window.open("market.php");
 }
 
+function starting()
+{
+	var prompt="When you start the game you will have to choose between 2 factions, after that you will be<bR>"+
+			   " redirected to the world-map , the world map has HUMANAGOUS number of tiles,that's the number of tiles<br>"+
+			   "available for all players to conquer/capture, however you can only select your play area from the world-map<bR>"+
+			   " in the world map: <br>"+
+			   " -blue tiles-your tiles<br>"+
+			   " -yellow tiles - ally tiles(allies belong to the same faction)<br>"+
+			   " -red tiles - enemy tiles (players belonging to the other faction<br>"+
+			   " -transparent tiles - unoccupied<br><br><br><br><br>"+
+			   " <button onclick='start()'>GO TO MINI GAME</button>";
+	response("prompt",prompt);
+}
+
+function start()
+{
+	window.location="../index.php";	
+}
+
 var everythingLoaded = setInterval(function() {
   if (/loaded|complete/.test(document.readyState)) {
     clearInterval(everythingLoaded);
