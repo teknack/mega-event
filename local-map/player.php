@@ -2354,7 +2354,7 @@ function fortify($row,$col)/*pending*/
 	{
 		$_SESSION['response']="the slot is now accupied by an ally or you tried to fortify your spawn point do not fortify them since they cannot 
 		be conquered or settled upon :(.";
-		header("location:index.php")
+		header("location:index.php");
 	}
 	global $conn,$playerid,$fortifyWoodCost,$fortifyMetalCost,$fortifyPowerCost;
 	$sql="SELECT fortification FROM grid WHERE row=$row and col=$col;";
