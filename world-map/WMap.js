@@ -84,6 +84,39 @@ function drawMap()
 	ctx1.drawImage(map,0,0,1000,1000);
 }
 
+function leader()
+{
+	var xhttp;
+	var leaders="";
+	  if (window.XMLHttpRequest) {
+	    // code for modern browsers
+	    xhttp = new XMLHttpRequest();
+	    } else {
+	    // code for IE6, IE5
+	    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  xhttp.onreadystatechange = function() {
+	    if (xhttp.readyState == 4 && xhttp.status == 200) {
+		    console.log(xhttp.responseText);
+	        temp=JSON.parse(xhttp.responseText);             //editable
+			for(var i=0;i<temp.length;i++)
+			{
+				if(temp[i]['user']!=null)
+				{
+					if(temp[i]['faction']==1)
+						temp[i]['faction']="Eos";
+					else if(temp[i]['faction']==2)
+						temp[i]['faction']="Zephyros";
+					leaders+="<tr><td>"+(i+1)+"</td><td>"+temp[i]['user']+"</td><td>"+temp[i]['faction']+"</td><td>"+temp[i]['tiles']+"</td></tr>";
+				}
+			}
+			document.getElementById("leaderBoard").innerHTML+=leaders;                                        
+	    }
+	  }
+	  xhttp.open("GET", "getLeader.php", true);
+	  xhttp.send();	
+}
+
 window.onload=function loadDoc(){
 	canvas=document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
@@ -129,7 +162,7 @@ window.onload=function loadDoc(){
   xhttp.open("GET", "getWMap.php", true);
   xhttp.send();
   //ajax ends--->
-
+  	leader();
 	document.getElementById("canvas").setAttribute("onClick","passCursorPosition(canvas,event)")	;
 	document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
 	document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
