@@ -202,7 +202,7 @@ function fetch($player,$col="",$cond="")
 	}
 	
 	$query="SELECT ".$col." FROM ".$dbtable." WHERE tek_emailid='".$player."' ".$cond.";";
-	$_SESSION["error"]=$query;
+	//$_SESSION["error"]=$query;
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);
 	return($res[$col]);
@@ -220,7 +220,7 @@ function fetchAll($player,$cond="")
 	$query = "SELECT * FROM ".$dbtable." WHERE tek_emailid='".$player."' ".$cond.";";
 	
 	$res = mysqli_query($dbconn,$query);
-	var_dump($query);
+	//var_dump($query);
 	$res = mysqli_fetch_assoc($res);
 	return($res);
 }

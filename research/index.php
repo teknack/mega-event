@@ -332,7 +332,7 @@ function deductResource($resource,$amount)
 	connect();
 	setTable("player");
 	$data = fetchAll($_SESSION["tek_emailid"]);
-	$data[$resource] = $data["resource"] - $amount;
+	$data[$resource] = $data[$resource] - $amount;
 	update($resource,$data[$resource],"tek_emailid='".$_SESSION["tek_emailid"]."'");
 	disconnect();
 }
