@@ -327,6 +327,16 @@ function civPerkTwoNextLevelInfo($level)
 	return($ret);
 }
 
+function deductResource($resource,$amount)
+{
+	connect();
+	setTable("player");
+	$data = fetchAll($_SESSION["tek_emailid"]);
+	$data[$resource] = $data["resource"] - $amount;
+	update($resource,$data[$resource],"tek_emailid='".$_SESSION["tek_emailid"]."'");
+	disconnect();
+}
+
 function getPlayerResources()
 {
 	connect();
@@ -348,6 +358,8 @@ function levelUpDefense()
 			{
 				$level=$level+1;
 				update("defence",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("wood",400);
 			}
 			else //not enough resources
 			{
@@ -360,6 +372,9 @@ function levelUpDefense()
 			{
 				$level=$level+1;
 				update("defence",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("wood",400);
+				deductResource("metal",400);
 			}
 			else
 			{
@@ -372,6 +387,8 @@ function levelUpDefense()
 			{
 				$level=$level+1;
 				update("defence",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("metal",800);
 			}
 			else
 			{
@@ -392,6 +409,7 @@ function levelUpOpen()
 			{
 				$level=$level+1;
 				update("open",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
 			}
 			else //not enough resources
 			{
@@ -404,6 +422,8 @@ function levelUpOpen()
 			{
 				$level=$level+1;
 				update("open",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("wood",800);
 			}
 			else
 			{
@@ -416,6 +436,9 @@ function levelUpOpen()
 			{
 				$level=$level+1;
 				update("open",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",400);
+				deductResource("metal",400);
 			}
 			else
 			{
@@ -437,6 +460,8 @@ function levelUpStealth()
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("food",480);
 			}
 			else //not enough resources
 			{
@@ -450,6 +475,8 @@ function levelUpStealth()
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",400);
 			}
 			else
 			{
@@ -463,6 +490,8 @@ function levelUpStealth()
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",800);
 			}
 			else
 			{
@@ -476,6 +505,9 @@ function levelUpStealth()
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",800);
+				deductResource("metal",400);
 			}
 			else
 			{
@@ -489,6 +521,9 @@ function levelUpStealth()
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",800);
+				deductResource("metal",800);
 			}
 			else
 			{
@@ -502,6 +537,9 @@ function levelUpStealth()
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",1200);
+				deductResource("metal",800);
 			}
 			else
 			{
@@ -515,6 +553,9 @@ function levelUpStealth()
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",1200);
+				deductResource("metal",1200);
 			}
 			else
 			{
@@ -536,6 +577,8 @@ function levelUpWarrior()
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("food",480);
 			}
 			else //not enough resources
 			{
@@ -549,6 +592,8 @@ function levelUpWarrior()
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",400);
 			}
 			else
 			{
@@ -562,6 +607,8 @@ function levelUpWarrior()
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",800);
 			}
 			else
 			{
@@ -575,6 +622,9 @@ function levelUpWarrior()
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",800);
+				deductResource("metal",400);
 			}
 			else
 			{
@@ -588,6 +638,9 @@ function levelUpWarrior()
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",800);
+				deductResource("metal",800);
 			}
 			else
 			{
@@ -601,6 +654,9 @@ function levelUpWarrior()
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",1200);
+				deductResource("metal",800);
 			}
 			else
 			{
@@ -614,6 +670,9 @@ function levelUpWarrior()
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("wood",1200);
+				deductResource("metal",1200);
 			}
 			else
 			{
@@ -634,6 +693,8 @@ function levelUpFactionPerkOne()
 			{
 				$level=$level+1;
 				update("faction1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("food",480);
 			}
 			else //not enough resources
 			{
@@ -646,6 +707,9 @@ function levelUpFactionPerkOne()
 			{
 				$level=$level+1;
 				update("faction1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("food",960);
+				deductResource("metal",400);
 			}
 			else
 			{
@@ -658,6 +722,9 @@ function levelUpFactionPerkOne()
 			{
 				$level=$level+1;
 				update("faction1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("food",960);
+				deductResource("metal",800);
 			}
 			else
 			{
@@ -678,6 +745,8 @@ function levelUpFactionPerkTwo()
 			{
 				$level=$level+1;
 				update("faction2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("food",480);
 			}
 			else //not enough resources
 			{
@@ -690,6 +759,9 @@ function levelUpFactionPerkTwo()
 			{
 				$level=$level+1;
 				update("faction2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("food",960);
+				deductResource("metal",400);
 			}
 			else
 			{
@@ -702,6 +774,9 @@ function levelUpFactionPerkTwo()
 			{
 				$level=$level+1;
 				update("faction2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("food",960);
+				deductResource("metal",800);
 			}
 			else
 			{
@@ -722,6 +797,8 @@ function levelUpCivPerkOne()
 			{
 				$level=$level+1;
 				update("civperk1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("food",480);
 			}
 			else //not enough resources
 			{
@@ -734,6 +811,8 @@ function levelUpCivPerkOne()
 			{
 				$level=$level+1;
 				update("civperk1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("food",400);
 			}
 			else
 			{
@@ -746,6 +825,8 @@ function levelUpCivPerkOne()
 			{
 				$level=$level+1;
 				update("civperk1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("metal",400);
 			}
 			else
 			{
@@ -766,6 +847,8 @@ function levelUpCivPerkTwo()
 			{
 				$level=$level+1;
 				update("civperk2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("food",480);
 			}
 			else //not enough resources
 			{
@@ -778,6 +861,8 @@ function levelUpCivPerkTwo()
 			{
 				$level=$level+1;
 				update("civperk2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",480);
+				deductResource("food",400);
 			}
 			else
 			{
@@ -790,6 +875,8 @@ function levelUpCivPerkTwo()
 			{
 				$level=$level+1;
 				update("civperk2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",960);
+				deductResource("metal",400);
 			}
 			else
 			{
@@ -802,6 +889,9 @@ function levelUpCivPerkTwo()
 			{
 				$level=$level+1;
 				update("civperk2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
+				deductResource("power",1000);
+				deductResource("wood",500);
+				deductResource("metal",500);
 			}
 			else
 			{
