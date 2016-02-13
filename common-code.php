@@ -72,7 +72,7 @@ function sendScore($gamename,$score,$player)
 	}
 	else
 	{
-		insert("tek_emailid",$player);
+		insert("tek_emailid","'".$player."'");
 		update($colname,$score,"tek_emailid='".$player."'");
 	}
 	
