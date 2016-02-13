@@ -1,8 +1,8 @@
 <?php 
 $servername="localhost";
 $username="root";
-$password="";
-$db="Mega";
+$password="swSlus7I63";
+$db="tek16_megaevent";
 
 $conn=new mysqli($servername,$username,$password,$db);
 if($conn->connect_error)
