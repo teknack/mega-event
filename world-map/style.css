@@ -11,14 +11,14 @@ html, body{
 #canvas
 {
 	position:absolute;
-	left:150px;
-	top:150px;
+	left:350px;
+	top:100px;
 	/*opacity: 0.3;*/
 }
 
 #mapCanvas
 {
 	position:absolute;
-	left:150px;
-	top:150px;
+	left:350px;
+	top:100px;
 }

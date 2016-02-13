@@ -89,6 +89,21 @@ window.onload=function loadDoc(){
 	ctx = canvas.getContext("2d");
 	canvas1=document.getElementById("mapCanvas");
 	ctx1 = canvas1.getContext("2d");
+	canvas2=document.getElementById("legend");
+	ctx2 = canvas2.getContext("2d");
+	ctx2.font="20px Arial";
+	ctx2.fillStyle="blue";
+	ctx2.fillRect(0,0,20,20);
+	ctx2.fillText(" - your tiles",30,15);
+	ctx2.fillStyle="yellow";
+	ctx2.fillRect(0,30,20,20);
+	ctx2.fillText(" - ally tiles",30,45);
+	ctx2.fillStyle="red";
+	ctx2.fillRect(0,60,20,20);
+	ctx2.fillText(" - enemy tiles",30,75);
+	ctx2.fillStyle="cyan";
+	ctx2.fillRect(0,90,20,20);
+	ctx2.fillText(" - your stationed soldiers",30,105);
   //ajax starts here do not edit!!
   var xhttp;
   if (window.XMLHttpRequest) {
@@ -224,7 +239,7 @@ function highlight(event)
 			row=100-hSize;
 		if(col>99-hSize)
 			col=100-hSize;
-		document.getElementById("info").innerHTML=x+","+y+"        "+row+","+col;
+		document.getElementById("info").innerHTML=row+","+col;
 		occupy(highlightColor,row,col,hSize);                  // highlighting color
 
 	}
