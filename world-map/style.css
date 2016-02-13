@@ -43,13 +43,11 @@ html, body{
     color: #1A535C;
 }
 
-.col-md-10{
-	background: rgba(0,0,0,0.5);
-}
 
 .panel{
 	background: rgba(0,0,0,0.2);
 	overflow: hidden;
+	pointer-events: none;
 }
 
 #legend
