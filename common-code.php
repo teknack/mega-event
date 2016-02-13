@@ -11,7 +11,7 @@ function sendScore($gamename,$score,$player)
 	
 	setTable("tk16_megaevent.CommonTable");
 	
-	switch($tablename)
+	switch($gamename)
 	{
 		case "into-darkness":
 			$colname = "id";
