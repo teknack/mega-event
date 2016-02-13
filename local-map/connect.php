@@ -1,7 +1,7 @@
 <?php 
 $servername="localhost";
 $username="root";
-$password="swSlus7I63";
+$password="";//"swSlus7I63";
 $db="tk16_megaevent";
 
 $conn=new mysqli($servername,$username,$password,$db);
