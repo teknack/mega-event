@@ -118,7 +118,7 @@ function update($column,$value,$condition)
 	if (!$op || $op === false)
 	{
 		echo("db.php -> update: ".mysqli_error($dbconn)."<br>");
-		//var_dump($query);
+		var_dump($query);
 		echo("<br>");
 		//var_dump($op);
 		//echo("<br>");
