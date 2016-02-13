@@ -65,7 +65,7 @@ if(mysqli_query($conn,$sql)){
                         type: 'GET',
                          data: { var_PHP_data: tot }, 
                          success: function(data) {
-                           alert(data);
+                           //alert(data);
                            window.location="../transitionToAlloc.php";
                            // $('#result').html(data)
                          }
