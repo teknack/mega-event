@@ -2422,9 +2422,15 @@ else if(isset($_POST['select_troops']))
 {
 	$row=$_POST['row'];
 	$col=$_POST['col'];
-	$quantity=$_POST['quantity'];
+	if(isset($_POST['quantity']) and !empty($_POST['quantity']))
+	{
+		$quantity=$_POST['quantity'];
+	}
+	else
+		$quantity=1;
 	if($quantity>0)
 	{
+		echo "looks okay";
 		if(troopExist($row,$col,$quantity))
 		{
 			$_SESSION['selectedRow']=$row;
@@ -2557,8 +2563,6 @@ else if(isset($_SESSION['result']))
 	}	
 	//header("location:index.php");
 }
-else
-{
-	header("location:index.php");
-}
+
+header("location:index.php");
 ?>
