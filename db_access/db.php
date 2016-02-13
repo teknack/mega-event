@@ -31,7 +31,7 @@ session_start();
 //validate(); //VALIDATION CHECK
 
 $dbusername="root";
-$dbpassword="swSlus7I63";
+$dbpassword="";//"swSlus7I63";
 $dbname="tk16_megaevent";
 $dbtable="grid";
 $dbconn="";
@@ -56,6 +56,7 @@ function connect()
 function setTable($table)
 {
 	global $dbtable;
+	
 	if (strpos($table,"tk16_megaevent.") === false)
 	{
 		$dbtable="tk16_megaevent.".$table;
@@ -191,25 +192,35 @@ function getSlotTroops($x,$y)
 		return $res;
 	}
 }
-function fetch($player,$col="")
+function fetch($player,$col="",$cond="")
 {
 	global $dbconn,$dbtable;
 	
-	$query="SELECT ".$col." FROM ".$dbtable." WHERE tek_emailid='".$player."';";
+	if($cond !== "")
+	{
+		$cond = "AND ".$cond;
+	}
+	
+	$query="SELECT ".$col." FROM ".$dbtable." WHERE tek_emailid='".$player."' ".$cond.";";
 	$_SESSION["error"]=$query;
 	$res = mysqli_query($dbconn,$query);
 	$res = mysqli_fetch_assoc($res);
 	return($res[$col]);
 }
 
-function fetchAll($player)
+function fetchAll($player,$cond="")
 {
 	global $dbconn, $dbtable;
 	
-	$query = "SELECT * FROM ".$dbtable." WHERE tek_emailid='".$player."';";
+	if($cond !== "")
+	{
+		$cond = "AND ".$cond;
+	}
+	
+	$query = "SELECT * FROM ".$dbtable." WHERE tek_emailid='".$player."' ".$cond.";";
 	
 	$res = mysqli_query($dbconn,$query);
-	//var_dump($query);
+	var_dump($query);
 	$res = mysqli_fetch_assoc($res);
 	return($res);
 }
