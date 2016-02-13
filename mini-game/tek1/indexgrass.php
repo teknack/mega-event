@@ -65,7 +65,7 @@ if(mysqli_query($conn,$sql)){
                         type: 'GET',
                          data: { var_PHP_data: tot }, 
                          success: function(data) {
-                           alert(data);
+                           //alert(data);
                            window.location="../transitionToAlloc.php";
                            // $('#result').html(data)
                          }
@@ -234,7 +234,7 @@ if(clicks===0){
                          }
                      });
                      
-window.location="transitionToAlloc.php";
+window.location="../transitionToAlloc.php";
 return;
   }
     ev.dataTransfer.setData("text", ev.target.id);

@@ -62,7 +62,7 @@ echo " Hi! Your changes have been saved.";
                         type: 'GET',
                          data: { var_PHP_data: tot }, 
                          success: function(data) {
-                           alert(data);
+                           //alert(data);
                            window.location="../transitionToAlloc.php";
                            // $('#result').html(data)
                          }
@@ -232,7 +232,7 @@ if(clicks===0){
                            // $('#result').html(data)
                          }
                      });
-window.location="transitionToAlloc.php";
+window.location="../transitionToAlloc.php";
 return;
   }
     ev.dataTransfer.setData("text", ev.target.id);
