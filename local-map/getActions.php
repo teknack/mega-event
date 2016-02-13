@@ -204,7 +204,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 				if(isset($_SESSION['selectedRow']))
 				{
 					if($slotType==3)
-						$output=$output.'{"action":"loot"},{"visible":"false"}]';
+						$output=$output.'{"visible":"false"}]';
 					else
 						$output=$output.'{"action":"scout"},{"action":"move"},{"visible":"false"}]';
 				}

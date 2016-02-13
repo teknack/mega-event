@@ -16,6 +16,7 @@ session_start();
     <link href='https://fonts.googleapis.com/css?family=Josefin+Slab:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="../maincss/mainstyle.css">	
 	<link rel="stylesheet" type="text/css" href="./css/local.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 	<script src="action.js"></script>
 </head>
 
@@ -163,6 +164,5 @@ session_start();
 
 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 </body>
 </html>
