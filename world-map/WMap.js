@@ -272,7 +272,9 @@ function highlight(event)
 			row=100-hSize;
 		if(col>99-hSize)
 			col=100-hSize;
-		document.getElementById("info").innerHTML=row+","+col;
+		document.getElementById("info").innerHTML=row+","+col+"-----"+row+","+(col+hSize)+"<br>"+
+												  "    |       "+"-----"+"    |   <br>"+
+												  (row+hSize)+","+col+"-----"+(row+hSize)+","+(col+hSize);
 		occupy(highlightColor,row,col,hSize);                  // highlighting color
 
 	}

@@ -2,6 +2,8 @@
     if (isset($_GET['var_PHP_data'])) {
       session_start();
 
+    if(isset($_SESSION['battery']))
+      header("location:../transitionToAlloc.php");
       //echo "hi";
     // echo $_GET['var_PHP_data'];
 //echo "<script type='text/javascript'>alert('$message');</script>";
@@ -72,7 +74,15 @@ echo " Hi! Your changes have been saved.";
         $('#game').show();
     });
              });
+$(document).bind("contextmenu",function(e) {
+ e.preventDefault();
+});
 
+$(document).keydown(function(e){
+    if(e.which === 123){
+       return false;
+    }
+});
         </script>
 
 <style>
@@ -80,10 +90,10 @@ div
 {
  /*display: block; */
 
-  width: 6em;
+  width:5em;
 height: 4em;
  border:1px solid;
-border-color: transparent;  
+border-color: transparent; 
   text-align: center;
   font-weight: bold;
    
@@ -139,23 +149,24 @@ width: 100px;
 
 section
 {
-  width:1200px; 
-height:468px;
-  background-image: url(city.jpg);
+  width:57em; 
+height:30em;
+  background-image: url("city.jpg");
   background-repeat: no-repeat;
   background-position: center;
+  background-size: 67em 30em;
 }
 
 #div1
 {
-width: 900px;
-height:100px;
-}
+width: 50em;
+height:7em;
 
+}
 #option
 {
-width: 1200px;
-height:100px;
+width: 70em;
+height:7em;
 
 }
 </style>
@@ -170,7 +181,7 @@ document.getElementById('click').innerHTML = "Tries left= " + clicks ;
 } 
 </script>
 <script>
-var correct=0;var clicks=15;
+var correct=0;var clicks=10;
 	var incorrect=0;
   var bflag=0; var wflag=0;var wflag2=0; var tflag=0; var gflag=0; var hflag=0;var sflag2=0; var sflag=0; var tot=0;
 function allowDrop(ev) {
@@ -217,7 +228,7 @@ function drop(ev,el) {
         {
 $("#s2").animate({
            
-            height: '-=12px',
+            height: '-=0.8em',
         });
           bflag=1; tot=tot+20;
  // $(document).ready(function() {
@@ -240,7 +251,7 @@ if (data2==data){
         {
 $("#s2").animate({
            
-            height: '-=12px',
+            height: '-=0.8em',
         });wflag=1; tot=tot+20;}}
 
 else{
@@ -248,7 +259,7 @@ if(wflag2==0)
         {
 $("#s2").animate({
            
-            height: '-=12px',
+            height: '-=0.8em',
         });wflag2=1; tot=tot+20;}
 }
 
@@ -260,7 +271,7 @@ if (data2==data){
         {
 $("#s2").animate({
            
-            height: '-=12px',
+            height: '-=0.8em',
         });
 hflag=1; tot=tot+20;}}
 else{
@@ -269,7 +280,7 @@ else{
         {
 $("#s2").animate({
            
-            height: '-=12px',
+            height: '-=0.8em',
         });
 hflag2=1; tot=tot+20;}}}
 
@@ -284,7 +295,7 @@ hflag2=1; tot=tot+20;}}}
         {
 $("#s2").animate({
            
-            height: '-=12px',
+            height: '-=0.8em',
         });
 sflag=1; tot=tot+20;}}
 else{
@@ -293,7 +304,7 @@ else{
         {
 $("#s2").animate({
            
-            height: '-=12px',
+            height: '-=0.8em',
         });
 sflag2=1; tot=tot+20;}}}
     else if (data2=="geo")
@@ -301,7 +312,7 @@ sflag2=1; tot=tot+20;}}}
         {
 $("#s2").animate({
            
-            height: '-=12px',
+            height: '-=0.8em',
         });
 
       gflag=1; tot=tot+20;}}
@@ -312,7 +323,7 @@ $("#s2").animate({
         {
 $("#s2").animate({
            
-            height: '-=12px',
+            height: '-=0.8em',
         });
       tflag=1; tot=tot+20;}} 
 
@@ -334,7 +345,7 @@ $("#s2").animate({
 
        $("#s2").animate({
            
-            height: '+=12px',
+            height: '+=0.8em',
         });
      }
     }
@@ -347,7 +358,7 @@ $("#s2").animate({
 
        $("#s2").animate({
            
-            height: '+=12px',
+            height: '+=0.8em',
         });
 }
      }
@@ -359,7 +370,7 @@ $("#s2").animate({
 
        $("#s2").animate({
            
-            height: '+=12px',
+            height: '+=0.8em',
         });
 }
      }
@@ -378,7 +389,7 @@ $("#s2").animate({
 
         $("#s2").animate({
            
-            height: '+=12px',
+            height: '+=0.8em',
         });
      }}
       else{
@@ -389,7 +400,7 @@ $("#s2").animate({
 
         $("#s2").animate({
            
-            height: '+=12px',
+            height: '+=0.8em',
         });
      }
     }}
@@ -402,7 +413,7 @@ $("#s2").animate({
 
         $("#s2").animate({
            
-            height: '+=12px',
+            height: '+=0.8em',
         });
      }
     }
@@ -414,7 +425,7 @@ $("#s2").animate({
 
         $("#s2").animate({
            
-            height: '+=12px',
+            height: '+=0.8em',
         });
      }
     }}
@@ -427,7 +438,7 @@ $("#s2").animate({
 
         $("#s2").animate({
            
-            height: '+=12px',
+            height: '+=0.8em',
         });
      }
     }
@@ -476,8 +487,8 @@ $("#s2").animate({
 <div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
 
-<div id="s1" style="background-image: url(batterygreen.png);height:60px;width:100px;position:relative;  border:3px solid #000;   vertical-align: bottom;">
-<div  id="s2" style="background-image: url(battery.png);height:59px;width:100px;position:absolute;  border:2px #000; margin:0em;">
+<div id="s1" style="background-image: url(batterygreen.png);background-repeat: no-repeat;background-position: relative;    background-size: 6em 4em; height:4em;width:6em; position:relative;  border:3px solid #000;   vertical-align: bottom;">
+<div  id="s2" style="background-image: url(battery.png);background-repeat: no-repeat;background-position: relative; background-size: 6em 4em;height:4em;width:6em;position:relative;  border:2px #000; margin:0em;">
  </div>
  </div> 
 
@@ -485,16 +496,16 @@ $("#s2").animate({
 
 
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="Wind" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="Solar" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
 
 
@@ -508,16 +519,16 @@ $("#s2").animate({
 <div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-
-
-
-
-
-
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="Solar" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+
+
+
+
+
+
+<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
@@ -533,17 +544,17 @@ $("#s2").animate({
 
 
 
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="Thermal" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
 
 
@@ -562,7 +573,7 @@ $("#s2").animate({
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div id="Hydro" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
@@ -570,13 +581,6 @@ $("#s2").animate({
 <div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
   
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="Hydro" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 <div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
@@ -612,7 +616,7 @@ $("#s2").animate({
 
 </div>
  
-<div id="click" style="color:#fff;width: 9em; height: 2em;"> Tries left = 15 </div>
+<div id="click" style="color:#fff;width: 9em; height: 2em;"> Tries left = 10 </div>
 <br>
 <div id="sub" style="margin-top:7; margin-left:40;"> Save</div> 
 
