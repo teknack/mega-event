@@ -2563,6 +2563,6 @@ else if(isset($_SESSION['result']))
 	}	
 	//header("location:index.php");
 }
-
-header("location:index.php");
+else
+	header("location:index.php");
 ?>
