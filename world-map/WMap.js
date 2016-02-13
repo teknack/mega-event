@@ -93,17 +93,17 @@ window.onload=function loadDoc(){
 	ctx2 = canvas2.getContext("2d");
 	ctx2.font="20px Arial";
 	ctx2.fillStyle="blue";
-	ctx2.fillRect(0,0,20,20);
-	ctx2.fillText(" - your tiles",30,15);
+	ctx2.fillRect(30,10,20,20);
+	ctx2.fillText(" - your tiles",50,25);
 	ctx2.fillStyle="yellow";
-	ctx2.fillRect(0,30,20,20);
-	ctx2.fillText(" - ally tiles",30,45);
+	ctx2.fillRect(30,40,20,20);
+	ctx2.fillText(" - ally tiles",50,55);
 	ctx2.fillStyle="red";
-	ctx2.fillRect(0,60,20,20);
-	ctx2.fillText(" - enemy tiles",30,75);
+	ctx2.fillRect(30,70,20,20);
+	ctx2.fillText(" - enemy tiles",50,85);
 	ctx2.fillStyle="cyan";
-	ctx2.fillRect(0,90,20,20);
-	ctx2.fillText(" - your stationed soldiers",30,105);
+	ctx2.fillRect(30,100,20,20);
+	ctx2.fillText(" - your stationed soldiers",50,115);
   //ajax starts here do not edit!!
   var xhttp;
   if (window.XMLHttpRequest) {
