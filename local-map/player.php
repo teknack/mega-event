@@ -671,69 +671,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 {
 	global $conn,$playerid,$plunderPortion;
-	if($action=="loot") // for loot
-	{
-		global $foodMax,$metalMax,$waterMax,$waterMax,$woodMax;
-
-		$lootPercent=$_SESSION['bpercent'];
-		$surPercent=$_SESSION['ppercent'];
-		if(!isset($srcRow) or !isset($srcCol) or !empty($srcCol) or !empty($srcRow))
-		{
-			echo $_SESSION['selectedCol']."<bR>";
-			$srcRow=$_SESSION['selectedRow'];
-			$srcCol=$_SESSION['selectedCol'];
-		}
-		$foodLoot=$foodMax*$lootPercent/100;
-		$metalLoot=$metalMax*$lootPercent/100;
-		$waterLoot=$metalMax*$lootPercent/100;
-		$woodLoot=$metalMax*$lootPercent/100;
-		$powerLoot=$metalMax*$lootPercent/100;
-
-		$sql="UPDATE player SET food=food+$foodLoot,water=water+$waterLoot,power=power+$powerLoot,metal=metal+$metalLoot
-		      ,wood=wood+$woodLoot WHERE tek_emailid='$playerid'";
-		if(!$conn->query($sql))
-		{
-			echo "error: ".$conn->error."<br>";
-			var_dump($sql);
-		}
-		echo $srcRow."<br>";
-		echo $srcCol."<br>";
-		$quantity=$quantity*$surPercent/100;
-		$sql="SELECT occupied FROM grid WHERE row=$srcRow and col=$srcCol;";
-		$res=$conn->query($sql);
-		var_dump($sql);
-		$r=$res->fetch_assoc();
-		if($r['occupied']==$playerid)
-		{
-			$sql="UPDATE grid SET troops=troops-$quantity WHERE row=$srcRow and col=$srcCol;";
-			if(!$conn->query($sql))
-			{
-				echo "error : ".$conn->error."<br>";
-				var_dump($sql);
-			}
-			else
-			{
-				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol;";
-				if(!$conn->query($sql))
-				{
-					echo "error : ".$conn->error."<br>";
-					var_dump($sql);
-				}	
-			}	
-		}
-		if($_SESSION['result'])
-			$_SESSION['response']="That was a good loot!<br>Loot:<bR>-food:$foodLoot<bR>-water:$waterLoot<bR>-power:$powerLoot
-								   <bR>-metal:$metalLoot<bR>-wood:$woodLoot";
-		else
-			$_SESSION['response']="Try with stronger troops<br>Loot:<bR>-food:$foodLoot<bR>-water:$waterLoot<bR>-power:$powerLoot
-								   <bR>-metal:$metalLoot<bR>-wood:$woodLoot";
-		unset($_SESSION['destRow']);
-		unset($_SESSION['destCol']);
-		//unset($_SESSION['selectedRow']);
-		//unset($_SESSION['selectedCol']);
-		//unset($_SESSION['selectedTroops']);
-		header("location:index.php");
-	}
+	
 	$battleRes=simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity);
 	$battleResult=$battleRes['result'];
 	echo "<br>RESULT:-$battleResult<br>";
@@ -753,6 +691,7 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 	{
 		if(isset($_SESSION['result'])) //in case called after mini-game
 		{
+			echo "mini-game!";
 			$result=$_SESSION['result'];
 			if($result)
 			{
@@ -904,14 +843,19 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 				unset($_SESSION['bpercent']);
 				if($result)
 				{
+					unset($_SESSION['selectedRow']);
+					unset($_SESSION['selectedCol']);
+					unset($_SESSION['selectedTroops']);
+					unset($_SESSION['destRow']);
+					unset($_SESSION['destCol']);
 					$_SESSION['settleRow']=$destRow;
 					$_SESSION['settleCol']=$destCol;
 					$_SESSION['claim']=true;
 					//echo "<script>alert('shud')</script>";
-					echo "<script>window.location.href='../mini-game/settle.php';</script>";
+					echo "reaches";
+					header("location:../mini-game/settle.php");
 				}
-				else
-					echo "<script>window.location.href='index.php';</script>";
+				
 			}
 			else
 			{
@@ -957,14 +901,12 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 					echo "error : ".$conn->error."   <br>";
 					var_dump($sql);
 				}
-				if($result)
-				{
-					$_SESSION['settleRow']=$destRow;
-					$_SESSION['settleCol']=$destCol;
-					$_SESSION['claim']=true;
-					echo "THERE!";
-					echo "<script>window.location.href='../mini-game/settle.php';</script>";
-				}
+				unset($_SESSION['selectedRow']);
+				unset($_SESSION['selectedCol']);
+				unset($_SESSION['selectedTroops']);
+				unset($_SESSION['destRow']);
+				unset($_SESSION['destCol']);
+				echo "<script>window.location.href='index.php';</script>";
 			}
 		}
 		else
@@ -1186,19 +1128,27 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 			}
 			if($battleResult)
 			{
+				unset($_SESSION['selectedRow']);
+				unset($_SESSION['selectedCol']);
+				unset($_SESSION['selectedTroops']);
+				unset($_SESSION['destRow']);
+				unset($_SESSION['destCol']);
 				$_SESSION['settleRow']=$destRow;
 				$_SESSION['settleCol']=$destCol;
 				$_SESSION['claim']=true;
-				header("location:../mini-game/settle/settle.php");
+				header("location:../mini-game/settle.php");
+			}
+			else
+			{
+				unset($_SESSION['selectedRow']);
+				unset($_SESSION['selectedCol']);
+				unset($_SESSION['selectedTroops']);
+				unset($_SESSION['destRow']);
+				unset($_SESSION['destCol']);
+				header("location:index.php");
 			}
 		}
 	}	
-	//unset($_SESSION['selectedRow']);
-	//unset($_SESSION['selectedCol']);
-	unset($_SESSION['selectedTroops']);
-	unset($_SESSION['destRow']);
-	unset($_SESSION['destCol']);
-
 }
 
 function simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity)
