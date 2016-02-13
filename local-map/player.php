@@ -2401,9 +2401,7 @@ if(isset($_POST['fortify']))
 	fortify($row,$col);
 	header("location:index.php");
 }
-
-
-if(isset($_POST['settle']))
+else if(isset($_POST['settle']))
 {
 	$row=$_POST['row'];
 	$col=$_POST['col'];
@@ -2412,9 +2410,7 @@ if(isset($_POST['settle']))
 	settle($row,$col);
 	header("location:index.php");
 }
-
-
-if(isset($_POST['select_troops']))
+else if(isset($_POST['select_troops']))
 {
 	$row=$_POST['row'];
 	$col=$_POST['col'];
@@ -2430,17 +2426,13 @@ if(isset($_POST['select_troops']))
 	}
 	header("location:index.php");
 }
-
-
-if(isset($_POST["scout"]))
+else if(isset($_POST["scout"]))
 {
 	scout($_POST['row'],$_POST['col']);
 	//scout(1,19);
 	header("location:index.php");
 }
-
-
-if(isset($_POST['move']))
+else if(isset($_POST['move']))
 {
 	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
 	{
@@ -2459,9 +2451,7 @@ if(isset($_POST['move']))
 	move($srcrow,$srccol,$row,$col,$quantity);
 	header("location:index.php");
 }
-
-
-if(isset($_POST['attack']))
+else if(isset($_POST['attack']))
 {
 	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
 	{
@@ -2482,8 +2472,7 @@ if(isset($_POST['attack']))
 	}
 	//header("location:index.php");
 }
-
-if(isset($_POST['sim_attack']))
+else if(isset($_POST['sim_attack']))
 {
 	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
 	{
@@ -2501,9 +2490,7 @@ if(isset($_POST['sim_attack']))
 	attack($srcrow,$srccol,$row,$col,$quantity);
 	header("location:index.php");
 }
-
-
-if(isset($_POST['loot']))
+else if(isset($_POST['loot']))
 {
 	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
 	{
@@ -2522,16 +2509,7 @@ if(isset($_POST['loot']))
 	loot($srcrow,$srccol,$row,$col,$quantity);
 	//header("location:index.php");
 }
-
-
-if(isset($_POST["loot_scout"]))
-{
-	lootScout($_POST['row'],$_POST['col']);
-	header("location:index.php");
-}
-
-
-if(isset($_POST['create_troops']))
+else if(isset($_POST['create_troops']))
 {
 	$row=$_POST['row'];
 	$col=$_POST['col'];
@@ -2544,8 +2522,7 @@ if(isset($_POST['create_troops']))
 	createTroops($row,$col,$quantity);
 	header("location:index.php");
 }
-
-if(isset($_SESSION['result']))
+else if(isset($_SESSION['result']))
 {
 	if(isset($_SESSION['selectedTroops']) and !empty($_SESSION['selectedTroops']))
 	{
@@ -2570,5 +2547,8 @@ if(isset($_SESSION['result']))
 	}	
 	//header("location:index.php");
 }
-
+else
+{
+	header("location:index.php");
+}
 ?>
