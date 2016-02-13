@@ -8,17 +8,27 @@ html, body{
 	color: white;
 }
 
+#legend
+{
+	position:relative;
+	top:-800px;
+}
+
+#parentInfo
+{
+	position:relative;
+	top:-800px;
+}
+
 #canvas
 {
-	position:absolute;
-	left:350px;
-	top:100px;
+	position:relative;
+	top:-960px;
 	/*opacity: 0.3;*/
 }
 
 #mapCanvas
 {
-	position:absolute;
-	left:350px;
-	top:100px;
+	position:relative;
+	top:50px;
 }
