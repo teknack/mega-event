@@ -9,7 +9,7 @@ function sendScore($gamename,$score,$player)
 {
 	connect();
 	
-	setTable("tek16_megaevent.CommonTable");
+	setTable("tk16_megaevent.CommonTable");
 	
 	switch($tablename)
 	{
@@ -62,7 +62,7 @@ function sendScore($gamename,$score,$player)
 		break;
 	}
 	
-	if (checkPlayerExists($player,"tek16_megaevent.CommonTable"))
+	if (checkPlayerExists($player,"tk16_megaevent.CommonTable"))
 	{
 		$val = fetch($player,$colname);
 		
@@ -88,7 +88,7 @@ function getScores() //fetch total points
 		$check=true;
 	}
 	
-	setTable("tek16_megaevent.CommonTable");
+	setTable("tk16_megaevent.CommonTable");
 	$scores = fetchAll($_SESSION["tek_emailid"]);
 
 	if ($check === true)
@@ -121,7 +121,7 @@ function harvest($player) //return's the "gold"
 	
 	update("gold",$new_val,"tek_emailid='".$player."'");
 	
-	setTable("CommonTable");//("tek16_megaevent.commontable");
+	setTable("tk16_megaevent.CommonTable");//("tek16_megaevent.commontable");
 	
 	/*
 	foreach ($scores as $key=>$val)

@@ -68,9 +68,9 @@ session_start();
 							<input type="hidden" name="row" id="row">
 							<input type="hidden" name="col" id="col">
 							<input type="number" name="quantity" id="quantity">
-						</form>
 						<div id="action">
 						</div>
+						</form>
 					</div>
 				</div>
 				<div class="panel panel-default">

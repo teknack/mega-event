@@ -876,7 +876,7 @@ if (isset($_POST) && !empty($_POST))
 			<div>
 				<!-- Menu right items -->
 				<ul class="nav nav-tabs navbar-nav navbar-right">
-					<li><a href="./resources.php">Collect</a></li>
+					<li><a href="../local-map/resources.php">Collect</a></li>
 					<li><a href="../local-map/index.php">Local</a></li>
 					<li><a href="../market/index.php">Market</a></li>
 					<li class="active"><a href="../research/index.php">Research</a></li>

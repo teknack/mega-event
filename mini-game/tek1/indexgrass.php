@@ -90,26 +90,48 @@ $(document).keydown(function(e){
         </script>
 
 <style>
-div
-{
- /*display: block; */
-
-  width:5em;
-height: 4em;
- border:1px solid;
-border-color: transparent; 
-  text-align: center;
-  font-weight: bold;
-   
-    
-  background:rgba(255,255,255,0);
-  vertical-align: top;
-    float: left;
-
-
-
-
+body{
+  background-image: url(back.jpg);
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    border: none;
+    margin: 0px 0px;
+    padding: 0px 0px;
+    overflow-x: hidden; 
 }
+
+#game{
+ width: 100vw;
+    height: 100vh;
+    margin: 0px 0px;
+    padding: 0px 0px;
+}
+.tile
+{
+ display: block; */
+    width: 8.15%;
+    height: 12.2%;
+    text-align: center;
+    font-weight: bold;
+    background: rgba(255,255,255,0);
+    vertical-align: top;
+    float: left;
+    width: 8.9%;
+}
+
+@media screen and (max-width: 1046px) {
+.tile
+{
+  width: 8.7%;
+}
+}
+
+
+/*div{
+  border-color: transparent;
+  border: 1px solid;
+}*/
 #sub {
 width: 100px;
  height:25px;
@@ -128,6 +150,9 @@ width: 100px;
   padding: 10px 20px 10px 20px;
   border: solid #1f218c 2px;
   text-decoration: none;
+  float: left;
+  text-align: center;
+    font-size: 25px;
 }
 
 #sub:hover {
@@ -148,31 +173,34 @@ width: 100px;
   
   font-weight: bold;
   text-shadow: -5px 3px 3px rgba(50, 12, 200, 0.9);
-
+  float: left;
+    padding: 10px 50px;
 }
 
-section
+.section
 {
-  width:57em; 
-height:30em;
-  background-image: url("grass new.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 67em 30em;
+  width: 100vw;
+    height: 75vh;
+    background-image: url("grass new.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
 }
 
 #div1
 {
 width: 50em;
 height:7em;
+float: left;
 
 }
 #option
 {
-width: 70em;
-height:7em;
-
+/*width: 70em;
+height:7em;*/
+float: left;
 }
+
 </style>
 <script type="text/javascript" src="jquery-1.12.0.js"></script>
 <script type="text/javascript">
@@ -424,140 +452,143 @@ $("#s2").animate({
 </script>
 
 </head>
-<body style=" background-image: url(back.jpg);width: 80em; height:80em; display: block; border: none; ">
+<body>
 
 
-<p id="hide"><img src="front.png">
+<p id="hide"><img src="front.png" style="width: 100%; height: 100%;">
 
 </p>
 
 
 <div id="game">
+<div class="section">
 
-<section>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
-<div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div4" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
 
-<div id="s1" style="background-image: url(batterygreen.png);background-repeat: no-repeat;background-position: relative;    background-size: 6em 4em; height:4em;width:6em; position:relative;  border:3px solid #000;   vertical-align: bottom;">
-<div  id="s2" style="background-image: url(battery.png);background-repeat: no-repeat;background-position: relative; background-size: 6em 4em;height:4em;width:6em;position:relative;  border:2px #000; margin:0em;">
- </div>
+<div id="s1" style="background-image: url(batterygreen.png);background-repeat: no-repeat; background-size: 6em 4em;height:4em;width:6em; position:absolute; top: 10px; right: 10px;  border:2px solid #000;   vertical-align: bottom;">
  </div> 
 
-
-
-
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div  id="s2" style="background-image: url(battery.png);background-repeat: no-repeat; background-size: 6em 4em;height:4em;width:6em;position:relative; position:absolute; top: 10px; right: 10px;  border:2px solid #000; margin:0em;">
+ </div>
 
 
 
 
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div  class="tile"id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div  class="tile"id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div  class="tile"id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div  class="tile"id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div  class="tile"id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
 
 
 
-
-
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="Geo" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="Biogas" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div  class="tile"id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div6" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
 
 
 
 
 
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="Solar" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="Solar" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="Geo" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="Biogas" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div7" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
 
 
 
 
 
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-
-  
-<div id="Hydro" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="Hydro" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-<div id="div5" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
-
-
-
-  
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div3" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
 
 
 
 
 
 
-</section> <br>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div  class="tile"id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="Hydro" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="Hydro" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+<div class="tile" id="div8" ondrop="drop(event,this)" ondragover="allowDrop(event)"></div>
+
+
+</div>
 <div id="option">
 <div id="div1" ondrop="drop(event,this)" ondragover="allowDrop(event)" style="background-color: rgba(250,240,230,0.3);">
 <br>

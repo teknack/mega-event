@@ -2,7 +2,7 @@
 $servername="localhost";
 $username="root";
 $password="swSlus7I63";
-$db="tek16_megaevent";
+$db="tk16_megaevent";
 
 $conn=new mysqli($servername,$username,$password,$db);
 if($conn->connect_error)

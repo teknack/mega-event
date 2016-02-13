@@ -3,11 +3,11 @@
 	if(isset($_SESSION['playerLevel']) && isset($_SESSION['baseLevel']) && isset($_SESSION['troopType']))
 	{
 		//$goto="location:../../local-map/index.php";
-		$goto="<script>window.location.href='../../local-map/player.php';</script>";
+		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/local-map/index.php';</script>";
 	}
 	else
 	{
-		$goto="<script>window.location.href='../../tutorial/index.php';</script>";
+		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/tutorial/index.php';</script>";
 	}
 	$difficulty = $_SESSION['baseLevel'];
 	$playerlevel = $_SESSION['playerLevel'];

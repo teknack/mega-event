@@ -2,8 +2,8 @@
 	session_start();
 	$servername="localhost";
 	$username="root";
-	$password="";
-	$db="Mega";
+	$password="swSlus7I63";
+	$db="tk16_megaevent";
 	$player=$_SESSION['tek_emailid'];
 	$conn=new mysqli($servername,$username,$password,$db);
 	if($conn->connect_error)

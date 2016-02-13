@@ -32,7 +32,7 @@ session_start();
 
 $dbusername="root";
 $dbpassword="swSlus7I63";
-$dbname="tek16_megaevent";
+$dbname="tk16_megaevent";
 $dbtable="grid";
 $dbconn="";
 $dbservername="localhost";
@@ -56,8 +56,14 @@ function connect()
 function setTable($table)
 {
 	global $dbtable;
-	
-	$dbtable = $table;
+	if (strpos($table,"tk16_megaevent.") === false)
+	{
+		$dbtable="tk16_megaevent.".$table;
+	}
+	else
+	{
+		$dbtable = $table;
+	}
 }
 
 function checkPlayerExists($player,$table)

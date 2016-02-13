@@ -10,7 +10,7 @@ include "./db_access/db.php";
 		
 		if ($username === "Nischal" || $username === "Jacques" || $username === "Siddhant")
 		{
-			if ($password === "ThreeGandus")
+			if ($password === "SidIsAGandu")
 			{
 				$_SESSION["admin"] = true;
 				header("location: ./admin-main.php");

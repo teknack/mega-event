@@ -134,7 +134,7 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 		}
 		else if($action=="fortify")
 		{
-			if($r['fortification']<8)
+			if($r['fortification']<8 and $r['fortification']>0)
 				return true;
 			else
 				return false;		
@@ -2352,8 +2352,9 @@ function fortify($row,$col)/*pending*/
 {
 	if(!validateAction("fortify",$row,$col))
 	{
-		$_SESSION['response']="the slot is now accupied by an ally :(.";
-		return;
+		$_SESSION['response']="the slot is now accupied by an ally or you tried to fortify your spawn point do not fortify them since they cannot 
+		be conquered or settled upon :(.";
+		header("location:index.php")
 	}
 	global $conn,$playerid,$fortifyWoodCost,$fortifyMetalCost,$fortifyPowerCost;
 	$sql="SELECT fortification FROM grid WHERE row=$row and col=$col;";

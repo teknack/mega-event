@@ -2,30 +2,29 @@
 	session_start();
 	$servername="localhost";
 	$username="root";
-	$password="";
-	$db="Mega";
-	$player=$_SESSION["tek_emailid"];
+	$password="swSlus7I63";
+	$db="tk16_megaevent";
 	$conn=new mysqli($servername,$username,$password,$db);
 	if($conn->connect_error)
 	{
 		die("connection error".$conn->connect_error);
 	}
-	$sql="SELECT faction FROM player WHERE tek_emailid='$player';";
+	$sql="SELECT tek_emailid,total,faction FROM player ORDER BY total DESC;";
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
 	$faction=$row['faction'];
-	$sql="SELECT special FROM grid ORDER BY row ASC";
 	$res= $conn->query($sql);
 	$troops=0;
 	$output="[";                                        //stores JSON string format [{occupied:"value",faction:"value"},
 	if($res->num_rows > 0)                              //                           {occupied:"value",faction:"value"}]
 	{
-		while($row = $res->fetch_assoc())
+		$i=0;
+		while($row = $res->fetch_assoc() and $i<5)
 		{
-			$special=$row['special'];
-			$output=$output.'{"terrain":"'.$special.'"},';
+			$output=$output.'{"user":"'.$row["tek_emailid"].'","faction":"'.$row["faction"].'","tiles":"'.$row['total'].'"},';
+			$i++;
 		}
-		$output=$output.'{"player":"'.$player.'","faction":"'.$faction.'"}]';
+		$output.="{}]";
 	}
 	echo $output;
 	$conn->close();
