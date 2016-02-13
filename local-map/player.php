@@ -549,12 +549,12 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 	{
 
 		$row=$res->fetch_assoc();
-		if($row['occupied']=='$playerid')
+		if($row['occupied']==$playerid)
 		{
 			$sql="SELECT occupied FROM grid WHERE row=$destRow and col=$destCol";
 			$res2=$conn->query($sql);
 			$r=$res2->fetch_assoc();
-			if($r['occupied']!='$playerid') //player moving form settled to unoccupied/allied slot
+			if($r['occupied']!=$playerid) //player moving form settled to unoccupied/allied slot
 			{
 				$sql="SELECT quantity FROM troops WHERE row=$destRow and col=$destCol;"; //check if troops are already present
 				$res1=$conn->query($sql);
@@ -607,7 +607,7 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 			$sql="SELECT occupied FROM grid WHERE row=$destRow and col=$destCol";
 			$res2=$conn->query($sql);
 			$r=$res2->fetch_assoc();
-			if($r['occupied']!='$playerid') //player moves from unoccupied/allied slots to unoccupied/allied slots
+			if($r['occupied']!=$playerid) //player moves from unoccupied/allied slots to unoccupied/allied slots
 			{
 				$sql="UPDATE troops SET quantity=quantity-$quantity WHERE row=$srcRow and col=$srcCol and playerid='$playerid';";
 				if($conn->query($sql)==false)
@@ -2354,7 +2354,7 @@ function fortify($row,$col)/*pending*/
 	{
 		$_SESSION['response']="the slot is now accupied by an ally or you tried to fortify your spawn point do not fortify them since they cannot 
 		be conquered or settled upon :(.";
-		header("location:index.php")
+		header("location:index.php");
 	}
 	global $conn,$playerid,$fortifyWoodCost,$fortifyMetalCost,$fortifyPowerCost;
 	$sql="SELECT fortification FROM grid WHERE row=$row and col=$col;";
@@ -2563,6 +2563,6 @@ else if(isset($_SESSION['result']))
 	}	
 	//header("location:index.php");
 }
-
-header("location:index.php");
+else
+	header("location:index.php");
 ?>
