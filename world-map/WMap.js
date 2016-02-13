@@ -84,11 +84,59 @@ function drawMap()
 	ctx1.drawImage(map,0,0,1000,1000);
 }
 
+function leader()
+{
+	var xhttp;
+	var leaders="";
+	  if (window.XMLHttpRequest) {
+	    // code for modern browsers
+	    xhttp = new XMLHttpRequest();
+	    } else {
+	    // code for IE6, IE5
+	    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  xhttp.onreadystatechange = function() {
+	    if (xhttp.readyState == 4 && xhttp.status == 200) {
+		    console.log(xhttp.responseText);
+	        temp=JSON.parse(xhttp.responseText);             //editable
+			for(var i=0;i<temp.length;i++)
+			{
+				if(temp[i]['user']!=null)
+				{
+					if(temp[i]['faction']==1)
+						temp[i]['faction']="Eos";
+					else if(temp[i]['faction']==2)
+						temp[i]['faction']="Zephyros";
+					leaders+="<tr><td>"+(i+1)+"</td><td>"+temp[i]['user']+"</td><td>"+temp[i]['faction']+"</td><td>"+temp[i]['tiles']+"</td></tr>";
+				}
+			}
+			document.getElementById("leaderBoard").innerHTML+=leaders;                                        
+	    }
+	  }
+	  xhttp.open("GET", "getLeader.php", true);
+	  xhttp.send();	
+}
+
 window.onload=function loadDoc(){
 	canvas=document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
 	canvas1=document.getElementById("mapCanvas");
 	ctx1 = canvas1.getContext("2d");
+	canvas2=document.getElementById("legend");
+	ctx2 = canvas2.getContext("2d");
+	ctx2.font="20px Arial";
+	ctx2.fillStyle="blue";
+	ctx2.fillRect(30,10,20,20);
+	ctx2.fillText(" - Your Tiles",50,25);
+	ctx2.fillStyle="yellow";
+	ctx2.fillRect(30,40,20,20);
+	ctx2.fillText(" - Ally Tiles",50,55);
+	ctx2.fillStyle="red";
+	ctx2.fillRect(30,70,20,20);
+	ctx2.fillText(" - Enemy Tiles",50,85);
+	ctx2.fillStyle="cyan";
+	ctx2.fillRect(30,100,20,20);
+	ctx2.fillText(" - Your stationed soldiers",50,115);
   //ajax starts here do not edit!!
   var xhttp;
   if (window.XMLHttpRequest) {
@@ -114,7 +162,7 @@ window.onload=function loadDoc(){
   xhttp.open("GET", "getWMap.php", true);
   xhttp.send();
   //ajax ends--->
-
+  	leader();
 	document.getElementById("canvas").setAttribute("onClick","passCursorPosition(canvas,event)")	;
 	document.getElementById("canvas").setAttribute("onmousemove","highlight(event)");
 	document.getElementById("canvas").setAttribute("onmouseout","clear(event)");
@@ -224,7 +272,7 @@ function highlight(event)
 			row=100-hSize;
 		if(col>99-hSize)
 			col=100-hSize;
-		document.getElementById("info").innerHTML=x+","+y+"        "+row+","+col;
+		document.getElementById("info").innerHTML=row+","+col;
 		occupy(highlightColor,row,col,hSize);                  // highlighting color
 
 	}

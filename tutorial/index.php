@@ -72,6 +72,7 @@
 					<button type="submit" id="attacking">attacking</button><br><br>
 					<button type="submit" id="research">research</button><br><br>
 					<button type="submit" id="market">market and getting more resources</button><br><br>
+					<button type="submit" id="starting">starting the game</button><br><br>
 				</div>
 			</div>
 			<div class="panel panel-default">

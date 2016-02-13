@@ -1,16 +1,16 @@
 <?php
 	session_start();
-	if(isset($_SESSION['playerLevel']) && isset($_SESSION['baseLevel']) && isset($_SESSION['troopType'])){
+	if(isset($_SESSION['playerLevel']) && isset($_SESSION['baseLevel']) && isset($_SESSION['troopType']))
+	{
 		$playerlevel = $_SESSION['playerLevel'];
 		$difficulty = $_SESSION['baseLevel'];
 		$playerclass = $_SESSION['troopType'];
-	}else{
+	}
+	else
+	{
 		$difficulty = 1;
 		$playerlevel = 1;
 		$playerclass = 1;
-		$_SESSION['baseLevel'] = 1;
-		$_SESSION['troopType'] = 1;
-		$_SESSION['playerLevel'] = 1;
 	}
 ?>
 <html class="full">

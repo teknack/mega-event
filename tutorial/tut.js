@@ -631,7 +631,7 @@ function introduce()
 	var prompt="           INTRODUCTION             <br>"+
 		  "All the tiles you see is the area you are gonna play on<br>"+ 
 		  "-your objective is to occupy as many of these tiles as possible<br>"+ 
-		  "-blue forts are the tiles on which you have settle you will start"+ 
+		  "-blue forts are the tiles on which you have settled, you will start "+ 
 		   "your game with one tile occupied<br>"+ 
 		  "-yellow forts belong to your allies,they are the ones who belong"+ 
 		   "to the same faction as you do <br>"+ 
@@ -641,7 +641,7 @@ function introduce()
 		  "-You will get to choose your faction once you actually start the game<br>"+ 
 		   "but for now you could fiddle with the game to learn it or u could"+
 		   "select the tutorial options on the right to let the game teach you<br>"+
-		  "-YOUR OBJECTIVE IS TO GET AS MANY BLUE TILES AS POSSIBLE"; 
+		  "-YOUR OBJECTIVE IS TO GET AS MANY BLUE TILES/FORTS AS POSSIBLE"; 
 		  "- YOU HAVEN'T STARTED THE GAME YET<br>"+
 		  "- HAVE FUN"
 	response("prompt",prompt);
@@ -658,15 +658,18 @@ function basics()
 			   "click based on your comfort(right click)"
 			   "At the bottom right are the local map navigation buttons which you<br>"+
 			   " could use to shift the local map to right,left,up or down by one <br>"+
-			   " column/row(this feature is not available in the tutorial)"
+			   " column/row(this feature is not available in the tutorial)<br>"+
+			   " the four directional buttons and the button in the middle are navigation button<br>"+
+			   " they are useless in this tutorial.But in the main game you can navigate through the map<br>"+
+			   " or u can go back to world map<br>";
 	response("prompt",prompt);
 }
 
 function tileTypes()
 {
 	var prompt="                        TILE TYPES                     <br>"+
-			   "The map you see below the tiles is not just for looks it has a purpose<br>"+
-			   "-the tiles above "
+			   "The map you see below the tiles is not just for looks, it has a purpose<br>"+
+			   "-the tiles below <br>"+
 			   "-green areas give bonus FOOD and WATER(+1 food/min and +1 water/min)<br>"+
 			   "-sandy areas areas give bonus POWER(+1 power/min and -1 water/min)<br>"+
 			   "-water areas cannot be settled on but,are resource rich so you can loot<bR>"+
@@ -791,6 +794,25 @@ function market()
 	window.open("market.php");
 }
 
+function starting()
+{
+	var prompt="When you start the game you will have to choose between 2 factions, after that you will be<bR>"+
+			   " redirected to the world-map , the world map has HUMANAGOUS number of tiles,that's the number of tiles<br>"+
+			   "available for all players to conquer/capture, however you can only select your play area from the world-map<bR>"+
+			   " in the world map: <br>"+
+			   " -blue tiles-your tiles<br>"+
+			   " -yellow tiles - ally tiles(allies belong to the same faction)<br>"+
+			   " -red tiles - enemy tiles (players belonging to the other faction<br>"+
+			   " -transparent tiles - unoccupied<br><br><br><br><br>"+
+			   " <button onclick='start()'>Start the game</button>";
+	response("prompt",prompt);
+}
+
+function start()
+{
+	window.location="../index.php";	
+}
+
 var everythingLoaded = setInterval(function() {
   if (/loaded|complete/.test(document.readyState)) {
     clearInterval(everythingLoaded);
@@ -803,6 +825,11 @@ function renderLocal()
 	hideAll();
 	canvas=document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
+	canvas1=document.getElementById("mapCanvas");
+	ctx1 = canvas1.getContext("2d");
+	var map=new Image();
+	map.src="../assets/map.png";
+	ctx1.drawImage(map,0,0,450,450);
 	playerFort=new Image();
     playerFort.src="../assets/"+fortSet+"b.png";
     enemyFort=new Image();
@@ -853,4 +880,5 @@ function renderLocal()
 	document.getElementById("market").setAttribute("onclick","market()");
 	document.getElementById("research").setAttribute("onclick","research()");
 	document.getElementById("basics").setAttribute("onclick","basics()");
+	document.getElementById("starting").setAttribute("onclick","starting()");
 }
