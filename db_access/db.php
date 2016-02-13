@@ -31,7 +31,7 @@ session_start();
 //validate(); //VALIDATION CHECK
 
 $dbusername="root";
-$dbpassword="admin";
+$dbpassword="swSlus7I63";
 $dbname="tek16_megaevent";
 $dbtable="grid";
 $dbconn="";

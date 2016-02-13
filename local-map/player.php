@@ -155,7 +155,7 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 		$sql="SELECT faction FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
-		if($r['faction']==0 and $r1['status']!="settle" and $r1['status']!="attack" and $r2['special']!=3 and $r3['fortification']!=-9) 
+		if($r['faction']==0 and $r1['status']!="settle" and $r1['status']!="attack" and $r3['fortification']!=-9) 
 			return true;	//only unoccupied slot
 		else
 			return false;
@@ -677,7 +677,12 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 
 		$lootPercent=$_SESSION['bpercent'];
 		$surPercent=$_SESSION['ppercent'];
-
+		if(!isset($srcRow) or !isset($srcCol) or !empty($srcCol) or !empty($srcRow))
+		{
+			echo $_SESSION['selectedCol']."<bR>";
+			$srcRow=$_SESSION['selectedRow'];
+			$srcCol=$_SESSION['selectedCol'];
+		}
 		$foodLoot=$foodMax*$lootPercent/100;
 		$metalLoot=$metalMax*$lootPercent/100;
 		$waterLoot=$metalMax*$lootPercent/100;
@@ -691,6 +696,8 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 			echo "error: ".$conn->error."<br>";
 			var_dump($sql);
 		}
+		echo $srcRow."<br>";
+		echo $srcCol."<br>";
 		$quantity=$quantity*$surPercent/100;
 		$sql="SELECT occupied FROM grid WHERE row=$srcRow and col=$srcCol;";
 		$res=$conn->query($sql);
@@ -1186,8 +1193,8 @@ function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 			}
 		}
 	}	
-	unset($_SESSION['selectedRow']);
-	unset($_SESSION['selectedCol']);
+	//unset($_SESSION['selectedRow']);
+	//unset($_SESSION['selectedCol']);
 	unset($_SESSION['selectedTroops']);
 	unset($_SESSION['destRow']);
 	unset($_SESSION['destCol']);
@@ -1698,8 +1705,8 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 	$_SESSION['destCol']=$destCol;
 	if(!validateAction("attack",$destRow,$destCol))
 	{
-		$_SESSION['response']="the slot is now accupied by an ally :(.";
-		return;
+		$_SESSION['response']="the slot is now accupied by an ally :( or is a base slot which cannot be captured.";
+		header("location:index.php");
 	}
 
 	//confirm if player can afford to move
@@ -1979,7 +1986,7 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 	if(!validateAction("settle",$row,$col))
 	{
 		$_SESSION['response']="the slot is now accupied by an enemy/ally :(.";
-		return;
+		header("location:index.php");
 	}
 	global $conn,$playerid,$faction,$settleWoodCost,$settleMetalCost,$settlePowerCost;
 	$sql="UPDATE grid SET status='settle' WHERE row=$row and col=$col;";
@@ -1992,9 +1999,9 @@ function settle($row,$col) //occupies selected slot pending increment of resourc
 	$sql="SELECT civperk2 FROM research WHERE playerid='$playerid';";
 	$res=$conn->query($sql);
 	$r=$res->fetch_assoc();
-	if($r['civperk2']<4 and $slotType==4)
+	if($r['civperk2']<4 and ($slotType==4 or $slotType==3))
 	{
-		$_SESSION['response']="you cannot settle on water yet.Get civperk2 level 4 first";
+		$_SESSION['response']="you cannot settle on water or mountain yet .Get civperk2 level 4 first";
 		return;
 	}
 	if($faction==2)
@@ -2408,7 +2415,7 @@ else if(isset($_POST['settle']))
 	//$row=1;
 	//$col=13;
 	settle($row,$col);
-	header("location:index.php");
+	//header("location:index.php");
 }
 else if(isset($_POST['select_troops']))
 {
@@ -2537,6 +2544,8 @@ else if(isset($_SESSION['result']))
 	{
 		if($_SESSION['loot']==1)
 		{
+			echo "$srccol<bR>";
+			echo "loot<br>";
 			simAftermath($srcrow,$srccol,$row,$col,$quantity,"loot");
 			unset($_SESSION['loot']);
 		}	
