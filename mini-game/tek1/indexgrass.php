@@ -234,7 +234,7 @@ if(clicks===0){
                          }
                      });
                      
-window.location="transitionToAlloc.php";
+window.location="../transitionToAlloc.php";
 return;
   }
     ev.dataTransfer.setData("text", ev.target.id);
