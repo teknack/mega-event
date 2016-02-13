@@ -11,8 +11,19 @@
 	$research_level = $res["civperk2"];
 	//echo($research_level);
 	
-	$battery = $_SESSION["battery"];
-	$val = 3 + floor((3+$research_level)*($battery/100));
+	$battery = 0;
+	$val = 0;
+	
+	if (isset($_SESSION["battery"]))
+	{
+		$battery = $_SESSION["battery"];
+		$val = 3 + floor((3+$research_level)*($battery/100));
+	}
+	else
+	{
+		$val = 3 + $research_level;
+	}
+	
 	$_SESSION["regen_points"] = $val;
 	disconnect();
 	
