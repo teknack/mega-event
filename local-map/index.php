@@ -49,7 +49,7 @@ session_start();
 	</nav>
 
 	
-	<div class="container white-bg">
+	<div class="container-fluid white-bg">
 		<div class="row" id="main">
 			<div id="localplay" class="col-md-6 bigpart">
 				<canvas id="mapCanvas" width="540" height="540">

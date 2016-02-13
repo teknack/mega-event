@@ -65,7 +65,7 @@ body{
 
 /* Main Content */
 
-.container{
+.container-fluid{
 	background: rgba(0,0,0,0.6);
 	padding: 1em;
 	font-size: 1.4em;
