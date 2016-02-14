@@ -114,7 +114,7 @@ function harvest($player) //return's the "gold"
 	
 	$sum = $scores["id"] + $scores["th"] + $scores["ftt"] + $scores["c"] + $scores["ss"] + $scores["r"] + $scores["kq"] + $scores["ai"] + $scores["acoustica"] + $scores["s"] + $scores["a"] + $scores["m"];
 	
-	setTable("tek16_megaevent.player");
+	setTable("tk16_megaevent.player");
 	
 	$val = fetch($player,"gold");
 		
