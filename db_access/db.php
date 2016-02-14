@@ -298,13 +298,13 @@ function gameUnset()
 
 function getPlayerName($emailid)
 {
-	
 	$conn = connect();
 	
 	$query="SELECT fname FROM teknack_promo.registered WHERE emailid='".$emailid."';";
-	$op = $mysqli_query($conn,$query);
+	$op = mysqli_query($conn,$query);
 	$op = mysqli_fetch_assoc($op);
-	
+	//var_dump($op);
+	disconnect();
 	return($op["fname"]);
 }
 ?>
