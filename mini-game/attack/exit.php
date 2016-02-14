@@ -123,8 +123,8 @@
 	$_SESSION['ppercent'] = $currenthealthpercent;
 	$_SESSION['bpercent'] = $destruction;
 	$_SESSION['attackdone'] = 1;
-	include('redirect.php');
+	header('location:toLocal.php');
 	//header($goto);
 	//echo $goto;
-	echo "<script>window.close();</script>";
+	//echo "<script>window.close();</script>";
 ?>

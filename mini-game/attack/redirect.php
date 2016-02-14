@@ -40,11 +40,11 @@
         <link href="style.css" rel="stylesheet">
         <script type="text/javascript" src="jquery.min.js"></script>
         <script type="text/javascript">
-        	function refresh(){
+        	/*function refresh(){
         		setInterval(function(){
         			window.location.reload(true);
         		}, 5000);
-        	}
+        	}*/
         </script>
 	</head>
 	<body onload="refresh();">
@@ -81,15 +81,15 @@
 			var formdata = "index.html?def="+blevel+"&plvl="+plevel+"&pcls="+pclass;
 			//alert(formdata);
 			$('a[href="#"]').click(function(){
-  				//window.location.href = formdata;
-  				var win = window.open(formdata, '_blank');
+  				window.location.href = formdata;
+  				/*var win = window.open(formdata, '_blank');
 				if(win){
 				    //Browser has allowed it to be opened
 				    win.focus();
 				}else{
 				    //Broswer has blocked it
 				    alert('Please allow popups for this site');
-				}
+				}*/
 			});
 		</script>
 	</body>
