@@ -857,7 +857,7 @@ function levelUpCivPerkTwo()
 		break;
 		
 		case 1: //level 1 -> 2 :  480 Power | 400 wood
-			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 4000)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["wood"] >= 4000)
 			{
 				$level=$level+1;
 				update("civperk2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
