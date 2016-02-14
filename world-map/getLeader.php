@@ -6,7 +6,7 @@
 		global $conn;
 		
 		$query="SELECT fname FROM teknack_promo.registered WHERE emailid='".$emailid."';";
-		$op = $mysqli_query($conn,$query);
+		$op = mysqli_query($conn,$query);
 		$op = mysqli_fetch_assoc($op);
 		
 		return($op["fname"]);
@@ -34,7 +34,7 @@
 		while($row = $res->fetch_assoc() and $i<5)
 		{
 			$playerid=$row['tek_emailid'];
-			$output=$output.'{"user":"'.$playerid.'","faction":"'.$row["faction"].'","tiles":"'.$row['total'].'"},';
+			$output=$output.'{"user":"'.getPlayerName($_SESSION["tek_emailid"]).'","faction":"'.$row["faction"].'","tiles":"'.$row['total'].'"},';
 			$i++;
 		}
 		$output.="{}]";

@@ -943,8 +943,6 @@ if (isset($_POST) && !empty($_POST))
 	disconnect();
 }
 
-echo(getPlayerName($_SESSION["tek_emailid"]));
-
 ?>
 <html>
 
