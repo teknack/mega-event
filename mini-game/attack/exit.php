@@ -3,7 +3,7 @@
 	if(isset($_SESSION['playerLevel']) && isset($_SESSION['baseLevel']) && isset($_SESSION['troopType']))
 	{
 		//$goto="location:../../local-map/index.php";
-		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/local-map/index.php';</script>";
+		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/local-map/player.php';</script>";
 	}
 	else
 	{

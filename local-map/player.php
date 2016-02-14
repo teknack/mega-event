@@ -1694,7 +1694,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 		unset($_SESSION['selectedTroops']);
-		return;
+		header("location:index.php");
 	}
 	if(!queryResource("water",$waterCost))
 	{
@@ -1702,7 +1702,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 		unset($_SESSION['selectedTroops']);
-		return;
+		header("location:index.php");
 	}
 	if(!queryResource("power",$powerCost))
 	{
@@ -1710,7 +1710,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 		unset($_SESSION['selectedTroops']);
-		return;
+		header("location:index.php");
 	}
 	deductResource("food",$foodCost);
 	deductResource("water",$waterCost);
