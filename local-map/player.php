@@ -712,6 +712,7 @@ function addBaseTile($row,$col)
 
 function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 {
+	global $conn,$playerid,$faction;
 	
 	$battleRes=simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity);
 	$battleResult=$battleRes['result'];
@@ -2538,20 +2539,7 @@ else if(isset($_SESSION['result']))
 	$row=$_SESSION['destRow'];
 	$col=$_SESSION['destCol'];
 	//echo $quantity;
-	if(isset($_SESSION['loot']))
-	{
-		if($_SESSION['loot']==1)
-		{
-			echo "$srccol<bR>";
-			echo "loot<br>";
-			simAftermath($srcrow,$srccol,$row,$col,$quantity,"loot");
-			unset($_SESSION['loot']);
-		}	
-	}
-	else
-	{
-		simAftermath($srcrow,$srccol,$row,$col,$quantity,"attack");
-	}	
+	simAftermath($srcrow,$srccol,$row,$col,$quantity,"attack");
 	//header("location:index.php");
 }
 else if(isset($_POST['add_base_tile']))
@@ -2559,7 +2547,6 @@ else if(isset($_POST['add_base_tile']))
 	$row=$_POST['row'];
 	$col=$_POST['col'];
 	addBaseTile($row,$col);
-	header("location:index.php");
 }
 else
 	header("location:index.php");
