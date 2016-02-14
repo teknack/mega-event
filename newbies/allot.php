@@ -15,7 +15,7 @@
 
 function allot()
 {
-	$dist = rand(1,10);
+	$dist = rand(5,10);
 	$dir = rand(0,7);
 	
 	$conn = connect();
