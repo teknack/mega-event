@@ -34,7 +34,7 @@
 		while($row = $res->fetch_assoc() and $i<5)
 		{
 			$playerid=$row['tek_emailid'];
-			$output=$output.'{"user":"'.getPlayerName($_SESSION["tek_emailid"]).'","faction":"'.$row["faction"].'","tiles":"'.$row['total'].'"},';
+			$output=$output.'{"user":"'.$playerid.'","faction":"'.$row["faction"].'","tiles":"'.$row['total'].'"},';
 			$i++;
 		}
 		$output.="{}]";
