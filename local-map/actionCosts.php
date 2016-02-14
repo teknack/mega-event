@@ -105,6 +105,13 @@ function scout()
 	echo "Scout<br>Food:$scoutCostFood<br>Water:$scoutCostWater";
 }
 
+function addBaseTile()
+{
+	global $addBaseWood,$addBaseMetal;
+
+	echo "Add Base Tile<br>Wood:$addBaseWood<br>Metal:$addBaseMetal<br><br>Sets your occupied slot as unconquerable so your enemies can't capture it"
+}
+
 $func=$_REQUEST['action'];
 if($func=="settle")
 {
@@ -125,5 +132,9 @@ else if($func=="move" or $func=="attack")
 else if($func=="scout")
 {
 	scout();
+}
+else if($func=="addBaseTile")
+{
+	addBaseTile();
 }
 ?>

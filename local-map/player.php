@@ -115,7 +115,7 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 		else
 			return false;
 	}
-	else if($action=="createTroops" or $action=="fortify")
+	else if($action=="createTroops" or $action=="fortify" or $action=="addBaseTile")
 	{
 		$sql="SELECT occupied,fortification FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
@@ -123,7 +123,7 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 		echo $r['occupied'];
 		echo "<br>".$playerid;
 		echo "<br>".$action;
-		if($action=="createTroops")
+		if($action=="createTroops" or $action=="addBaseTile")
 		{
 			if($r['occupied']==$playerid)
 			{
@@ -668,9 +668,50 @@ function move($srcRow,$srcCol,$destRow,$destCol,$quantity) //move works in 2 ste
 }
 
 
+function addBaseTile($row,$col)
+{
+	global $conn,$playerid,$addBaseWood,$addBaseMetal;
+
+	if(!validateAction("addBaseTile",$row,$col))
+	{
+		$_SESSION['response']="tile's probablty not yours anymore<br>";
+		return;
+	}
+	if(!queryResource("wood",$addBaseWood))
+	{
+		echo "here but don't know how";
+		$_SESSION['response']="You don't have the required resources(wood).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	if(!queryResource("metal",$addBaseMetal))
+	{
+		$_SESSION['response']="You don't have the required resources(metal).";
+		unset($_SESSION['selectedRow']);
+		unset($_SESSION['selectedCol']);
+		unset($_SESSION['selectedTroops']);
+		return;
+	}
+	deductResource("wood",$addBaseWood);
+	deductResource("power",$addBaseMetal);
+
+	$sql="UPDATE grid SET fortification=-9 WHERE row=$row and col=$col;";
+	if(!$conn->query($sql))
+	{
+		echo "error: ".$conn->error."<br>";
+		var_dump($sql);
+	}
+	else
+		$_SESSION['response']="Added base tile<br>";
+
+	header("location:index.php");
+}
+
+
 function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 {
-	global $conn,$playerid,$plunderPortion;
 	
 	$battleRes=simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity);
 	$battleResult=$battleRes['result'];
@@ -2512,6 +2553,13 @@ else if(isset($_SESSION['result']))
 		simAftermath($srcrow,$srccol,$row,$col,$quantity,"attack");
 	}	
 	//header("location:index.php");
+}
+else if(isset($_POST['add_base_tile']))
+{
+	$row=$_POST['row'];
+	$col=$_POST['col'];
+	addBaseTile($row,$col);
+	header("location:index.php");
 }
 else
 	header("location:index.php");

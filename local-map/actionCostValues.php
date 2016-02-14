@@ -19,4 +19,6 @@ $waterMax=500;
 $powerMax=500;
 $metalMax=500;
 $woodMax=500;
+$addBaseWood=15000;
+$addBaseMetal=15000;
 ?>

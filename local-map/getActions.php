@@ -159,7 +159,7 @@ function getActions($row,$col)  //AJAX FUNCTION!!! **maybe will add action cost 
 					else
 					{
 						$output=$output.'{"action":"fortify"},{"action":"select_troops"},
-						                 {"action":"create_troops"},{"visible":"true"},';
+						                 {"action":"create_troops"},{"action":"add_base_tile"},{"visible":"true"},';
 						scout($r,$c); // PROBLEM 
 					}		
 				}
