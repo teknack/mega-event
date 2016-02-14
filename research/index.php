@@ -943,6 +943,8 @@ if (isset($_POST) && !empty($_POST))
 	disconnect();
 }
 
+echo(getPlayerName($_SESSION["tek_emailid"]));
+
 ?>
 <html>
 
@@ -987,7 +989,7 @@ if (isset($_POST) && !empty($_POST))
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Name <?php alert(getPlayerName($_SESSION["tek_emailid"])); ?></th>
+							<th>Name</th>
 							<th>Current Level</th>
 							<th>Next Level Info</th>
 							<th>Next Level</th>
