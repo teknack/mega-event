@@ -9,11 +9,6 @@
 	{
 		die("connection error".$conn->connect_error);
 	}
-	$conn2=new mysqli($servername,$username,$password,"teknack_promo");
-	if($conn->connect_error)
-	{
-		die("connection error".$conn->connect_error);
-	}
 	$sql="SELECT tek_emailid,total,faction FROM player ORDER BY total DESC;";
 	$res=$conn->query($sql);
 	$row=$res->fetch_assoc();
@@ -26,12 +21,8 @@
 		$i=0;
 		while($row = $res->fetch_assoc() and $i<5)
 		{
-			$playerid=$row['tek_emailid'];
-			$sql="SELECT uname FROM registered WHERE tek_emailid='$playerid';";
-			$res1=$conn2->query($sql);
-			$r=$res1->fetch_assoc();
-			$player=$r['uname'];
-			$output=$output.'{"user":"$player"'..'","faction":"'.$row["faction"].'","tiles":"'.$row['total'].'"},';
+			$playerid
+			$output=$output.'{"user":"$playerid"'..'","faction":"'.$row["faction"].'","tiles":"'.$row['total'].'"},';
 			$i++;
 		}
 		$output.="{}]";
