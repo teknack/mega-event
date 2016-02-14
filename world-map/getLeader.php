@@ -1,5 +1,17 @@
 <?php
 	session_start();
+	
+	function getPlayerName($emailid)
+	{
+		global $conn;
+		
+		$query="SELECT fname FROM teknack_promo.registered WHERE emailid='".$emailid."';";
+		$op = $mysqli_query($conn,$query);
+		$op = mysqli_fetch_assoc($op);
+		
+		return($op["fname"]);
+	}
+	
 	$servername="localhost";
 	$username="root";
 	$password="swSlus7I63";
