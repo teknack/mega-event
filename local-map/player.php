@@ -100,7 +100,7 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 		$sql="SELECT faction FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
-		if($r['faction']==$faction or $r['faction']==0 or $r1['status']=="attack" or $r2['fortification']<0)
+		if($r['faction']==$faction or $r['faction']==0 or $r1['status']=="attack" or $r2['fortification']==-9)
 			return false;
 		else
 			return true;
