@@ -8,11 +8,10 @@
 	else
 	{
 		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/tutorial/index.php';</script>";
-	}*/)
+	})*/
 	/*$difficulty = $_SESSION['baseLevel'];
 	$playerlevel = $_SESSION['playerLevel'];
 	$playerclass = $_SESSION['troopType'];*/
-	include('redirect.php');
 	global $difficulty , $playerlevel , $playerclass;
 
 	$enemykilled = $_SESSION['destruction'];
@@ -123,7 +122,8 @@
 	}
 	$_SESSION['ppercent'] = $currenthealthpercent;
 	$_SESSION['bpercent'] = $destruction;
-	$GLOBALS['attackdone'] = 1;
+	$_SESSION['attackdone'] = 1;
+	include('redirect.php');
 	//header($goto);
 	//echo $goto;
 	echo "<script>window.close();</script>";
