@@ -987,7 +987,7 @@ if (isset($_POST) && !empty($_POST))
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Name</th>
+							<th>Name <?php echo(getPlayerName($_SESSION["tek_emailid"]))?></th>
 							<th>Current Level</th>
 							<th>Next Level Info</th>
 							<th>Next Level</th>
