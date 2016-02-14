@@ -53,7 +53,7 @@ function scoutCost()
   xhttp.send();
 }
 
-function add_base_tile()
+function add_base_tileCost()
 {
     var xhttp;
     if (window.XMLHttpRequest) 
