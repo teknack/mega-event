@@ -126,5 +126,5 @@
 	include('redirect.php');
 	//header($goto);
 	//echo $goto;
-	echo "<script>window.close();</script>";
+	//echo "<script>window.close();</script>";
 ?>
