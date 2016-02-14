@@ -305,6 +305,7 @@ function getPlayerName($emailid)
 	$op = $mysqli_query($conn,$query);
 	$op = mysqli_fetch_assoc($op);
 	
-	return($op["fname"]);
+	disconnect();
+	return($query);
 }
 ?>
