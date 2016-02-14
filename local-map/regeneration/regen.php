@@ -30,9 +30,11 @@ $col = $_SESSION["settleCol"];
 	<div class="container">
 		
 		<div class="page-header">
-			<h1>Distribute Statistics</h1>
+			<h1>Regeneration Allocation</h1>
 		</div>	
 
+		<p>You have successfully settled. "Max Points" shows the total points you can allocate to the different resources.<br>
+			You are allocating the regeneration points. This will get added to your current regeneration points. Choose wisely.<p>
 
 		<span id="max" style="display: none"></span><br>
 

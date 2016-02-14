@@ -628,95 +628,82 @@ function move()
 
 function introduce()
 {
-	var prompt="           INTRODUCTION             <br>"+
-		  "All the tiles you see is the area you are gonna play on<br>"+ 
+	var prompt="           <strong>INTRODUCTION</strong>             <br>"+
+		  "<b>Welcome to the tutorial</b><br>"+
+		  "-->All the tiles you see is the area you are gonna play on<br>"+ 
 		  "-your objective is to occupy as many of these tiles as possible<br>"+ 
-		  "-blue forts are the tiles on which you have settled, you will start "+ 
+		  "-->Blue fort -- tiles which you have settled, you will start "+ 
 		   "your game with one tile occupied<br>"+ 
-		  "-yellow forts belong to your allies,they are the ones who belong"+ 
+		  "-->Yellow forts -- allies,they are the ones who belong"+ 
 		   "to the same faction as you do <br>"+ 
-		  "-red forts belong to all the players who are in the other faction"+ 
+		  "-->Red forts -- other faction, "+ 
 		   "your enemies<br>"+
-		  "-the empty tiles are unoccupied and you can send your troops to occupy them<br>"+
-		  "-You will get to choose your faction once you actually start the game<br>"+ 
+		  "-->Empty tiles -- unoccupied. You can send your troops to occupy them<br><br>"+
+		  "-->You will get to choose your faction once you actually start the game<br>"+ 
 		   "but for now you could fiddle with the game to learn it or u could"+
 		   "select the tutorial options on the right to let the game teach you<br>"+
-		  "-YOUR OBJECTIVE IS TO GET AS MANY BLUE TILES/FORTS AS POSSIBLE"; 
-		  "- YOU HAVEN'T STARTED THE GAME YET<br>"+
-		  "- HAVE FUN"
+		  "--></b>YOUR OBJECTIVE IS TO GET AS MANY BLUE TILES/FORTS AS POSSIBLE</b>";
 	response("prompt",prompt);
 }
 
 function basics()
 {
-	var prompt="                        BASICS                     <br>"+
-			   "At the top left are the resources you need to play the game<br>"+
-			   "They look like   '1000/0'  so the number on the left of '/' is the<bR>"+
-			   "amount of a resource you have while the number on the right is <br>"+
-			   "regeneration rate of those resources per minute<br>"+
-			   "To get the actions that you can perform on each tile use either left or right<br>"+
-			   "click based on your comfort(right click)"
-			   "At the bottom right are the local map navigation buttons which you<br>"+
-			   " could use to shift the local map to right,left,up or down by one <br>"+
+	var prompt="<strong>BASICS</strong>                     <br>"+
+			   "-->At the top left are the resources you need to play the game<br>"+
+			   "-->They look like   '1000/0'<br> Number on the left of '/' -- "+
+			   "amount of a resource you have currently <br>-->Number on the right -- "+
+			   "regeneration rate of resources/minute<br>"+
+			   "-->To get the actions that you perform on each tile -- either left or right click<br>"+
+			   "-->Local map navigation buttons -- At the bottom right: "+
+			   " Use to shift the local map to right,left,up or down by one "+
 			   " column/row(this feature is not available in the tutorial)<br>"+
-			   " the four directional buttons and the button in the middle are navigation button<br>"+
-			   " they are useless in this tutorial.But in the main game you can navigate through the map<br>"+
-			   " or u can go back to world map<br>";
+			   " -->The four directional buttons: 4 directions <br>"+
+			   "-Center world button: World map";
 	response("prompt",prompt);
 }
 
 function tileTypes()
 {
-	var prompt="                        TILE TYPES                     <br>"+
+	var prompt="                        <strong>TILE TYPES</strong>                     <br>"+
 			   "The map you see below the tiles is not just for looks, it has a purpose<br>"+
-			   "-the tiles below <br>"+
-			   "-green areas give bonus FOOD and WATER(+1 food/min and +1 water/min)<br>"+
-			   "-sandy areas areas give bonus POWER(+1 power/min and -1 water/min)<br>"+
-			   "-water areas cannot be settled on but,are resource rich so you can loot<bR>"+
-			   " them as many times as you want but it will be hard<br>"+
-			   "-mountain areas can be settled on but you need certain amount of tech for that to happen(+2 metal/min and +2 water/min)<br>"+
-			   "-brown colored muddy areas give bonus FOOD(+2 food/min)";
+			   "-->Grass areas give bonus FOOD and WATER <b>(+1 food/min and +1 water/min)</b><br>"+
+			   "-->Sandy areas areas give bonus POWER <b>(+1 power/min and -1 water/min)</b><br>"+
+			   "-->Mountain areas can be settled on but you need certain amount of tech <b>(+2 metal/min and +2 water/min)</b><br>"+
+			   "-->Brown colored muddy areas give bonus <b>FOOD(+2 food/min)</b>";
 	response("prompt",prompt);	
 }
 
 function scouting()
 {
-	var prompt="     SCOUTING      <br>"+
-			   "-scouting allows you to find out who is occupying a tile and more importantly"+
+	var prompt="     <strong>SCOUTING</strong>      <br>"+
+			   "-->Scouting -- find out who is occupying a tile and "+
 			   " the number of troops stationed in them<br>"+
-			   "-you get all details of tiles occupied by you or unoccupied tiles on which"+
-			   " you have stationed your troops<br>"+
-			   "-click any tile not occupied by you and not having any of your troops,"+
+			   "-->You get all details of tiles occupied by you or unoccupied tiles on which"+
+			   " you have stationed your troops<br><br>"+
+			   "-->Click any tile not occupied by you and not having any of your troops,"+
 			   " then click the scout option<br>"+
-			   "-It lets you check out how many troops (if any) are stationed in a tile<br>"+
-			   " and who's occupying it as well as their faction and also the type of tile"+
-			   "**IF YOU CAN'T GET SCOUT OPTION YOU MIGHT BE DOING SOMETHING WRONG <br>**";
+			   "-->It lets you check out how many troops (if any) are stationed in a tile<br>"+
+			   " and who's occupying it as well as their faction and also the type of tile<br>"+
+			   "**IF YOU CAN'T GET SCOUT OPTION YOU MIGHT BE DOING SOMETHING WRONG **";
 	response("prompt",prompt);
 }
 
 function selMove()
 {
 	
-	var prompt="          SELECTING TROOPS and MOVING               <br>"+
+	var prompt="<strong>SELECTING TROOPS and MOVING</strong>               <br>"+
 			   "-To move or attack using your troops you have to first select them<br>"+
-			   "-to select troops first click on a tile which has your troops stationed"+
+			   "-->Select troops -- Click on a tile which has your troops stationed"+
 			   " in it<br>"+
-			   "-Enter the number of troops you want to select in the textbox in bottom left<br>"+
-			   "-Then click on any tile except the tile you selected your troops from to get move option<br>"+
-			   "-select one soldier in tile (5,3)<br>"+
-		       "-Then click on tile (3,4) and move your troops there<br>"+
-			   "-Notice the resource cost below?Also the green tiles have your troops stationed<br>"+
-		       "-Now move your troops from (5,3) to (3,3)<br>"+
-		       "-look at the resource cost for moving the same distance<br>The distance was<br>"+
-			   "halved because your troops moved within friendly tiles which are connected<br>"+
-			   "now move your soldier(s) in (3,3) to (3,4) and then start settle and attack tutorial<br>"+
-			   "MOVE COST IS BASED ON THE NUMBER OF TILES YOUR SOLDIERS MOVE, NOT THE NUMBER OF SOLDIERS<br>";
+			   "-->Enter the number of troops you want to select in the textbox in bottom left<br>"+
+			   "-->Then click on any tile except the tile you selected your troops from to get move option<br>"+
+			   "-->MOVE <b>COST</b> IS BASED ON THE NUMBER OF TILES YOUR SOLDIERS MOVE, NOT THE NUMBER OF SOLDIERS<br>";
 	response("prompt",prompt);
 }
 
 function selMove2()
 {
-	var prompt="         SELECTING TROOPS and MOVING-II(AMBUSH)               <br>"+
+	var prompt="         <strong>SELECTING TROOPS and MOVING-II(AMBUSH)</strong>               <br>"+
 			   "Now you know how to move your troops,lets see how you could use it<br>"+
 			   "You could move your soldiers to unoccupied tiles.These soldiers will attack any<br>"+
 			   "enemy troops which move in to the tile your troops are stationed in.<br>"+
@@ -730,7 +717,7 @@ function selMove2()
 
 function settling()
 {
-	var prompt="     SETTLING       <br>"+
+	var prompt="     <strong>SETTLING</strong>       <br>"+
 			   "-The most important part of the game,which is the first way to acquire more tiles<bR>"+
 			   " I would be assuming at this point that you have moved atleast one of your soldiers<br>"+
 			   " to an occupied (white)tile .If not then DO IT<br>"+
@@ -750,7 +737,7 @@ function settling()
 
 function creatingTroops()
 {
-	var prompt=" CREATING TROOPS <br>"+
+	var prompt=" <strong>CREATING TROOPS</strong> <br>"+
 			   " All your troops ARE necessarily of one type, initially your troops are unspecialised<br>"+
 			   " and WEAK.<br>"+
 			   " you can specialise them to stealth or warrior who have their respective bonuses.<br>"+
@@ -763,7 +750,7 @@ function creatingTroops()
 
 function attacking()
 {
-	var prompt=" ATTACKING <br>"+
+	var prompt=" <strong>ATTACKING</strong> <br>"+
 			   " Now select all troops in your newly settled tiles<br>"+
 			   " click on an enemy(red) tile and click on scout option NOT ATTACK<br>"+
 			   " You can see the probability of attack success at the bottom of the page<br>"+

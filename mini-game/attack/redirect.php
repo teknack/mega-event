@@ -5,24 +5,24 @@
 		$playerlevel = $_SESSION['playerLevel'];
 		$difficulty = $_SESSION['baseLevel'];
 		$playerclass = $_SESSION['troopType'];
-		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/local-map/player.php';</script>";
+		$goto="<script>window.location.href='../../local-map/player.php';</script>";
 		//try without absolute path
-		if($GLOBALS['attackdone'] != 1){ //or(isset($GLOBALS['attackdone']))
-			$GLOBALS['attackdone'] = 0;
+		if($_SESSION['attackdone'] != 1){ //or(isset($_SESSION['attackdone']))
+			$_SESSION['attackdone'] = 0;
 		}
 	}
 	else
 	{
-		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/tutorial/index.php';</script>";
+		$goto="<script>window.location.href='../../tutorial/index.php';</script>";
 		$difficulty = 1;
 		$playerlevel = 1;
 		$playerclass = 1;
-		if($GLOBALS['attackdone'] != 1){ //or(isset($GLOBALS['attackdone']))
-			$GLOBALS['attackdone'] = 0;
+		if($_SESSION['attackdone'] != 1){ //or(isset($_SESSION['attackdone']))
+			$_SESSION['attackdone'] = 0;
 		}
 	}
-	if($GLOBALS['attackdone'] == 1){
-		unset($GLOBALS['attackdone']);
+	if($_SESSION['attackdone'] == 1){
+		unset($_SESSION['attackdone']);
 		echo $goto;
 	}
 	//the page will reload after every 5 secs
