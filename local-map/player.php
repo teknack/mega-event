@@ -1802,23 +1802,23 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 
 	if($winChance<50 and $winChance>40) //if win chance is very less we add more difference between the troops
 	{									// and base i.e increase the difficulty
-		$addDiff=1;
+		$addDiff=3;
 	}
 	else if($winChance<=40 and $winChance>30)
 	{
-		$addDiff=2;
+		$addDiff=4;
 	}
 	else if($winChance<=30 and $winChance>20)
 	{
-		$addDiff=3;
+		$addDiff=5;
 	}
 	else if($winChance<=20 and $winChance>10)
 	{
-		$addDiff=4;
+		$addDiff=6;
 	}
 	else if($winChance<10)
 	{
-		$addDiff=5;
+		$addDiff=7;
 	}
 	if($fortification-$playerLevel<$addDiff and $addDiff>0)
 	{
