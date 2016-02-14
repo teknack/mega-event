@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	if(isset($_SESSION['playerLevel']) && isset($_SESSION['baseLevel']) && isset($_SESSION['troopType']))
+	/*if(isset($_SESSION['playerLevel']) && isset($_SESSION['baseLevel']) && isset($_SESSION['troopType']))
 	{
 		//$goto="location:../../local-map/index.php";
 		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/local-map/player.php';</script>";
@@ -8,10 +8,11 @@
 	else
 	{
 		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/tutorial/index.php';</script>";
-	}
-	$difficulty = $_SESSION['baseLevel'];
+	})*/
+	/*$difficulty = $_SESSION['baseLevel'];
 	$playerlevel = $_SESSION['playerLevel'];
-	$playerclass = $_SESSION['troopType'];
+	$playerclass = $_SESSION['troopType'];*/
+	global $difficulty , $playerlevel , $playerclass;
 
 	$enemykilled = $_SESSION['destruction'];
 	$currenthealth = $_SESSION['playerhealth'];
@@ -121,6 +122,9 @@
 	}
 	$_SESSION['ppercent'] = $currenthealthpercent;
 	$_SESSION['bpercent'] = $destruction;
+	$_SESSION['attackdone'] = 1;
+	include('redirect.php');
 	//header($goto);
-	echo $goto;
+	//echo $goto;
+	echo "<script>window.close();</script>";
 ?>

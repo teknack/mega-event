@@ -100,7 +100,7 @@ function validateAction($action,$row,$col) //return true if action is permitted 
 		$sql="SELECT faction FROM grid WHERE row=$row and col=$col;";
 		$res=$conn->query($sql);
 		$r=$res->fetch_assoc();
-		if($r['faction']==$faction or $r['faction']==0 or $r1['status']=="attack" or $r2['fortification']==-9)
+		if($r['faction']==$faction or $r['faction']==0 or $r1['status']=="attack" or $r2['fortification']<0)
 			return false;
 		else
 			return true;
@@ -1694,7 +1694,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 		unset($_SESSION['selectedTroops']);
-		return;
+		header("location:index.php");
 	}
 	if(!queryResource("water",$waterCost))
 	{
@@ -1702,7 +1702,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 		unset($_SESSION['selectedTroops']);
-		return;
+		header("location:index.php");
 	}
 	if(!queryResource("power",$powerCost))
 	{
@@ -1710,7 +1710,7 @@ function attackM($srcRow,$srcCol,$destRow,$destCol,$quantity,$factor)
 		unset($_SESSION['selectedRow']);
 		unset($_SESSION['selectedCol']);
 		unset($_SESSION['selectedTroops']);
-		return;
+		header("location:index.php");
 	}
 	deductResource("food",$foodCost);
 	deductResource("water",$waterCost);
