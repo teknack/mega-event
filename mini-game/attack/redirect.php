@@ -81,7 +81,7 @@
 			var formdata = "index.html?def="+blevel+"&plvl="+plevel+"&pcls="+pclass;
 			//alert(formdata);
 			$('a[href="#"]').click(function(){
-  				window.location.href = formdata;
+  				//window.location.href = formdata;
   				var win = window.open(formdata, '_blank');
 				if(win){
 				    //Browser has allowed it to be opened
