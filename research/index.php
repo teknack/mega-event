@@ -64,15 +64,15 @@ function defenseNextLevelInfo($level)
 	switch($level+1)
 	{
 		case 1:
-			$ret = "1% more difficult to attack per soldier in occupied slot<br><b>Costs</b>: 480 Power | 400 wood";
+			$ret = "1% more difficult to attack per soldier in occupied slot<br><b>Costs</b>: 4800 Power | 4000 wood";
 		break;
 		
 		case 2:
-			$ret = "2% more difficult to attack per soldier in occupied slot<br><b>Costs</b>: 480 Power | 400 wood | 400 metal";
+			$ret = "2% more difficult to attack per soldier in occupied slot<br><b>Costs</b>: 4800 Power | 4000 wood | 4000 metal";
 		break;
 		
 		case 3:
-			$ret = "3% more difficult to attack per soldier in occupied slot<br><b>Costs</b>: 960 Power | 800 metal";
+			$ret = "3% more difficult to attack per soldier in occupied slot<br><b>Costs</b>: 9600 Power | 8000 metal";
 		break;
 	}
 	
@@ -86,15 +86,15 @@ function openBattleNextLevelInfo($level)
 	switch($level+1)
 	{
 		case 1:
-			$ret = "hides 25% of troops from enemy's scout. Hidden troops twice as effective<br><b>Costs</b>: 480 Power";
+			$ret = "hides 25% of troops from enemy's scout. Hidden troops twice as effective<br><b>Costs</b>: 4800 Power";
 		break;
 		
 		case 2:
-			$ret = "hides 50% of troops from enemy's scout.<br><b>Costs</b>: 480 Power | 800 wood";
+			$ret = "hides 50% of troops from enemy's scout.<br><b>Costs</b>: 4800 Power | 8000 wood";
 		break;
 		
 		case 3:
-			$ret = "hides 100% of troops from enemy's scout. Immune to attack from others on same slot<br><b>Costs</b>: 960 power | 400 wood | 400 metal";
+			$ret = "hides 100% of troops from enemy's scout. Immune to attack from others on same slot<br><b>Costs</b>: 9600 power | 4000 wood | 400 metal";
 		break;
 	}
 	
@@ -108,31 +108,31 @@ function stealthNextLevelInfo($level)
 	switch($level+1)
 	{
 		case 1:
-			$ret = "3% chance of attack success per troop, 10% more loot plundered<br><b>Costs</b>: 480 power | 480 food";
+			$ret = "3% chance of attack success per troop, 10% more loot plundered<br><b>Costs</b>: 4800 power | 4800 food";
 		break;
 		
 		case 2:
-			$ret = "3% chance of attack success per troop, 20% more loot plundered<br><b>Costs</b>: 960 power | 400 wood";
+			$ret = "3% chance of attack success per troop, 20% more loot plundered<br><b>Costs</b>: 9600 power | 4000 wood";
 		break;
 		
 		case 3:
-			$ret = "3% chance of attack success per troop, 40% more loot plundered<br><b>Costs</b>: 960 power | 800 wood";
+			$ret = "3% chance of attack success per troop, 40% more loot plundered<br><b>Costs</b>: 9600 power | 8000 wood";
 		break;
 		
 		case 4:
-			$ret = "3% chance of attack success per troop, 60% more loot plundered<br><b>Costs</b>: 960 power | 800 wood | 400 metal";
+			$ret = "3% chance of attack success per troop, 60% more loot plundered<br><b>Costs</b>: 9600 power | 8000 wood | 4000 metal";
 		break;
 		
 		case 5:
-			$ret = "3% chance of attack success per troop, 80% more loot plundered<br><b>Costs</b>: 960 power | 800 wood | 800 metal";
+			$ret = "3% chance of attack success per troop, 80% more loot plundered<br><b>Costs</b>: 9600 power | 8000 wood | 8000 metal";
 		break;
 		
 		case 6:
-			$ret = "4% chance of attack success per troop, 90% more loot plundered<br><b>Costs</b>: 960 power | 1200 wood | 800 metal";
+			$ret = "4% chance of attack success per troop, 90% more loot plundered<br><b>Costs</b>: 9600 power | 12000 wood | 8000 metal";
 		break;
 		
 		case 7:
-			$ret = "5% chance of attack success per troop, 100% more loot plundered<br><b>Costs</b>: 960 power | 1200 wood | 1200 metal";
+			$ret = "5% chance of attack success per troop, 100% more loot plundered<br><b>Costs</b>: 9600 power | 12000 wood | 12000 metal";
 		break;
 	}
 	
@@ -146,31 +146,31 @@ function warriorNextLevelInfo($level)
 	switch($level+1)
 	{
 		case 1:
-			$ret = "5% chance of attack success per troop, maximum of 90% troops lost on victory<br><b>Costs</b>: 480 power | 480 food";
+			$ret = "5% chance of attack success per troop, maximum of 90% troops lost on victory<br><b>Costs</b>: 4800 power | 4800 food";
 		break;
 		
 		case 2:
-			$ret = "5% chance of attack success per troop, maximum of 80% troops lost on victory<br><b>Costs</b>: 960 power | 400 wood";
+			$ret = "5% chance of attack success per troop, maximum of 80% troops lost on victory<br><b>Costs</b>: 9600 power | 4000 wood";
 		break;
 		
 		case 3:
-			$ret = "5% chance of attack success per troop, maximum of 70% troops lost on victory<br><b>Costs</b>: 960 power | 800 wood";
+			$ret = "5% chance of attack success per troop, maximum of 70% troops lost on victory<br><b>Costs</b>: 9600 power | 8000 wood";
 		break;
 		
 		case 4:
-			$ret = "5% chance of attack success per troop, maximum of 60% troops lost on victory<br><b>Costs</b>: 960 power | 800 wood | 400 metal";
+			$ret = "5% chance of attack success per troop, maximum of 60% troops lost on victory<br><b>Costs</b>: 9600 power | 8000 wood | 4000 metal";
 		break;
 		
 		case 5:
-			$ret = "5% chance of attack success per troop, maximum of 50% troops lost on vitory<br><b>Costs</b>: 960 power | 800 wood | 800 metal";
+			$ret = "5% chance of attack success per troop, maximum of 50% troops lost on vitory<br><b>Costs</b>: 9600 power | 8000 wood | 8000 metal";
 		break;
 		
 		case 6:
-			$ret = "5% chance of attack success per troop, maximum of 40% troops lost on victory<br><b>Costs</b>: 960 power | 1200 wood | 800 metal";
+			$ret = "5% chance of attack success per troop, maximum of 40% troops lost on victory<br><b>Costs</b>: 9600 power | 12000 wood | 8000 metal";
 		break;
 		
 		case 7:
-			$ret = "6% chance of attack success per troop<br><b>Costs</b>: 960 power | 1200 wood | 1200 metal";
+			$ret = "6% chance of attack success per troop<br><b>Costs</b>: 9600 power | 12000 wood | 12000 metal";
 		break;
 	}
 	
@@ -194,15 +194,15 @@ function factionPerkOneNextLevelInfo($level)
 		switch($level+1)
 		{
 			case 1:
-				$ret="+10% plunder bonus on successful attack<br><b>Costs</b>: 480 power | 480 food";
+				$ret="+10% plunder bonus on successful attack<br><b>Costs</b>: 4800 power | 4800 food";
 			break;
 			
 			case 2:
-				$ret="+15% plunder bonus on successful attack<br><b>Costs</b>: 960 power | 960 food | 400 metal";
+				$ret="+15% plunder bonus on successful attack<br><b>Costs</b>: 9600 power | 9600 food | 4000 metal";
 			break;
 			
 			case 3:
-				$ret="+30% plunder bonus on successful attack<br><b>Costs</b>: 960 power | 960 food | 800 metal";
+				$ret="+30% plunder bonus on successful attack<br><b>Costs</b>: 9600 power | 9600 food | 8000 metal";
 			break;
 		}
 		
@@ -214,15 +214,15 @@ function factionPerkOneNextLevelInfo($level)
 		switch($level+1)
 		{
 			case 1:
-				$ret="-10% on Settle Cost<br><b>Costs</b>: 480 power | 480 food";
+				$ret="-10% on Settle Cost<br><b>Costs</b>: 4800 power | 4800 food";
 			break;
 			
 			case 2:
-				$ret="-20% on Settle Cost<br><b>Costs</b>: 960 power | 960 food | 400 metal";
+				$ret="-20% on Settle Cost<br><b>Costs</b>: 9600 power | 9600 food | 4000 metal";
 			break;
 			
 			case 3:
-				$ret="-30% on Settle Cost<br><b>Costs</b>: 960 power | 960 food | 800 metal";
+				$ret="-30% on Settle Cost<br><b>Costs</b>: 9600 power | 9600 food | 8000 metal";
 			break;
 		}
 	}
@@ -246,15 +246,15 @@ function factionPerkTwoNextLevelInfo($level)
 		switch($level+1)
 		{
 			case 1:
-				$ret="If ally troops in neighbouring slots, 10% of the ally troops assist in attack/defence<br><b>Costs</b>: 480 power | 480 food";
+				$ret="If ally troops in neighbouring slots, 10% of the ally troops assist in attack/defence<br><b>Costs</b>: 4800 power | 4800 food";
 			break;
 			
 			case 2:
-				$ret="If ally troops in neighbouring slots, 30% of the ally troops assist in attack/defence<br><b>Costs</b>: 960 power | 960 food | 400 metal";
+				$ret="If ally troops in neighbouring slots, 30% of the ally troops assist in attack/defence<br><b>Costs</b>: 9600 power | 9600 food | 4000 metal";
 			break;
 			
 			case 3:
-				$ret="If ally troops in neighbouring slots, 50% of the ally troops assist in attack/defence<br><b>Costs</b>: 960 power | 960 food | 800 metal";
+				$ret="If ally troops in neighbouring slots, 50% of the ally troops assist in attack/defence<br><b>Costs</b>: 9600 power | 9600 food | 8000 metal";
 			break;
 		}
 	}
@@ -263,15 +263,15 @@ function factionPerkTwoNextLevelInfo($level)
 		switch($level+1)
 		{	
 			case 1:
-				$ret="Scout cost is 50% of original cost<br><b>Costs</b>: 480 power | 480 food";
+				$ret="Scout cost is 50% of original cost<br><b>Costs</b>: 4800 power | 4800 food";
 			break;
 			
 			case 2:
-				$ret="Scout cost is 25% of original cost<br><b>Costs</b>: 960 power | 960 food | 400 metal";
+				$ret="Scout cost is 25% of original cost<br><b>Costs</b>: 9600 power | 9600 food | 4000 metal";
 			break;
 			
 			case 3:
-				$ret="No Scout cost! :D<br><b>Costs</b>: 960 power | 960 food | 800 metal";
+				$ret="No Scout cost! :D<br><b>Costs</b>: 9600 power | 9600 food | 8000 metal";
 			break;
 		}
 	}
@@ -286,15 +286,15 @@ function civPerkOneNextLevelInfo($level)
 	switch($level+1)
 	{
 		case 1:
-			$ret="-10% move cost<br><b>Costs</b>: 480 power | 480 food";
+			$ret="-10% move cost<br><b>Costs</b>: 4800 power | 4800 food";
 		break;
 		
 		case 2:
-			$ret="-20% move cost<br><b>Costs</b>: 480 power | 400 wood";
+			$ret="-20% move cost<br><b>Costs</b>: 4800 power | 4000 wood";
 		break;
 		
 		case 3:
-			$ret="-30% move cost<br><b>Costs</b>: 960 power | 400 metal";
+			$ret="-30% move cost<br><b>Costs</b>: 9600 power | 4000 metal";
 		break;
 	}
 	
@@ -308,19 +308,19 @@ function civPerkTwoNextLevelInfo($level)
 	switch($level+1)
 	{
 		case 1:
-			$ret="+1 base points to use on settling<br><b>Costs</b>: 480 power | 480 food";
+			$ret="+1 base points to use on settling<br><b>Costs</b>: 4800 power | 4800 food";
 		break;
 		
 		case 2:
-			$ret="+2 base points to use on settling<br><b>Costs</b>: 480 power | 400 wood";
+			$ret="+2 base points to use on settling<br><b>Costs</b>: 4800 power | 4000 wood";
 		break;
 		
 		case 3:
-			$ret="+3 base points to use on settling<br><b>Costs</b>: 960 power | 400 metal";
+			$ret="+3 base points to use on settling<br><b>Costs</b>: 9600 power | 4000 metal";
 		break;
 		
 		case 3:
-			$ret="You Can now settle on Mountains!<br><b>Costs</b>: 1000 power | 500 wood |500 metal";
+			$ret="You Can now settle on Mountains!<br><b>Costs</b>: 10000 power | 5000 wood |5000 metal";
 		break;
 	}
 	
@@ -354,12 +354,12 @@ function levelUpDefense()
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power | 400 wood
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["wood"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["wood"] >= 4000)
 			{
 				$level=$level+1;
 				update("defence",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("wood",400);
+				deductResource("power",4800);
+				deductResource("wood",4000);
 			}
 			else //not enough resources
 			{
@@ -368,13 +368,13 @@ function levelUpDefense()
 		break;
 		
 		case 1: //level 1 -> 2 :  480 Power | 400 wood | 400 metal
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["wood"] >= 400 && $_SESSION["resources"]["metal"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["wood"] >= 4000 && $_SESSION["resources"]["metal"] >= 4000)
 			{
 				$level=$level+1;
 				update("defence",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("wood",400);
-				deductResource("metal",400);
+				deductResource("power",4800);
+				deductResource("wood",4000);
+				deductResource("metal",4000);
 			}
 			else
 			{
@@ -383,12 +383,12 @@ function levelUpDefense()
 		break;
 		
 		case 2: //level 2 -> 3 :  960 Power | 800 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 800)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 8000)
 			{
 				$level=$level+1;
 				update("defence",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("metal",800);
+				deductResource("power",9600);
+				deductResource("metal",8000);
 			}
 			else
 			{
@@ -405,11 +405,11 @@ function levelUpOpen()
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power
-			if ($_SESSION["resources"]["power"] >= 480)
+			if ($_SESSION["resources"]["power"] >= 4800)
 			{
 				$level=$level+1;
 				update("open",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
+				deductResource("power",4800);
 			}
 			else //not enough resources
 			{
@@ -418,12 +418,12 @@ function levelUpOpen()
 		break;
 		
 		case 1: //level 1 -> 2 :  480 Power | 800 wood
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["wood"] >= 800)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["wood"] >= 8000)
 			{
 				$level=$level+1;
 				update("open",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("wood",800);
+				deductResource("power",4800);
+				deductResource("wood",8000);
 			}
 			else
 			{
@@ -432,13 +432,13 @@ function levelUpOpen()
 		break;
 		
 		case 2: //level 2 -> 3 :  960 Power | 400 wood | 400 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 400 && $_SESSION["resources"]["wood"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 4000 && $_SESSION["resources"]["wood"] >= 4000)
 			{
 				$level=$level+1;
 				update("open",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",400);
-				deductResource("metal",400);
+				deductResource("power",9600);
+				deductResource("wood",4000);
+				deductResource("metal",4000);
 			}
 			else
 			{
@@ -455,13 +455,13 @@ function levelUpStealth()
 	switch($level["s"])
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 480)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 4800)
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("food",480);
+				deductResource("power",4800);
+				deductResource("food",4800);
 			}
 			else //not enough resources
 			{
@@ -470,13 +470,13 @@ function levelUpStealth()
 		break;
 		
 		case 1: //level 1 -> 2 :  960 Power | 400 wood
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["wood"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["wood"] >= 4000)
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",400);
+				deductResource("power",9600);
+				deductResource("wood",4000);
 			}
 			else
 			{
@@ -485,13 +485,13 @@ function levelUpStealth()
 		break;
 		
 		case 2: //level 2 -> 3 :  960 Power | 800 wood
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["wood"] >= 800)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["wood"] >= 8000)
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",800);
+				deductResource("power",9600);
+				deductResource("wood",8000);
 			}
 			else
 			{
@@ -500,14 +500,14 @@ function levelUpStealth()
 		break;
 		
 		case 3: //level 3 -> 4 :  960 Power | 800 wood | 400 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 400 && $_SESSION["resources"]["wood"] >= 800)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 4000 && $_SESSION["resources"]["wood"] >= 8000)
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",800);
-				deductResource("metal",400);
+				deductResource("power",9600);
+				deductResource("wood",8000);
+				deductResource("metal",4000);
 			}
 			else
 			{
@@ -516,14 +516,14 @@ function levelUpStealth()
 		break;
 		
 		case 4: //level 4 -> 5 :  960 Power | 800 wood | 800 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 800 && $_SESSION["resources"]["wood"] >= 800)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 8000 && $_SESSION["resources"]["wood"] >= 8000)
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",800);
-				deductResource("metal",800);
+				deductResource("power",9600);
+				deductResource("wood",8000);
+				deductResource("metal",8000);
 			}
 			else
 			{
@@ -532,14 +532,14 @@ function levelUpStealth()
 		break;
 		
 		case 5: //level 5 -> 6 :  960 Power | 1200 wood | 800 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 800 && $_SESSION["resources"]["wood"] >= 1200)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 8000 && $_SESSION["resources"]["wood"] >= 12000)
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",1200);
-				deductResource("metal",800);
+				deductResource("power",9600);
+				deductResource("wood",12000);
+				deductResource("metal",8000);
 			}
 			else
 			{
@@ -548,14 +548,14 @@ function levelUpStealth()
 		break;
 		
 		case 6: //level 6 -> 7 :  960 Power | 1200 wood | 1200 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 1200 && $_SESSION["resources"]["wood"] >= 1200)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 12000 && $_SESSION["resources"]["wood"] >= 12000)
 			{
 				$level["s"]=$level["s"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",1200);
-				deductResource("metal",1200);
+				deductResource("power",9600);
+				deductResource("wood",12000);
+				deductResource("metal",12000);
 			}
 			else
 			{
@@ -572,13 +572,13 @@ function levelUpWarrior()
 	switch($level["w"])
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 480)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 4800)
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("food",480);
+				deductResource("power",4800);
+				deductResource("food",4800);
 			}
 			else //not enough resources
 			{
@@ -587,13 +587,13 @@ function levelUpWarrior()
 		break;
 		
 		case 1: //level 1 -> 2 :  960 Power | 400 wood
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["wood"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["wood"] >= 4000)
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",400);
+				deductResource("power",9600);
+				deductResource("wood",4000);
 			}
 			else
 			{
@@ -602,13 +602,13 @@ function levelUpWarrior()
 		break;
 		
 		case 2: //level 2 -> 3 :  960 Power | 800 wood
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["wood"] >= 800)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["wood"] >= 8000)
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",800);
+				deductResource("power",9600);
+				deductResource("wood",8000);
 			}
 			else
 			{
@@ -617,14 +617,14 @@ function levelUpWarrior()
 		break;
 		
 		case 3: //level 3 -> 4 :  960 Power | 800 wood | 400 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 400 && $_SESSION["resources"]["wood"] >= 800)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 4000 && $_SESSION["resources"]["wood"] >= 8000)
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",800);
-				deductResource("metal",400);
+				deductResource("power",9600);
+				deductResource("wood",8000);
+				deductResource("metal",4000);
 			}
 			else
 			{
@@ -633,14 +633,14 @@ function levelUpWarrior()
 		break;
 		
 		case 4: //level 4 -> 5 :  960 Power | 800 wood | 800 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 800 && $_SESSION["resources"]["wood"] >= 800)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 8000 && $_SESSION["resources"]["wood"] >= 8000)
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",800);
-				deductResource("metal",800);
+				deductResource("power",9600);
+				deductResource("wood",8000);
+				deductResource("metal",8000);
 			}
 			else
 			{
@@ -649,14 +649,14 @@ function levelUpWarrior()
 		break;
 		
 		case 5: //level 5 -> 6 :  960 Power | 1200 wood | 800 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 800 && $_SESSION["resources"]["wood"] >= 1200)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 8000 && $_SESSION["resources"]["wood"] >= 12000)
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",1200);
-				deductResource("metal",800);
+				deductResource("power",9600);
+				deductResource("wood",12000);
+				deductResource("metal",8000);
 			}
 			else
 			{
@@ -665,14 +665,14 @@ function levelUpWarrior()
 		break;
 		
 		case 6: //level 6 -> 7 :  960 Power | 1200 wood | 1200 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 1200 && $_SESSION["resources"]["wood"] >= 1200)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 12000 && $_SESSION["resources"]["wood"] >= 12000)
 			{
 				$level["w"]=$level["w"]+1;
 				$value="s:".$level["s"].",w:".$level["w"];
 				update("ttype","'".$value."'","playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("wood",1200);
-				deductResource("metal",1200);
+				deductResource("power",9600);
+				deductResource("wood",12000);
+				deductResource("metal",12000);
 			}
 			else
 			{
@@ -689,12 +689,12 @@ function levelUpFactionPerkOne()
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 480)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 4800)
 			{
 				$level=$level+1;
 				update("faction1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("food",480);
+				deductResource("power",4800);
+				deductResource("food",4800);
 			}
 			else //not enough resources
 			{
@@ -703,13 +703,13 @@ function levelUpFactionPerkOne()
 		break;
 		
 		case 1: //level 1 -> 2 :  480 Power | 960 food | 400 metal
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 960 && $_SESSION["resources"]["metal"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 9600 && $_SESSION["resources"]["metal"] >= 4000)
 			{
 				$level=$level+1;
 				update("faction1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("food",960);
-				deductResource("metal",400);
+				deductResource("power",4800);
+				deductResource("food",9600);
+				deductResource("metal",4000);
 			}
 			else
 			{
@@ -718,13 +718,13 @@ function levelUpFactionPerkOne()
 		break;
 		
 		case 2: //level 2 -> 3 :  960 Power | 960 food | 800 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 800 && $_SESSION["resources"]["food"] >= 960)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 8000 && $_SESSION["resources"]["food"] >= 9600)
 			{
 				$level=$level+1;
 				update("faction1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("food",960);
-				deductResource("metal",800);
+				deductResource("power",9600);
+				deductResource("food",9600);
+				deductResource("metal",8000);
 			}
 			else
 			{
@@ -741,12 +741,12 @@ function levelUpFactionPerkTwo()
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 480)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 4800)
 			{
 				$level=$level+1;
 				update("faction2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("food",480);
+				deductResource("power",4800);
+				deductResource("food",4800);
 			}
 			else //not enough resources
 			{
@@ -755,13 +755,13 @@ function levelUpFactionPerkTwo()
 		break;
 		
 		case 1: //level 1 -> 2 :  480 Power | 960 food | 400 metal
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 960 && $_SESSION["resources"]["metal"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 9600 && $_SESSION["resources"]["metal"] >= 4000)
 			{
 				$level=$level+1;
 				update("faction2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("food",960);
-				deductResource("metal",400);
+				deductResource("power",4800);
+				deductResource("food",9600);
+				deductResource("metal",4000);
 			}
 			else
 			{
@@ -770,13 +770,13 @@ function levelUpFactionPerkTwo()
 		break;
 		
 		case 2: //level 2 -> 3 :  960 Power | 960 food | 800 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 800 && $_SESSION["resources"]["food"] >= 960)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 8000 && $_SESSION["resources"]["food"] >= 9600)
 			{
 				$level=$level+1;
 				update("faction2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("food",960);
-				deductResource("metal",800);
+				deductResource("power",9600);
+				deductResource("food",9600);
+				deductResource("metal",8000);
 			}
 			else
 			{
@@ -793,12 +793,12 @@ function levelUpCivPerkOne()
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 480)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 4800)
 			{
 				$level=$level+1;
 				update("civperk1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("food",480);
+				deductResource("power",4800);
+				deductResource("food",4800);
 			}
 			else //not enough resources
 			{
@@ -807,12 +807,12 @@ function levelUpCivPerkOne()
 		break;
 		
 		case 1: //level 1 -> 2 :  480 Power | 400 wood
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 4000)
 			{
 				$level=$level+1;
 				update("civperk1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("food",400);
+				deductResource("power",4800);
+				deductResource("food",4000);
 			}
 			else
 			{
@@ -821,12 +821,12 @@ function levelUpCivPerkOne()
 		break;
 		
 		case 2: //level 2 -> 3 :  960 Power 400 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 4000)
 			{
 				$level=$level+1;
 				update("civperk1",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("metal",400);
+				deductResource("power",9600);
+				deductResource("metal",4000);
 			}
 			else
 			{
@@ -843,12 +843,12 @@ function levelUpCivPerkTwo()
 	switch($level)
 	{
 		case 0: //level 0 -> 1 : 480 Power | 480 food
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 480)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 4800)
 			{
 				$level=$level+1;
 				update("civperk2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("food",480);
+				deductResource("power",4800);
+				deductResource("food",4800);
 			}
 			else //not enough resources
 			{
@@ -857,12 +857,12 @@ function levelUpCivPerkTwo()
 		break;
 		
 		case 1: //level 1 -> 2 :  480 Power | 400 wood
-			if ($_SESSION["resources"]["power"] >= 480 && $_SESSION["resources"]["food"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 4800 && $_SESSION["resources"]["food"] >= 4000)
 			{
 				$level=$level+1;
 				update("civperk2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",480);
-				deductResource("food",400);
+				deductResource("power",4800);
+				deductResource("food",4000);
 			}
 			else
 			{
@@ -871,12 +871,12 @@ function levelUpCivPerkTwo()
 		break;
 		
 		case 2: //level 2 -> 3 :  960 Power 400 metal
-			if ($_SESSION["resources"]["power"] >= 960 && $_SESSION["resources"]["metal"] >= 400)
+			if ($_SESSION["resources"]["power"] >= 9600 && $_SESSION["resources"]["metal"] >= 4000)
 			{
 				$level=$level+1;
 				update("civperk2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",960);
-				deductResource("metal",400);
+				deductResource("power",9600);
+				deductResource("metal",4000);
 			}
 			else
 			{
@@ -885,13 +885,13 @@ function levelUpCivPerkTwo()
 		break;
 		
 		case 2: //level 3 -> 4 :  1000 power | 500 wood |500 metal
-			if ($_SESSION["resources"]["power"] >= 1000 && $_SESSION["resources"]["metal"] >= 500 && $_SESSION["resources"]["wood"] >= 500)
+			if ($_SESSION["resources"]["power"] >= 10000 && $_SESSION["resources"]["metal"] >= 5000 && $_SESSION["resources"]["wood"] >= 5000)
 			{
 				$level=$level+1;
 				update("civperk2",$level,"playerid='".$_SESSION["tek_emailid"]."'");
-				deductResource("power",1000);
-				deductResource("wood",500);
-				deductResource("metal",500);
+				deductResource("power",10000);
+				deductResource("wood",5000);
+				deductResource("metal",5000);
 			}
 			else
 			{
