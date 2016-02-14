@@ -5,6 +5,17 @@
   
 include "../db_access/db.php";
 
+function getSum($resource)
+{
+	$conn = connect();
+	
+	$query = "SELECT SUM(".$resource."_regen) FROM player;";
+	$res = mysqli_query($conn,$query);
+	$res = mysqli_fetch_assoc($res);
+	var_dump($res);
+	return($res["SUM(".$resource."_regen)"]);
+}
+
  //check if player refreshes page
  if (!isset($_SESSION["wood_demand"]))
  {
@@ -41,13 +52,13 @@ setTable("market");
 
 if ($values["wood_quant"] > 0)
 {
-	if ($wood_demand - $values["wood_quant"] >= 1)
+	if (($wood_demand - $values["wood_quant"] >= 1) && (($wood_demand/getSum("wood")) > 1)) 
 	{
 		$wood_demand = $wood_demand - $values["wood_quant"];
 	}
 	else
 	{
-		$wood_demand = 1;
+		$wood_demand = getSum("wood");
 	}
 	
 	/*
@@ -83,13 +94,13 @@ if ($values["wood_quant"] > 0)
 if ($values["water_quant"] > 0)
 {
 	
-	if ($water_demand - $values["water_quant"] >= 1)
+	if (($water_demand - $values["water_quant"] >= 1) && (($water_demand/getSum("water")) > 1))
 	{
 		$water_demand = $water_demand - $values["water_quant"];
 	}
 	else
 	{
-		$water_demand = 1;
+		$water_demand = getSum("water");
 	}
 	
 	/*
@@ -121,13 +132,13 @@ if ($values["water_quant"] > 0)
 
 if ($values["metal_quant"] > 0)
 {
-	if ($metal_demand - $values["metal_quant"] >= 1)
+	if (($metal_demand - $values["metal_quant"] >= 1)  && (($metal_demand/getSum("metal")) > 1))
 	{
 		$metal_demand = $metal_demand - $values["metal_quant"];
 	}
 	else
 	{
-		$metal_demand = 1;
+		$metal_demand = getSum("metal");
 	}
 	
 	/*
@@ -159,13 +170,13 @@ if ($values["metal_quant"] > 0)
 
 if ($values["power_quant"] > 0)
 {
-	if ($power_demand - $values["power_quant"] >= 1)
+	if (($power_demand - $values["power_quant"] >= 1)  && (($power_demand/getSum("power")) > 1))
 	{
 		$power_demand = $power_demand - $values["power_quant"];
 	}
 	else
 	{
-		$power_demand = 1;
+		$power_demand = getSum("power");
 	}
 	
 	/*
@@ -197,13 +208,13 @@ if ($values["power_quant"] > 0)
 
 if ($values["food_quant"] > 0)
 {
-	if ($food_demand - $values["food_quant"] >= 1)
+	if (($food_demand - $values["food_quant"] >= 1) && (($food_demand/getSum("food")) > 1))
 	{
 		$food_demand = $food_demand - $values["food_quant"];
 	}
 	else
 	{
-		$food_demand = 1;
+		$food_demand = getSum("food");
 	}
 	
 	/*	
