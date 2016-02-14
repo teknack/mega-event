@@ -2551,3 +2551,17 @@ else if(isset($_POST['add_base_tile']))
 else
 	header("location:index.php");
 ?>
+<html>
+<head>
+	<script>
+		function refresh()
+		{
+        		setInterval(function(){
+        			window.location.reload(true);
+        		}, 5000);
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -126,6 +126,31 @@ function attackCost()
   xhttp.send();   
 }
 
+function sim_attackCost()
+{
+    var xhttp;
+    var destRow=document.getElementById("row").value;
+    var destCol=document.getElementById("col").value;
+    if (window.XMLHttpRequest) 
+    {
+    // code for modern browsers
+    xhttp = new XMLHttpRequest();
+    } else 
+    {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xhttp.onreadystatechange = function() 
+    {
+        if (xhttp.readyState == 4 && xhttp.status == 200) 
+        {
+            document.getElementById("cost").innerHTML = xhttp.responseText;
+        }
+    };
+  xhttp.open("GET", "actionCosts.php?action=attack&row="+destRow+"&col="+destCol, true);
+  xhttp.send();   
+}
+
 function create_troopsCost()
 {
     var xhttp;
