@@ -21,8 +21,8 @@
 		$i=0;
 		while($row = $res->fetch_assoc() and $i<5)
 		{
-			$playerid
-			$output=$output.'{"user":"$playerid"'..'","faction":"'.$row["faction"].'","tiles":"'.$row['total'].'"},';
+			$playerid=$row['tek_emailid'];
+			$output=$output.'{"user":"'.$playerid.'","faction":"'.$row["faction"].'","tiles":"'.$row['total'].'"},';
 			$i++;
 		}
 		$output.="{}]";
