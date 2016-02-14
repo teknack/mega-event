@@ -5,13 +5,29 @@
 		$playerlevel = $_SESSION['playerLevel'];
 		$difficulty = $_SESSION['baseLevel'];
 		$playerclass = $_SESSION['troopType'];
+		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/local-map/player.php';</script>";
+		//try without absolute path
+		if($GLOBALS['attackdone'] != 1){ //or(isset($GLOBALS['attackdone']))
+			$GLOBALS['attackdone'] = 0;
+		}
 	}
 	else
 	{
+		$goto="<script>window.location.href='http://teknack.in/bucket/mega-event/tutorial/index.php';</script>";
 		$difficulty = 1;
 		$playerlevel = 1;
 		$playerclass = 1;
+		if($GLOBALS['attackdone'] != 1){ //or(isset($GLOBALS['attackdone']))
+			$GLOBALS['attackdone'] = 0;
+		}
 	}
+	if($GLOBALS['attackdone'] == 1){
+		unset($GLOBALS['attackdone']);
+		echo $goto;
+	}
+	//the page will reload after every 5 secs
+	//if attackdone is true it will close the mini-game tab and redirect to localmap or tutorial
+	//so game will run in iframe only
 ?>
 <html class="full">
 	<head>
@@ -23,8 +39,15 @@
         <title>Mega Event</title>
         <link href="style.css" rel="stylesheet">
         <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript">
+        	function refresh(){
+        		setInterval(function(){
+        			window.location.reload(true);
+        		}, 5000);
+        	}
+        </script>
 	</head>
-	<body>
+	<body onload="refresh();">
 		<div style="width:80%; margin:0 auto;">
 			<div class="objective">
 				<img src="website_images/objective.png" width="45%" height="15%" style="margin-top:4%; margin-left:28%;"></img>
