@@ -67,6 +67,13 @@ function setTable($table)
 	}
 }
 
+function setTableDirect($table)
+{
+	global $dbtable;
+	
+	$dbtable = $table;
+}
+
 function checkPlayerExists($player,$table)
 {
 	global $dbconn;
@@ -287,5 +294,16 @@ function gameUnset()
 	$_SESSION["locArray"] = null;
 	$_SESSION["collect_time"] = null;
 	$_SESSION["resources"] = null;
+}
+
+function getPlayerName($emailid)
+{
+	global $dbconn;
+	
+	$query="SELECT fname FROM teknack_promo.registered WHERE emailid='".$emailid."';";
+	$op = $mysqli_query($dbconn,$query);
+	$op = mysqli_fetch_assoc($op);
+	
+	return($op["fname"]);
 }
 ?>
