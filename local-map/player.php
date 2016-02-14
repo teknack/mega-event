@@ -712,7 +712,7 @@ function addBaseTile($row,$col)
 
 function simAftermath($srcRow,$srcCol,$destRow,$destCol,$quantity,$action)
 {
-	global $conn,$playerid,$faction,$moveCostPower,$moveCostWater,$moveCostFood;
+	global $conn,$playerid,$faction,$moveCostFood,$moveCostWater,$moveCostPower,$plunderPortion;
 	
 	$battleRes=simBattle($srcRow,$srcCol,$destRow,$destCol,$quantity);
 	$battleResult=$battleRes['result'];
