@@ -180,6 +180,7 @@ function getSlot($x,$y)
 	$res = mysqli_fetch_assoc($res);
 	return($res);
 }
+
 function getSlotTroops($x,$y)
 {
 	global $dbconn;
@@ -199,6 +200,7 @@ function getSlotTroops($x,$y)
 		return $res;
 	}
 }
+
 function fetch($player,$col="",$cond="")
 {
 	global $dbconn,$dbtable;
@@ -269,6 +271,7 @@ function consoleLog($msg="")
 {
 	echo("<script>console.log('".$msg."');</script>");
 }
+
 function testVar($input="")
 {
 	$input = trim($input);
